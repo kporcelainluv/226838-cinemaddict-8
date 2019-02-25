@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
-* Студент: [Ksusha Zhukova](https://up.htmlacademy.ru/ecmascript/8/user/226838).
-* Наставник: `Неизвестно`.
+- Студент: [Ksusha Zhukova](https://up.htmlacademy.ru/ecmascript/8/user/226838).
+- Наставник: `Константин Каруна`.
 
 ---
 
