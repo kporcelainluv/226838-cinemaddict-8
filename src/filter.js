@@ -29,7 +29,6 @@ const createFilter = filter => {
   }
   filterContainer.appendChild(filterLink);
 };
-
 const displayFilters = (filters, createFilter, makeFilterActive) => {
   filters.map(elm => createFilter(elm));
 

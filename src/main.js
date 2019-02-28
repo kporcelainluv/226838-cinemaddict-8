@@ -1,18 +1,21 @@
-// import {
-//   displayFilters,
-//   filters,
-//   createFilter,
-//   makeFilterActive
-// } from "./filter.js";
-// import {
-//   createAllMoviesCards,
-//   createContainer,
-//   films,
-//   createFilmCard
-// } from "./films.js";
+import {
+  displayFilters,
+  filters,
+  createFilter,
+  makeFilterActive
+} from "./filter.js";
+import { listOfAllFilmCards } from "./card.js";
+// display filters
+displayFilters(filters, createFilter, makeFilterActive);
 
-// displayFilters(filters, createFilter, makeFilterActive);
-
-// createContainer("Top rated", 2, 3);
-// createContainer("Most commented", 4, 5);
-// createAllMoviesCards(films, createFilmCard);
+//display film cards
+const moviesCategoeriesContainers = Array.from(
+  document.querySelectorAll(".films-list__container")
+);
+let index = 0;
+for (let container of moviesCategoeriesContainers) {
+  for (let i = index; i < index + 2; i++) {
+    container.appendChild(listOfAllFilmCards[i]);
+  }
+  index += 2;
+}
