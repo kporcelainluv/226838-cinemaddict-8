@@ -4,18 +4,42 @@ import {
   createFilter,
   makeFilterActive
 } from "./filter.js";
-import { listOfAllFilmCards } from "./card.js";
+
+import { createFilmCard, film, getRandomNum } from "./card.js";
 // display filters
 displayFilters(filters, createFilter, makeFilterActive);
-
-//display film cards
+// add film cards
 const moviesCategoeriesContainers = Array.from(
-  document.querySelectorAll(".films-list__container")
+  document.querySelectorAll(`.films-list__container`)
 );
-let index = 0;
-for (let container of moviesCategoeriesContainers) {
-  for (let i = index; i < index + 2; i++) {
-    container.appendChild(listOfAllFilmCards[i]);
-  }
-  index += 2;
+const [all, topRated, mostCommented] = moviesCategoeriesContainers;
+// add films to section with All films
+for (let filmsAmount = 0; filmsAmount <= 15; filmsAmount++) {
+  let newElem = createFilmCard(
+    film.name,
+    film.descriptionText,
+    film.posters,
+    film.controls
+  );
+  all.appendChild(newElem);
+}
+// add films to section with Top films
+for (let filmsAmount = 0; filmsAmount < 4; filmsAmount++) {
+  let newElem = createFilmCard(
+    film.name,
+    film.descriptionText,
+    film.posters,
+    (film.controls = false)
+  );
+  topRated.appendChild(newElem);
+}
+// add films to section with Commented films
+for (let filmsAmount = 0; filmsAmount < 4; filmsAmount++) {
+  let newElem = createFilmCard(
+    film.name,
+    film.descriptionText,
+    film.posters,
+    (film.controls = false)
+  );
+  mostCommented.appendChild(newElem);
 }
