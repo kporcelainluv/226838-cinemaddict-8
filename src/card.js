@@ -5,9 +5,19 @@ class Card {
     this._posters = data.posters;
     this._controls = data.controls;
     this._element = null;
+    this._onClick = null;
   }
   _getRandomNum(length) {
     return Math.floor(Math.random() * length);
+  }
+  _onButtonClick(event) {
+    event.preventDefault();
+    if (typeof this._onClick === `function`) {
+      this._onClick();
+    }
+  }
+  set onClick(f) {
+    this._onClick = f;
   }
   get template() {
     const card = document
@@ -58,6 +68,13 @@ class Card {
   render(parent) {
     this._element = this.template;
     parent.appendChild(this._element);
+
+    const commentsButton = document.querySelector(`.film-card__comments`);
+    commentsButton.addEventListener("click", this._onButtonClick.bind(this));
+  }
+  unrender() {
+    const commentsButton = document.querySelector(`.film-card__comments`);
+    commentsButton.removeEventListener("click", this._onButtonClick.bind(this));
   }
 }
 

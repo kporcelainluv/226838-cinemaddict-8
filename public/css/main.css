@@ -775,11 +775,14 @@ a:hover {
 .popup-image {
   padding-top: 50px;
   padding-bottom: 50px;
-  margin-right: 100px;
+  margin-right: 50px;
+  margin-left: 50px;
 }
 .popup-description {
   flex-direction: column;
   padding-top: 50px;
+  padding: 50px;
+  padding-left: 0px;
 }
 .popup-description-option {
   font-size: 20px;

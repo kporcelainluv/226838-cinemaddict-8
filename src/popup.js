@@ -3,11 +3,24 @@ class Popup {
     this._name = data.name;
     this._raiting = data.raiting;
     this._year = data.year;
-    this._duration = data._duration;
-    this._genre = data._genre;
+    this._duration = data.duration;
+    this._genre = data.genre;
     this._about = data.descriptionText.split(`. `);
     this._posters = data.posters;
     this._element = null;
+    this._onClose = null;
+  }
+  get element() {
+    return this._element;
+  }
+  _onButtonClick(event) {
+    event.preventDefault();
+    if (typeof this._onClose === "function") {
+      this._onClose();
+    }
+  }
+  set onClose(f) {
+    this._onClose = f;
   }
   _getRandomNum(length) {
     return Math.floor(Math.random() * length);
@@ -15,7 +28,6 @@ class Popup {
   _createSpanElement(popUpTemplate, className, classConst) {
     const element = popUpTemplate.querySelector(`.${className}`);
     const span = document.createElement("span");
-    console.log(classConst);
     span.innerText = ` ${classConst}`;
     element.appendChild(span);
   }
@@ -28,7 +40,7 @@ class Popup {
     image.src = `./images/posters/${
       this._posters[this._getRandomNum(this._posters.length)]
     }.jpg`;
-    //film
+    // create film description
     const filmDescription = popUpTemplate.querySelector(
       `.popup-description-text`
     );
@@ -44,8 +56,6 @@ class Popup {
       }
       return 0;
     });
-    console.log({ coords });
-    filmDescription.textContent = this._about.slice(...coords).join(`. `);
     //add name
     this._createSpanElement(
       popUpTemplate,
@@ -61,26 +71,17 @@ class Popup {
     // add genre
     this._createSpanElement(popUpTemplate, "popup-genre", this._genre);
     // add about
-    this._createSpanElement(popUpTemplate, "popup-description", this._about);
+    this._createSpanElement(
+      popUpTemplate,
+      "popup-description-text",
+      this._about.slice(...coords).join(`. `)
+    );
     return popUpTemplate;
   }
   render() {
     this._element = this.template;
-
     const popUpClose = this._element.querySelector(`.popup-button`);
-    const commentsButton = document.querySelector(`.film-card__comments`);
-
-    const openPopup = () => {
-      let mainContainer = document.querySelector(`.main`);
-      mainContainer.appendChild(this._element);
-    };
-    const closeButton = () => {
-      let mainContainer = document.querySelector(`.main`);
-      const template = document.querySelector(`.popup-portal`);
-      mainContainer.removeChild(template);
-    };
-    commentsButton.addEventListener("click", openPopup);
-    popUpClose.addEventListener("click", closeButton);
+    popUpClose.addEventListener("click", this._onButtonClick.bind(this));
   }
 }
 export { Popup };
