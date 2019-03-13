@@ -13,38 +13,26 @@ class Popup {
   get element() {
     return this._element;
   }
-  _onButtonClick(event) {
-    event.preventDefault();
-    if (typeof this._onClose === "function") {
-      this._onClose();
-    }
-  }
+
   set onClose(f) {
     this._onClose = f;
+  }
+  _onButtonClick(event) {
+    event.preventDefault();
+    if (typeof this._onClose === `function`) {
+      this._onClose();
+    }
   }
   _getRandomNum(length) {
     return Math.floor(Math.random() * length);
   }
   _createSpanElement(popUpTemplate, className, classConst) {
     const element = popUpTemplate.querySelector(`.${className}`);
-    const span = document.createElement("span");
+    const span = document.createElement(`span`);
     span.innerText = ` ${classConst}`;
     element.appendChild(span);
   }
-  get template() {
-    const popUpTemplate = document
-      .querySelector(`.popup-template`)
-      .content.querySelector(`.popup-portal`)
-      .cloneNode(true);
-    const image = popUpTemplate.querySelector(`.popup-img-src`);
-    image.src = `./images/posters/${
-      this._posters[this._getRandomNum(this._posters.length)]
-    }.jpg`;
-    // create film description
-    const filmDescription = popUpTemplate.querySelector(
-      `.popup-description-text`
-    );
-
+  _generateDescription(descr) {
     const coords = [
       this._getRandomNum(this._about.length),
       this._getRandomNum(this._about.length)
@@ -56,32 +44,44 @@ class Popup {
       }
       return 0;
     });
+    return descr.slice(...coords).join(`. `);
+  }
+  get template() {
+    const popUpTemplate = document
+      .querySelector(`.popup-template`)
+      .content.querySelector(`.popup-portal`)
+      .cloneNode(true);
+    const image = popUpTemplate.querySelector(`.popup-img-src`);
+    image.src = `./images/posters/${
+      this._posters[this._getRandomNum(this._posters.length)]
+    }.jpg`;
+
     //add name
     this._createSpanElement(
       popUpTemplate,
-      "popup-name",
+      `popup-name`,
       this._name[this._getRandomNum(this._name.length)]
     );
     // add raiting
-    this._createSpanElement(popUpTemplate, "popup-raiting", this._raiting);
+    this._createSpanElement(popUpTemplate, `popup-raiting`, this._raiting);
     // add year
-    this._createSpanElement(popUpTemplate, "popup-year", this._year);
+    this._createSpanElement(popUpTemplate, `popup-year`, this._year);
     // add duration
-    this._createSpanElement(popUpTemplate, "popup-duration", this._duration);
+    this._createSpanElement(popUpTemplate, `popup-duration`, this._duration);
     // add genre
-    this._createSpanElement(popUpTemplate, "popup-genre", this._genre);
+    this._createSpanElement(popUpTemplate, `popup-genre`, this._genre);
     // add about
     this._createSpanElement(
       popUpTemplate,
-      "popup-description-text",
-      this._about.slice(...coords).join(`. `)
+      `popup-description-text`,
+      _generateDescription(this._about)
     );
     return popUpTemplate;
   }
   render() {
     this._element = this.template;
     const popUpClose = this._element.querySelector(`.popup-button`);
-    popUpClose.addEventListener("click", this._onButtonClick.bind(this));
+    popUpClose.addEventListener(`click`, this._onButtonClick.bind(this));
   }
 }
 export { Popup };

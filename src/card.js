@@ -16,6 +16,20 @@ class Card {
       this._onClick();
     }
   }
+  _generateDescription(descr) {
+    const coords = [
+      this._getRandomNum(this._about.length),
+      this._getRandomNum(this._about.length)
+    ].sort((a, b) => {
+      if (a < b) {
+        return -1;
+      } else if (a > b) {
+        return 1;
+      }
+      return 0;
+    });
+    return descr.slice(...coords).join(`. `);
+  }
   set onClick(f) {
     this._onClick = f;
   }
@@ -33,20 +47,7 @@ class Card {
     }
     // add film description
     const filmDescription = card.querySelector(`.film-card__description`);
-    const coords = [
-      this._getRandomNum(this._descriptionText.length),
-      this._getRandomNum(this._descriptionText.length)
-    ].sort((a, b) => {
-      if (a < b) {
-        return -1;
-      } else if (a > b) {
-        return 1;
-      }
-      return 0;
-    });
-    filmDescription.textContent = this._descriptionText
-      .slice(...coords)
-      .join(`. `);
+    filmDescription.textContent = _generateDescription(this._descriptionText);
     // add film name
     if (this._name) {
       const filmTitle = card.querySelector(`.film-card__title`);
@@ -65,16 +66,19 @@ class Card {
 
     return card;
   }
-  render(parent) {
+  render(parent, index) {
     this._element = this.template;
     parent.appendChild(this._element);
 
-    const commentsButton = document.querySelector(`.film-card__comments`);
-    commentsButton.addEventListener("click", this._onButtonClick.bind(this));
+    const commentsButton = document.querySelectorAll(`.film-card__comments`);
+    commentsButton[index].addEventListener(
+      `click`,
+      this._onButtonClick.bind(this)
+    );
   }
   unrender() {
     const commentsButton = document.querySelector(`.film-card__comments`);
-    commentsButton.removeEventListener("click", this._onButtonClick.bind(this));
+    commentsButton.removeEventListener(`click`, this._onButtonClick.bind(this));
   }
 }
 
