@@ -18,8 +18,8 @@ class Card {
   }
   _generateDescription(descr) {
     const coords = [
-      this._getRandomNum(this._about.length),
-      this._getRandomNum(this._about.length)
+      this._getRandomNum(descr.length),
+      this._getRandomNum(descr.length)
     ].sort((a, b) => {
       if (a < b) {
         return -1;
@@ -47,7 +47,9 @@ class Card {
     }
     // add film description
     const filmDescription = card.querySelector(`.film-card__description`);
-    filmDescription.textContent = _generateDescription(this._descriptionText);
+    filmDescription.textContent = this._generateDescription(
+      this._descriptionText
+    );
     // add film name
     if (this._name) {
       const filmTitle = card.querySelector(`.film-card__title`);

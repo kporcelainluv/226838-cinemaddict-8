@@ -74,7 +74,7 @@ class Popup {
     this._createSpanElement(
       popUpTemplate,
       `popup-description-text`,
-      _generateDescription(this._about)
+      this._generateDescription(this._about)
     );
     return popUpTemplate;
   }
