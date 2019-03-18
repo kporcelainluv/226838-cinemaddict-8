@@ -1,5 +1,7 @@
-class Popup {
+import { Component } from "./component.js";
+class Popup extends Component {
   constructor(data) {
+    super();
     this._name = data.name;
     this._raiting = data.raiting;
     this._year = data.year;
@@ -7,13 +9,8 @@ class Popup {
     this._genre = data.genre;
     this._about = data.descriptionText.split(`. `);
     this._posters = data.posters;
-    this._element = null;
     this._onClose = null;
   }
-  get element() {
-    return this._element;
-  }
-
   set onClose(f) {
     this._onClose = f;
   }
@@ -23,28 +20,11 @@ class Popup {
       this._onClose();
     }
   }
-  _getRandomNum(length) {
-    return Math.floor(Math.random() * length);
-  }
   _createSpanElement(popUpTemplate, className, classConst) {
     const element = popUpTemplate.querySelector(`.${className}`);
     const span = document.createElement(`span`);
     span.innerText = ` ${classConst}`;
     element.appendChild(span);
-  }
-  _generateDescription(descr) {
-    const coords = [
-      this._getRandomNum(this._about.length),
-      this._getRandomNum(this._about.length)
-    ].sort((a, b) => {
-      if (a < b) {
-        return -1;
-      } else if (a > b) {
-        return 1;
-      }
-      return 0;
-    });
-    return descr.slice(...coords).join(`. `);
   }
   get template() {
     const popUpTemplate = document
@@ -84,4 +64,5 @@ class Popup {
     popUpClose.addEventListener(`click`, this._onButtonClick.bind(this));
   }
 }
+
 export { Popup };

@@ -1,34 +1,19 @@
-class Card {
+import { Component } from "./component.js";
+class Card extends Component {
   constructor(data) {
+    super();
     this._name = data.name;
-    this._descriptionText = data.descriptionText.split(`. `);
+    this._about = data.descriptionText.split(`. `);
     this._posters = data.posters;
     this._controls = data.controls;
-    this._element = null;
+
     this._onClick = null;
-  }
-  _getRandomNum(length) {
-    return Math.floor(Math.random() * length);
   }
   _onButtonClick(event) {
     event.preventDefault();
     if (typeof this._onClick === `function`) {
       this._onClick();
     }
-  }
-  _generateDescription(descr) {
-    const coords = [
-      this._getRandomNum(descr.length),
-      this._getRandomNum(descr.length)
-    ].sort((a, b) => {
-      if (a < b) {
-        return -1;
-      } else if (a > b) {
-        return 1;
-      }
-      return 0;
-    });
-    return descr.slice(...coords).join(`. `);
   }
   set onClick(f) {
     this._onClick = f;
@@ -47,9 +32,7 @@ class Card {
     }
     // add film description
     const filmDescription = card.querySelector(`.film-card__description`);
-    filmDescription.textContent = this._generateDescription(
-      this._descriptionText
-    );
+    filmDescription.textContent = this._generateDescription(this._about);
     // add film name
     if (this._name) {
       const filmTitle = card.querySelector(`.film-card__title`);
