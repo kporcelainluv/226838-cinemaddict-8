@@ -1,13 +1,15 @@
 import { Component } from "./component.js";
+
 class Card extends Component {
   constructor(data) {
     super();
     this._name = data.name;
-    this._about = data.descriptionText.split(`. `);
+    this._about = data.descriptionText;
     this._posters = data.posters;
     this._controls = data.controls;
-
     this._onClick = null;
+    this._raiting = data.raiting;
+    this._onButtonClick = this._onButtonClick.bind(this);
   }
   _onButtonClick(event) {
     event.preventDefault();
@@ -17,6 +19,26 @@ class Card extends Component {
   }
   set onClick(f) {
     this._onClick = f;
+  }
+
+  render(parent) {
+    this._element = this.template;
+    parent.appendChild(this._element);
+
+    const commentsButton = document.querySelector(`.film-card__comments`);
+    commentsButton.addEventListener(`click`, this._onButtonClick);
+  }
+  unrender() {
+    const commentsButton = document.querySelector(`.film-card__comments`);
+    commentsButton.removeEventListener(`click`, this._onButtonClick);
+  }
+  update(data) {
+    this._name = data.name;
+    this._about = data.descriptionText;
+    this._posters = data.posters;
+    this._controls = data.controls;
+    this._onClick = null;
+    this._raiting = data.raiting;
   }
   get template() {
     const card = document
@@ -32,11 +54,11 @@ class Card extends Component {
     }
     // add film description
     const filmDescription = card.querySelector(`.film-card__description`);
-    filmDescription.textContent = this._generateDescription(this._about);
+    filmDescription.textContent = this._about;
     // add film name
     if (this._name) {
       const filmTitle = card.querySelector(`.film-card__title`);
-      filmTitle.textContent = this._name[this._getRandomNum(this._name.length)];
+      filmTitle.textContent = this._name;
     }
     // check if film card has control buttons
     if (!this._controls) {
@@ -45,25 +67,12 @@ class Card extends Component {
     }
     // add film image
     const image = card.querySelector(`.film-card__poster`);
-    image.src = `./images/posters/${
-      this._posters[this._getRandomNum(this._posters.length)]
-    }.jpg`;
+    image.src = `./images/posters/${this._posters}.jpg`;
+    //raitimg
+    const raiting = card.querySelector(`.film-card__rating`);
 
+    raiting.innerHTML = this._raiting;
     return card;
-  }
-  render(parent, index) {
-    this._element = this.template;
-    parent.appendChild(this._element);
-
-    const commentsButton = document.querySelectorAll(`.film-card__comments`);
-    commentsButton[index].addEventListener(
-      `click`,
-      this._onButtonClick.bind(this)
-    );
-  }
-  unrender() {
-    const commentsButton = document.querySelector(`.film-card__comments`);
-    commentsButton.removeEventListener(`click`, this._onButtonClick.bind(this));
   }
 }
 

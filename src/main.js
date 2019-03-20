@@ -18,15 +18,11 @@ const moviesCategoeriesContainers = Array.from(
 );
 
 const [all, topRated, mostCommented] = moviesCategoeriesContainers;
-
-for (let i = 0; i <= 6; i++) {
+const createFilmCard = () => {
   let filmCard = new Card(film);
   let myPopUp = new Popup(film);
-  filmCard.render(all, i);
-  if (i < 2) {
-    filmCard.render(topRated, i + 1);
-    filmCard.render(mostCommented, i + 2);
-  }
+  filmCard.render(all);
+
   filmCard.onClick = () => {
     let mainContainer = document.querySelector(`body`);
     myPopUp.render();
@@ -34,9 +30,20 @@ for (let i = 0; i <= 6; i++) {
     filmCard.unrender();
   };
 
-  myPopUp.onClose = () => {
+  myPopUp.onClose = newObject => {
+    film.name = newObject.name;
+    film.raiting = newObject.raiting;
+    film.descriptionText = newObject.descriptionText;
+    film.posters = newObject.posters;
+    film.year = newObject.year;
+    film.duration = newObject.duration;
+    film.genre = newObject.genre;
+
     let mainContainer = document.querySelector(`body`);
     const deletingPopUp = document.querySelector(`.popup-portal`);
     mainContainer.removeChild(deletingPopUp);
+
+    filmCard.update(film);
   };
-}
+};
+createFilmCard();
