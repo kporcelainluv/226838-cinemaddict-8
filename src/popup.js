@@ -10,24 +10,24 @@ class Popup extends Component {
     this._about = data.descriptionText;
     this._posters = data.posters;
     this._onClose = null;
-    this._onButtonClick = this._onButtonClick.bind(this);
+    this._onButtonClose = this._onButtonClose.bind(this);
     this._onChangeRaiting = this._onChangeRaiting.bind(this);
   }
   set onClose(f) {
     this._onClose = f;
   }
-  _onButtonClick(event) {
+  _onButtonClose(event) {
     event.preventDefault();
-
     const formData = new FormData(this._element.querySelector(`.popup-portal`));
+    console.log(formData);
     const newData = this._filmVoteMock(formData);
-    console.log("here", { newData });
     if (typeof this._onClose === `function`) {
       this._onClose(newData);
     }
     this.update(newData);
   }
-  _onChangeRaiting() {
+  _onChangeRaiting(userChosenRaiting) {
+    this._raiting = userChosenRaiting;
     this._partialUpdate();
     this.addEventListeners();
   }
@@ -46,13 +46,14 @@ class Popup extends Component {
       const [property, value] = pair;
       popUpMapper[property] && popUpMapper[property](value);
     }
-    console.log("filmvote ,ock", { mock });
+
     return mock;
   }
   _partialUpdate() {
     const updatedTemplate = this.template;
     this._element.parentNode.replaceChild(updatedTemplate, this._element);
     this._element = updatedTemplate;
+    this.addEventListeners();
   }
   _createSpanElement(popUpTemplate, className, classConst) {
     const element = popUpTemplate.querySelector(`.${className}`);
@@ -67,12 +68,20 @@ class Popup extends Component {
   }
   addEventListeners() {
     const popUpClose = this._element.querySelector(`.popup-button-close`);
-    popUpClose.addEventListener(`click`, this._onButtonClick);
+    popUpClose.addEventListener(`click`, this._onButtonClose);
 
     const raitingButtons = this._element.querySelectorAll(`.raiting-button`);
     raitingButtons.forEach(elm => {
-      elm.addEventListener("click", this._onChangeRaiting);
+      elm.addEventListener("click", () => {
+        this._onChangeRaiting(event.target.innerHTML);
+        console.log(event.target.innerHTML);
+      });
     });
+  }
+
+  removeEventListeners() {
+    const popUpClose = this._element.querySelector(`.popup-button-close`);
+    popUpClose.removeEventListener(`click`, this._onButtonClose);
   }
   update(data) {
     this._name = data.name;
@@ -82,9 +91,15 @@ class Popup extends Component {
     this._onClick = null;
     this._raiting = data.raiting;
   }
-  removeEventListeners() {
-    const popUpClose = this._element.querySelector(`.popup-button-close`);
-    popUpClose.removeEventListener(`click`, this._onButtonClick);
+  static createMapper(target) {
+    return {
+      name: value => (target.name = value),
+      raiting: value => (target.raiting = value),
+      year: value => (target.year = value),
+      duration: value => (target.duration = value),
+      genre: value => (target.genre = value),
+      posters: value => (target.posters = value)
+    };
   }
   get template() {
     const popUpTemplate = document
@@ -106,17 +121,6 @@ class Popup extends Component {
       this._about
     );
     return popUpTemplate;
-  }
-
-  static createMapper(target) {
-    return {
-      name: value => (target.name = value),
-      raiting: value => (target.raiting = value),
-      year: value => (target.year = value),
-      duration: value => (target.duration = value),
-      genre: value => (target.genre = value),
-      posters: value => (target.posters = value)
-    };
   }
 }
 

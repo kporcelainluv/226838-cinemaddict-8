@@ -31,6 +31,7 @@ const createFilmCard = () => {
   };
 
   myPopUp.onClose = newObject => {
+    console.log("b", film.raiting);
     film.name = newObject.name;
     film.raiting = newObject.raiting;
     film.descriptionText = newObject.descriptionText;
@@ -42,7 +43,7 @@ const createFilmCard = () => {
     let mainContainer = document.querySelector(`body`);
     const deletingPopUp = document.querySelector(`.popup-portal`);
     mainContainer.removeChild(deletingPopUp);
-
+    console.log("after", film.raiting);
     filmCard.update(film);
   };
 };
