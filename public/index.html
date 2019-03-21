@@ -122,63 +122,65 @@
     <template class="popup-template">
       <div class="popup-portal">
         <div class="popup">
-          <div class="popup-image">
-            <img
-              class="popup-img-src"
-              src="./accused.jpg"
-              alt=""
-              height="300"
-              width="200"
-            />
-          </div>
-          <div class="popup-description">
-            <span class="raiting-info"></span>
-            <p class="popup-description-option popup-name">
-              Name:
-            </p>
-            <p class="popup-description-option popup-raiting">
-              Raiting:
-            </p>
-            <p class="popup-description-option popup-year">Year:</p>
-            <p class="popup-description-option popup-duration">Duration:</p>
-            <p class="popup-description-option popup-genre">Genre:</p>
-            <p class="popup-description-option popup-description-text">
-              About:
-            </p>
-            <p>Changed your mind? Rate the film again</p>
-            <div class="raiting-buttons">
-              <button class="raiting-button" type="button">0</button>
-              <button class="raiting-button" type="button">1</button>
-              <button class="raiting-button" type="button">2</button>
-              <button class="raiting-button" type="button">3</button>
-              <button class="raiting-button" type="button">4</button>
-              <button class="raiting-button" type="button">5</button>
-              <button class="raiting-button" type="button">6</button>
-              <button class="raiting-button" type="button">7</button>
-              <button class="raiting-button" type="button">8</button>
-              <button class="raiting-button" type="button">9</button>
-              <button class="raiting-button" type="button">10</button>
+          <form class="film-details__form" action="" method="get">
+            <div class="popup-image">
+              <img
+                class="popup-img-src"
+                src="./accused.jpg"
+                alt=""
+                height="300"
+                width="200"
+              />
             </div>
-            <div class="popup-comments">
-              <label for="comments"></label>
-              <p>Leave your comment</p>
-              <input type="text" id="comments" />
-              <button type="submit">submit</button>
-            </div>
-            <div class="existing-comments">
-              <div class="existing-comment">
-                <img
-                  src="//picsum.photos/50/50?r=${Math.random()}"
-                  alt="аватарка пользователя"
-                />
-                <div class="comment">
-                  <p>Alyssa says:</p>
-                  <p>Oh I loved it!</p>
+            <div class="popup-description">
+              <span class="raiting-info"></span>
+              <p class="popup-description-option popup-name">
+                Name:
+              </p>
+              <p class="popup-description-option popup-raiting">
+                Raiting:
+              </p>
+              <p class="popup-description-option popup-year">Year:</p>
+              <p class="popup-description-option popup-duration">Duration:</p>
+              <p class="popup-description-option popup-genre">Genre:</p>
+              <p class="popup-description-option popup-description-text">
+                About:
+              </p>
+              <p>Changed your mind? Rate the film again</p>
+              <div class="raiting-buttons">
+                <button class="raiting-button" type="button">0</button>
+                <button class="raiting-button" type="button">1</button>
+                <button class="raiting-button" type="button">2</button>
+                <button class="raiting-button" type="button">3</button>
+                <button class="raiting-button" type="button">4</button>
+                <button class="raiting-button" type="button">5</button>
+                <button class="raiting-button" type="button">6</button>
+                <button class="raiting-button" type="button">7</button>
+                <button class="raiting-button" type="button">8</button>
+                <button class="raiting-button" type="button">9</button>
+                <button class="raiting-button" type="button">10</button>
+              </div>
+              <div class="popup-comments">
+                <label for="comments"></label>
+                <p>Leave your comment</p>
+                <input type="text" id="comments" />
+                <button type="submit">submit</button>
+              </div>
+              <div class="existing-comments">
+                <div class="existing-comment">
+                  <img
+                    src="//picsum.photos/50/50?r=${Math.random()}"
+                    alt="аватарка пользователя"
+                  />
+                  <div class="comment">
+                    <p>Alyssa says:</p>
+                    <p>Oh I loved it!</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <button type="button" class="popup-button-close">x</button>
+            <button type="button" class="popup-button-close">x</button>
+          </form>
         </div>
       </div>
     </template>

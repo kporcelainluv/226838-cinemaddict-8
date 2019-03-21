@@ -763,6 +763,7 @@ a:hover {
   padding-top: 30px;
   padding-bottom: 100px;
 }
+
 .statistic__rank {
   margin: 0;
   margin-bottom: 34px;
@@ -792,6 +793,10 @@ a:hover {
 }
 .statistic__filters-input:checked + .statistic__filters-label {
   color: var(--text-color-active);
+}
+
+.film-details__form {
+  display: flex;
   position: relative;
 }
 .statistic__filters-input:checked + .statistic__filters-label::before {

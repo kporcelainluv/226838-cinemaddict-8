@@ -20,15 +20,29 @@ class Card extends Component {
   set onClick(f) {
     this._onClick = f;
   }
-
-  render(parent) {
-    this._element = this.template;
-    parent.appendChild(this._element);
-
+  addEventListeners() {
     const commentsButton = document.querySelector(`.film-card__comments`);
     commentsButton.addEventListener(`click`, this._onButtonClick);
   }
+
+  render(parent, newElement = null) {
+    this._element = this.template;
+    if (arguments.length === 1) {
+      parent.appendChild(this._element);
+      this.addEventListeners();
+    } else {
+      parent.replaceChild(this._element, newElement);
+      this._element = newElement;
+      console.log("elm", newElement);
+      this.addEventListeners();
+    }
+    this.addEventListeners();
+  }
   unrender() {
+    this.removeEventListeners();
+  }
+
+  removeEventListeners() {
     const commentsButton = document.querySelector(`.film-card__comments`);
     commentsButton.removeEventListener(`click`, this._onButtonClick);
   }

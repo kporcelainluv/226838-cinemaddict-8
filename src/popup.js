@@ -12,15 +12,18 @@ class Popup extends Component {
     this._onClose = null;
     this._onButtonClose = this._onButtonClose.bind(this);
     this._onChangeRaiting = this._onChangeRaiting.bind(this);
+    this._initialData = data;
   }
   set onClose(f) {
     this._onClose = f;
   }
   _onButtonClose(event) {
     event.preventDefault();
-    const formData = new FormData(this._element.querySelector(`.popup-portal`));
-    console.log(formData);
+    const formData = new FormData(
+      this._element.querySelector(`.film-details__form`)
+    );
     const newData = this._filmVoteMock(formData);
+
     if (typeof this._onClose === `function`) {
       this._onClose(newData);
     }
@@ -28,32 +31,31 @@ class Popup extends Component {
   }
   _onChangeRaiting(userChosenRaiting) {
     this._raiting = userChosenRaiting;
+    this.removeEventListeners();
     this._partialUpdate();
     this.addEventListeners();
   }
   _filmVoteMock(data) {
     const mock = {
       name: "",
-      raiting: "",
-      year: "",
-      duration: "",
-      genre: "",
-      about: "",
-      posters: ""
+      raiting: ``,
+      year: ``,
+      duration: ``,
+      genre: ``,
+      about: ``,
+      posters: ``
     };
     const popUpMapper = Popup.createMapper(mock);
     for (const pair of data.entries()) {
       const [property, value] = pair;
       popUpMapper[property] && popUpMapper[property](value);
     }
-
     return mock;
   }
   _partialUpdate() {
     const updatedTemplate = this.template;
     this._element.parentNode.replaceChild(updatedTemplate, this._element);
     this._element = updatedTemplate;
-    this.addEventListeners();
   }
   _createSpanElement(popUpTemplate, className, classConst) {
     const element = popUpTemplate.querySelector(`.${className}`);
@@ -66,15 +68,26 @@ class Popup extends Component {
     this._element = this.template;
     this.addEventListeners();
   }
+  unrender() {
+    this.removeEventListeners();
+    this._element = null;
+  }
+
+  updateInputValue(event) {
+    const input = this._element.querySelector(`.input-raiting-btn-value`);
+    input.value = event.target.innerHTML;
+  }
   addEventListeners() {
     const popUpClose = this._element.querySelector(`.popup-button-close`);
     popUpClose.addEventListener(`click`, this._onButtonClose);
 
     const raitingButtons = this._element.querySelectorAll(`.raiting-button`);
+
     raitingButtons.forEach(elm => {
-      elm.addEventListener("click", () => {
-        this._onChangeRaiting(event.target.innerHTML);
-        console.log(event.target.innerHTML);
+      elm.addEventListener("click", event => {
+        const newRaiting = event.target.innerHTML;
+        this.updateInputValue(event);
+        this._onChangeRaiting(newRaiting);
       });
     });
   }
@@ -93,12 +106,7 @@ class Popup extends Component {
   }
   static createMapper(target) {
     return {
-      name: value => (target.name = value),
-      raiting: value => (target.raiting = value),
-      year: value => (target.year = value),
-      duration: value => (target.duration = value),
-      genre: value => (target.genre = value),
-      posters: value => (target.posters = value)
+      raiting: value => (target.raiting = value)
     };
   }
   get template() {
@@ -120,6 +128,15 @@ class Popup extends Component {
       `popup-description-text`,
       this._about
     );
+
+    const form = popUpTemplate.querySelector(`.film-details__form`);
+    const input = document.createElement("input");
+    input.type = "text";
+    input.name = "raiting";
+    input.value = this._raiting;
+    input.className = "input-raiting-btn-value";
+    input.style.display = "none";
+    form.appendChild(input);
     return popUpTemplate;
   }
 }
