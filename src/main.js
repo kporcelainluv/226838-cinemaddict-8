@@ -32,6 +32,7 @@ const createFilmCard = () => {
 
   myPopUp.onClose = newObject => {
     film.raiting = newObject.raiting;
+    film.amountOfComments = newObject.amountOfComments;
     let mainContainer = document.querySelector(`body`);
     const deletingPopUp = document.querySelector(`.popup-portal`);
     mainContainer.removeChild(deletingPopUp);

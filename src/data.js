@@ -32,6 +32,7 @@ const film = {
   raiting: [Math.floor(Math.random() * 10)],
   year: 2018,
   duration: `1h 13m`,
-  genre: `Comedy`
+  genre: `Comedy`,
+  amountOfComments: 13
 };
 export { film };

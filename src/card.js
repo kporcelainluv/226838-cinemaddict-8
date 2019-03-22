@@ -10,6 +10,7 @@ class Card extends Component {
     this._onClick = null;
     this._raiting = data.raiting;
     this._onButtonClick = this._onButtonClick.bind(this);
+    this._amountOfComments = data.amountOfComments;
   }
   _onButtonClick(event) {
     event.preventDefault();
@@ -53,6 +54,7 @@ class Card extends Component {
     this._controls = data.controls;
     this._onClick = null;
     this._raiting = data.raiting;
+    this._amountOfComments = data.amountOfComments;
   }
   get template() {
     const card = document
@@ -86,6 +88,9 @@ class Card extends Component {
     const raiting = card.querySelector(`.film-card__rating`);
 
     raiting.innerHTML = this._raiting;
+
+    const commentsButton = card.querySelector(`.film-card__comments`);
+    commentsButton.innerHTML = `${this._amountOfComments} comments`;
     return card;
   }
 }

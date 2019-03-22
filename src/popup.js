@@ -12,27 +12,36 @@ class Popup extends Component {
     this._onClose = null;
     this._onButtonClose = this._onButtonClose.bind(this);
     this._onChangeRaiting = this._onChangeRaiting.bind(this);
-    this._initialData = data;
+    this._onCommentAdd = this._onCommentAdd.bind(this);
+    this._amountOfComments = data.amountOfComments;
   }
   set onClose(f) {
     this._onClose = f;
   }
+
   _onButtonClose(event) {
     event.preventDefault();
     const formData = new FormData(
       this._element.querySelector(`.film-details__form`)
     );
     const newData = this._filmVoteMock(formData);
-
     if (typeof this._onClose === `function`) {
       this._onClose(newData);
     }
     this.update(newData);
   }
   _onChangeRaiting(userChosenRaiting) {
+    event.preventDefault();
     this._raiting = userChosenRaiting;
     this.removeEventListeners();
     this._partialUpdate();
+    this.addEventListeners();
+  }
+  _onCommentAdd(event) {
+    event.preventDefault();
+    this.removeEventListeners();
+    this._partialUpdate();
+    console.log(this);
     this.addEventListeners();
   }
   _filmVoteMock(data) {
@@ -43,7 +52,8 @@ class Popup extends Component {
       duration: ``,
       genre: ``,
       about: ``,
-      posters: ``
+      posters: ``,
+      amountOfComments: this._amountOfComments
     };
     const popUpMapper = Popup.createMapper(mock);
     for (const pair of data.entries()) {
@@ -90,6 +100,10 @@ class Popup extends Component {
         this._onChangeRaiting(newRaiting);
       });
     });
+    const addCommentButton = this._element.querySelector(
+      `.submit-comment-button`
+    );
+    addCommentButton.addEventListener("click", this._onCommentAdd);
   }
 
   removeEventListeners() {
@@ -103,10 +117,19 @@ class Popup extends Component {
     this._controls = data.controls;
     this._onClick = null;
     this._raiting = data.raiting;
+    this._amountOfComments = data.amountOfComments;
   }
   static createMapper(target) {
+    console.log("tsrget", target);
     return {
-      raiting: value => (target.raiting = value)
+      raiting: value => {
+        target.raiting = value;
+        console.log("val", value);
+      },
+      comments: value => {
+        target.amountOfComments += 1;
+        console.log("comment", value);
+      }
     };
   }
   get template() {
@@ -137,6 +160,7 @@ class Popup extends Component {
     input.className = "input-raiting-btn-value";
     input.style.display = "none";
     form.appendChild(input);
+
     return popUpTemplate;
   }
 }
