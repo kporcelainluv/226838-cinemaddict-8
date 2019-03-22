@@ -14,6 +14,7 @@ class Popup extends Component {
     this._onChangerating = this._onChangerating.bind(this);
     this._onCommentAdd = this._onCommentAdd.bind(this);
     this._amountOfComments = data.amountOfComments;
+    this._initialFilmData = data;
   }
   set onClose(f) {
     this._onClose = f;
@@ -24,7 +25,15 @@ class Popup extends Component {
     const formData = new FormData(
       this._element.querySelector(`.film-details__form`)
     );
-    const newData = this._filmVoteMock(formData);
+
+    const { rating, amountOfComments } = this._filmVoteMock(formData);
+
+    const newData = {
+      ...this._initialFilmData,
+      rating,
+      amountOfComments
+    };
+
     if (typeof this._onClose === `function`) {
       this._onClose(newData);
     }
