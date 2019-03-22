@@ -18,7 +18,7 @@ const moviesCategoeriesContainers = Array.from(
 );
 
 const [all, topRated, mostCommented] = moviesCategoeriesContainers;
-const createFilmCard = () => {
+const createFilmCard = film => {
   let filmCard = new Card(film);
   let myPopUp = new Popup(film);
   filmCard.render(all);
@@ -42,4 +42,4 @@ const createFilmCard = () => {
     myPopUp.unrender();
   };
 };
-createFilmCard();
+createFilmCard(film);
