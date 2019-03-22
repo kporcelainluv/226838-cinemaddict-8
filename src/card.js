@@ -1,4 +1,5 @@
 import { Component } from "./component.js";
+import moment from "moment";
 
 class Card extends Component {
   constructor(data, parentContainer) {
@@ -9,6 +10,8 @@ class Card extends Component {
     this._controls = data.controls;
     this._onClick = null;
     this._rating = data.rating;
+    this._year = data.year;
+    this._duration = data.duration;
     this._onButtonClick = this._onButtonClick.bind(this);
     this._amountOfComments = data.amountOfComments;
     this._parentContainer = parentContainer;
@@ -80,6 +83,10 @@ class Card extends Component {
       const filmTitle = card.querySelector(`.film-card__title`);
       filmTitle.textContent = this._name;
     }
+    const filmYear = card.querySelector(`.film-card__year`);
+    filmYear.innerHTML = moment(this._year).format("YYYY");
+    const filmDuration = card.querySelector(`.film-card__duration`);
+    filmDuration.innerHTML = moment(this._duration).format("hh:mm");
     // check if film card has control buttons
     if (!this._controls) {
       const controls = card.querySelector(`.film-card__controls`);

@@ -1,4 +1,6 @@
 import { Component } from "./component.js";
+import moment from "moment";
+
 class Popup extends Component {
   constructor(data) {
     super();
@@ -53,7 +55,11 @@ class Popup extends Component {
 
     const formData = new FormData(event.target);
 
-    this._comments = [...this._comments, { text: formData.get("comment") }];
+    this._comments = [
+      ...this._comments,
+      { text: formData.get("comment"), date: new Date() }
+    ];
+    console.log(this._comments);
     this._onButtonClose(event);
   }
 
@@ -186,14 +192,33 @@ class Popup extends Component {
     ratingInBigLetters.innerHTML = this._rating;
     this._createSpanElement(popUpTemplate, `popup-name`, this._name);
     this._createSpanElement(popUpTemplate, `popup-rating`, this._rating);
-    this._createSpanElement(popUpTemplate, `popup-year`, this._year);
-    this._createSpanElement(popUpTemplate, `popup-duration`, this._duration);
+    this._createSpanElement(
+      popUpTemplate,
+      `popup-year`,
+      moment(this._year).format("DD.MM.YYYY")
+    );
+    this._createSpanElement(
+      popUpTemplate,
+      `popup-duration`,
+      moment(this._duration).format("hh:mm")
+    );
     this._createSpanElement(popUpTemplate, `popup-genre`, this._genre);
     this._createSpanElement(
       popUpTemplate,
       `popup-description-text`,
       this._about
     );
+
+    const ratingOptions = popUpTemplate.querySelectorAll(
+      "select#rating > option"
+    );
+    for (const option of ratingOptions) {
+      const x = [Number(option.value)];
+
+      if (x[0] === this._rating[0]) {
+        option.selected = true;
+      }
+    }
 
     const listOfComments = popUpTemplate.querySelector(".existing-comments");
     for (const comment of this._comments) {

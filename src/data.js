@@ -30,10 +30,12 @@ const film = {
   ][Math.floor(Math.random() * 5)],
   controls: true,
   rating: [Math.floor(Math.random() * 10)],
-  year: 2018,
-  duration: `1h 13m`,
+  year: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000,
+  duration: Math.floor(Math.random() * 60) * 60 * 10000,
   genre: `Comedy`,
   amountOfComments: 1,
-  comments: [{ text: "This film is great!" }]
+  comments: [
+    { text: "This film is great!", data: new Date(2019, 0, 1, 2, 3, 4) }
+  ]
 };
 export { film };
