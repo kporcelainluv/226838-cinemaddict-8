@@ -17,11 +17,16 @@ const moviesCategoeriesContainers = Array.from(
   document.querySelectorAll(`.films-list__container`)
 );
 
-const [all, topRated, mostCommented] = moviesCategoeriesContainers;
+const [
+  allContainer,
+  topRatedContainer,
+  mostCommentedContainer
+] = moviesCategoeriesContainers;
+
 const createFilmCard = film => {
   let filmCard = new Card(film);
   let myPopUp = new Popup(film);
-  filmCard.render(all);
+  filmCard.render(allContainer);
 
   filmCard.onClick = () => {
     let mainContainer = document.querySelector(`body`);
@@ -38,7 +43,7 @@ const createFilmCard = film => {
     mainContainer.removeChild(deletingPopUp);
 
     filmCard.update(film);
-    filmCard.render(all, filmCard.element);
+    filmCard.render(allContainer, filmCard.element);
     myPopUp.unrender();
   };
 };
