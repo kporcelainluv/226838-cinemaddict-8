@@ -14,6 +14,7 @@ class Popup extends Component {
     this._onChangerating = this._onChangerating.bind(this);
     this._onCommentAdd = this._onCommentAdd.bind(this);
     this._amountOfComments = data.amountOfComments;
+    this._comments = data.comments;
     this._initialFilmData = data;
     this._parentContainer = document.querySelector(`body`);
   }
@@ -164,6 +165,13 @@ class Popup extends Component {
       `popup-description-text`,
       this._about
     );
+
+    const listOfComments = popUpTemplate.querySelector(".existing-comments");
+    for (const comment of this._comments) {
+      const commentNode = document.createElement("li");
+      commentNode.innerHTML = comment.text;
+      listOfComments.appendChild(commentNode);
+    }
 
     const form = popUpTemplate.querySelector(`.film-details__form`);
     const input = document.createElement("input");

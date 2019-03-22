@@ -856,7 +856,6 @@ a:hover {
   cursor: pointer;
 }
 .existing-comments {
-  display: flex;
   margin-top: 30px;
 }
 .existing-comment {
