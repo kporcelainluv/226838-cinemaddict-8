@@ -33,6 +33,7 @@ const film = {
   year: 2018,
   duration: `1h 13m`,
   genre: `Comedy`,
-  amountOfComments: 13
+  amountOfComments: 1,
+  comments: [{ text: "This film is great!" }]
 };
 export { film };
