@@ -10,14 +10,19 @@ class Popup extends Component {
     this._about = data.descriptionText;
     this._posters = data.posters;
     this._onClose = null;
-    this._onButtonClose = this._onButtonClose.bind(this);
-    this._onChangerating = this._onChangerating.bind(this);
-    this._onCommentAdd = this._onCommentAdd.bind(this);
+
     this._amountOfComments = data.amountOfComments;
     this._comments = data.comments;
     this._initialFilmData = data;
     this._parentContainer = document.querySelector(`body`);
+
+    this._onButtonClose = this._onButtonClose.bind(this);
+    this._onChangerating = this._onChangerating.bind(this);
+    this._onCommentAdd = this._onCommentAdd.bind(this);
+    this._onUpdateRating = this._onUpdateRating.bind(this);
+    this._onAddComment = this._onAddComment.bind(this);
   }
+
   set onClose(f) {
     this._onClose = f;
   }
@@ -32,8 +37,9 @@ class Popup extends Component {
 
     const newData = {
       ...this._initialFilmData,
-      rating,
-      amountOfComments
+      rating: this._rating,
+      comments: this._comments,
+      amountOfComments: this._comments.length
     };
 
     if (typeof this._onClose === `function`) {
@@ -41,6 +47,25 @@ class Popup extends Component {
     }
     this.update(newData);
   }
+
+  _onAddComment(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    this._comments = [...this._comments, { text: formData.get("comment") }];
+    this._onButtonClose(event);
+  }
+
+  _onUpdateRating(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    this._rating = formData.get("rating");
+    this._onButtonClose(event);
+  }
+
   _onChangerating(userChosenrating) {
     event.preventDefault();
     this._rating = userChosenrating;
@@ -114,10 +139,14 @@ class Popup extends Component {
         this._onChangerating(newrating);
       });
     });
-    const addCommentButton = this._element.querySelector(
-      `.submit-comment-button`
+
+    const formUpdateRating = this._element.querySelector(
+      `.update-rating__form`
     );
-    addCommentButton.addEventListener("click", this._onCommentAdd);
+    formUpdateRating.addEventListener("submit", this._onUpdateRating);
+
+    const formAddComment = this._element.querySelector(`.add-comment__form`);
+    formAddComment.addEventListener("submit", this._onAddComment);
   }
 
   removeEventListeners() {
