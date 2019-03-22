@@ -29,7 +29,7 @@ const film = {
     `blackmail`
   ][Math.floor(Math.random() * 5)],
   controls: true,
-  raiting: [Math.floor(Math.random() * 10)],
+  rating: [Math.floor(Math.random() * 10)],
   year: 2018,
   duration: `1h 13m`,
   genre: `Comedy`,

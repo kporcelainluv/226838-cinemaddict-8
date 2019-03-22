@@ -3,7 +3,7 @@ class Popup extends Component {
   constructor(data) {
     super();
     this._name = data.name;
-    this._raiting = data.raiting;
+    this._rating = data.rating;
     this._year = data.year;
     this._duration = data.duration;
     this._genre = data.genre;
@@ -11,7 +11,7 @@ class Popup extends Component {
     this._posters = data.posters;
     this._onClose = null;
     this._onButtonClose = this._onButtonClose.bind(this);
-    this._onChangeRaiting = this._onChangeRaiting.bind(this);
+    this._onChangerating = this._onChangerating.bind(this);
     this._onCommentAdd = this._onCommentAdd.bind(this);
     this._amountOfComments = data.amountOfComments;
   }
@@ -30,9 +30,9 @@ class Popup extends Component {
     }
     this.update(newData);
   }
-  _onChangeRaiting(userChosenRaiting) {
+  _onChangerating(userChosenrating) {
     event.preventDefault();
-    this._raiting = userChosenRaiting;
+    this._rating = userChosenrating;
     this.removeEventListeners();
     this._partialUpdate();
     this.addEventListeners();
@@ -47,7 +47,7 @@ class Popup extends Component {
   _filmVoteMock(data) {
     const mock = {
       name: "",
-      raiting: ``,
+      rating: ``,
       year: ``,
       duration: ``,
       genre: ``,
@@ -87,20 +87,20 @@ class Popup extends Component {
   }
 
   updateInputValue(event) {
-    const input = this._element.querySelector(`.input-raiting-btn-value`);
+    const input = this._element.querySelector(`.input-rating-btn-value`);
     input.value = event.target.innerHTML;
   }
   addEventListeners() {
     const popUpClose = this._element.querySelector(`.popup-button-close`);
     popUpClose.addEventListener(`click`, this._onButtonClose);
 
-    const raitingButtons = this._element.querySelectorAll(`.raiting-button`);
+    const ratingButtons = this._element.querySelectorAll(`.rating-button`);
 
-    raitingButtons.forEach(elm => {
+    ratingButtons.forEach(elm => {
       elm.addEventListener("click", event => {
-        const newRaiting = event.target.innerHTML;
+        const newrating = event.target.innerHTML;
         this.updateInputValue(event);
-        this._onChangeRaiting(newRaiting);
+        this._onChangerating(newrating);
       });
     });
     const addCommentButton = this._element.querySelector(
@@ -119,14 +119,14 @@ class Popup extends Component {
     this._posters = data.posters;
     this._controls = data.controls;
     this._onClick = null;
-    this._raiting = data.raiting;
+    this._rating = data.rating;
     this._amountOfComments = data.amountOfComments;
   }
   static createMapper(target) {
     console.log("tsrget", target);
     return {
-      raiting: value => {
-        target.raiting = value;
+      rating: value => {
+        target.rating = value;
         console.log("val", value);
       },
       comments: value => {
@@ -142,10 +142,10 @@ class Popup extends Component {
       .cloneNode(true);
     const image = popUpTemplate.querySelector(`.popup-img-src`);
     image.src = `./images/posters/${this._posters}.jpg`;
-    const raitingInBigLetters = popUpTemplate.querySelector(`.raiting-info`);
-    raitingInBigLetters.innerHTML = this._raiting;
+    const ratingInBigLetters = popUpTemplate.querySelector(`.rating-info`);
+    ratingInBigLetters.innerHTML = this._rating;
     this._createSpanElement(popUpTemplate, `popup-name`, this._name);
-    this._createSpanElement(popUpTemplate, `popup-raiting`, this._raiting);
+    this._createSpanElement(popUpTemplate, `popup-rating`, this._rating);
     this._createSpanElement(popUpTemplate, `popup-year`, this._year);
     this._createSpanElement(popUpTemplate, `popup-duration`, this._duration);
     this._createSpanElement(popUpTemplate, `popup-genre`, this._genre);
@@ -158,9 +158,9 @@ class Popup extends Component {
     const form = popUpTemplate.querySelector(`.film-details__form`);
     const input = document.createElement("input");
     input.type = "text";
-    input.name = "raiting";
-    input.value = this._raiting;
-    input.className = "input-raiting-btn-value";
+    input.name = "rating";
+    input.value = this._rating;
+    input.className = "input-rating-btn-value";
     input.style.display = "none";
     form.appendChild(input);
 

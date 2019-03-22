@@ -8,7 +8,7 @@ class Card extends Component {
     this._posters = data.posters;
     this._controls = data.controls;
     this._onClick = null;
-    this._raiting = data.raiting;
+    this._rating = data.rating;
     this._onButtonClick = this._onButtonClick.bind(this);
     this._amountOfComments = data.amountOfComments;
   }
@@ -53,7 +53,7 @@ class Card extends Component {
     this._posters = data.posters;
     this._controls = data.controls;
     this._onClick = null;
-    this._raiting = data.raiting;
+    this._rating = data.rating;
     this._amountOfComments = data.amountOfComments;
   }
   get template() {
@@ -85,9 +85,9 @@ class Card extends Component {
     const image = card.querySelector(`.film-card__poster`);
     image.src = `./images/posters/${this._posters}.jpg`;
     //raitimg
-    const raiting = card.querySelector(`.film-card__rating`);
+    const rating = card.querySelector(`.film-card__rating`);
 
-    raiting.innerHTML = this._raiting;
+    rating.innerHTML = this._rating;
 
     const commentsButton = card.querySelector(`.film-card__comments`);
     commentsButton.innerHTML = `${this._amountOfComments} comments`;
