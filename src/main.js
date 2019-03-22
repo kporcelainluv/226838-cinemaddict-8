@@ -29,9 +29,7 @@ const createFilmCard = (film, container) => {
   filmCard.render(container);
 
   filmCard.onClick = () => {
-    let mainContainer = document.querySelector(`body`);
     myPopUp.render();
-    mainContainer.appendChild(myPopUp.element);
     filmCard.unrender();
   };
 

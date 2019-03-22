@@ -77,7 +77,10 @@ class Popup extends Component {
   render() {
     this._element = this.template;
     this.addEventListeners();
+    const popupContainer = document.querySelector(`body`);
+    popupContainer.appendChild(this._element);
   }
+
   unrender() {
     this.removeEventListeners();
     this._element = null;
