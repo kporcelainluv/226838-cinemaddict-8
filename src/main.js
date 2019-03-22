@@ -24,8 +24,8 @@ const [
 ] = moviesCategoeriesContainers;
 
 const createFilmCard = (film, container) => {
-  let filmCard = new Card(film, container);
-  let myPopUp = new Popup(film);
+  const filmCard = new Card(film, container);
+  const myPopUp = new Popup(film);
   filmCard.render();
 
   filmCard.onClick = () => {

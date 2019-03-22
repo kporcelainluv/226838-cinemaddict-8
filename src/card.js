@@ -12,9 +12,10 @@ class Card extends Component {
     this._rating = data.rating;
     this._year = data.year;
     this._duration = data.duration;
-    this._onButtonClick = this._onButtonClick.bind(this);
     this._amountOfComments = data.amountOfComments;
     this._parentContainer = parentContainer;
+
+    this._onButtonClick = this._onButtonClick.bind(this);
   }
 
   _onButtonClick(event) {
@@ -39,7 +40,6 @@ class Card extends Component {
     } else {
       this._parentContainer.replaceChild(this._element, newElement);
       this._element = newElement;
-      console.log("elm", newElement);
       this.addEventListeners();
     }
     this.addEventListeners();
@@ -68,34 +68,30 @@ class Card extends Component {
       .querySelector(`.card-template`)
       .content.querySelector(`.film-card`)
       .cloneNode(true);
-    //remove controls
     if (!this._controls) {
       card.className += ` film-card--no-controls`;
       card.querySelector(
         `.film-card__comments`
       ).style.padding = `0px 0px 40px 0px`;
     }
-    // add film description
     const filmDescription = card.querySelector(`.film-card__description`);
     filmDescription.textContent = this._about;
-    // add film name
-    if (this._name) {
-      const filmTitle = card.querySelector(`.film-card__title`);
-      filmTitle.textContent = this._name;
-    }
+
+    const filmTitle = card.querySelector(`.film-card__title`);
+    filmTitle.textContent = this._name;
+
     const filmYear = card.querySelector(`.film-card__year`);
-    filmYear.innerHTML = moment(this._year).format("YYYY");
+    filmYear.innerHTML = moment(this._year).format(`YYYY`);
+
     const filmDuration = card.querySelector(`.film-card__duration`);
-    filmDuration.innerHTML = moment(this._duration).format("hh:mm");
+    filmDuration.innerHTML = moment(this._duration).format(`hh:mm`);
     // check if film card has control buttons
     if (!this._controls) {
       const controls = card.querySelector(`.film-card__controls`);
       card.removeChild(controls);
     }
-    // add film image
     const image = card.querySelector(`.film-card__poster`);
     image.src = `./images/posters/${this._posters}.jpg`;
-    //raitimg
     const rating = card.querySelector(`.film-card__rating`);
 
     rating.innerHTML = this._rating;
