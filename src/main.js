@@ -33,17 +33,11 @@ const createFilmCard = (film, container) => {
     filmCard.unrender();
   };
 
-  myPopUp.onClose = newObject => {
-    film.rating = newObject.rating;
-    film.amountOfComments = newObject.amountOfComments;
-
-    let mainContainer = document.querySelector(`body`);
-    const deletingPopUp = document.querySelector(`.popup-portal`);
-    mainContainer.removeChild(deletingPopUp);
+  myPopUp.onClose = updatedFilm => {
+    myPopUp.unrender();
 
     filmCard.update(film);
     filmCard.render(container, filmCard.element);
-    myPopUp.unrender();
   };
 };
 createFilmCard(film, allContainer);

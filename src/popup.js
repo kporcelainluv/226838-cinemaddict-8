@@ -15,6 +15,7 @@ class Popup extends Component {
     this._onCommentAdd = this._onCommentAdd.bind(this);
     this._amountOfComments = data.amountOfComments;
     this._initialFilmData = data;
+    this._parentContainer = document.querySelector(`body`);
   }
   set onClose(f) {
     this._onClose = f;
@@ -86,12 +87,12 @@ class Popup extends Component {
   render() {
     this._element = this.template;
     this.addEventListeners();
-    const popupContainer = document.querySelector(`body`);
-    popupContainer.appendChild(this._element);
+    this._parentContainer.appendChild(this._element);
   }
 
   unrender() {
     this.removeEventListeners();
+    this._parentContainer.removeChild(this._element);
     this._element = null;
   }
 
