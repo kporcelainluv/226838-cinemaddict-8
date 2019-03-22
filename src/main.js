@@ -23,10 +23,10 @@ const [
   mostCommentedContainer
 ] = moviesCategoeriesContainers;
 
-const createFilmCard = film => {
+const createFilmCard = (film, container) => {
   let filmCard = new Card(film);
   let myPopUp = new Popup(film);
-  filmCard.render(allContainer);
+  filmCard.render(container);
 
   filmCard.onClick = () => {
     let mainContainer = document.querySelector(`body`);
@@ -43,8 +43,8 @@ const createFilmCard = film => {
     mainContainer.removeChild(deletingPopUp);
 
     filmCard.update(film);
-    filmCard.render(allContainer, filmCard.element);
+    filmCard.render(container, filmCard.element);
     myPopUp.unrender();
   };
 };
-createFilmCard(film);
+createFilmCard(film, allContainer);
