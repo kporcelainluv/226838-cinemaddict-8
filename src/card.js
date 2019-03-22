@@ -1,7 +1,7 @@
 import { Component } from "./component.js";
 
 class Card extends Component {
-  constructor(data) {
+  constructor(data, parentContainer) {
     super();
     this._name = data.name;
     this._about = data.descriptionText;
@@ -11,7 +11,9 @@ class Card extends Component {
     this._rating = data.rating;
     this._onButtonClick = this._onButtonClick.bind(this);
     this._amountOfComments = data.amountOfComments;
+    this._parentContainer = parentContainer;
   }
+
   _onButtonClick(event) {
     event.preventDefault();
     if (typeof this._onClick === `function`) {
@@ -26,21 +28,23 @@ class Card extends Component {
     commentsButton.addEventListener(`click`, this._onButtonClick);
   }
 
-  render(parent, newElement = null) {
+  render(newElement = null) {
     this._element = this.template;
-    if (arguments.length === 1) {
-      parent.appendChild(this._element);
+    if (arguments.length === 0) {
+      this._parentContainer.appendChild(this._element);
       this.addEventListeners();
     } else {
-      parent.replaceChild(this._element, newElement);
+      this._parentContainer.replaceChild(this._element, newElement);
       this._element = newElement;
       console.log("elm", newElement);
       this.addEventListeners();
     }
     this.addEventListeners();
   }
+
   unrender() {
     this.removeEventListeners();
+    this._parentContainer.removeChild(this._element);
   }
 
   removeEventListeners() {
