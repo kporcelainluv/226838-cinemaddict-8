@@ -33,7 +33,9 @@ const createFilm = () => {
     rating: [Math.floor(Math.random() * 10)],
     year: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000,
     duration: Math.floor(Math.random() * 60) * 60 * 10000,
-    genre: `Comedy`,
+    genre: [`Sci-Fi`, `Animation`, `Fantasy`, `Comedy`, `TV Series`][
+      Math.floor(Math.random() * 5)
+    ],
     amountOfComments: 1,
     comments: [
       { text: "This film is great!", data: new Date(2019, 0, 1, 2, 3, 4) }
