@@ -4,6 +4,14 @@ import { Popup } from "./popup.js";
 import { filtersData } from "./filtersMock.js";
 import { Filter } from "./filter.js";
 
+// display filters
+filtersData.map(elm => {
+  const filter = new Filter(elm);
+  filter.render();
+
+  filter.onFilter = () => {};
+});
+
 // add film cards
 const moviesCategoeriesContainers = Array.from(
   document.querySelectorAll(`.films-list__container`)
