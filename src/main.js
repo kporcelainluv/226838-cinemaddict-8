@@ -1,17 +1,8 @@
-import {
-  displayFilters,
-  filters,
-  createFilter,
-  makeFilterActive
-} from "./filter.js";
-
 import { Card } from "./card.js";
 import { film, films } from "./data.js";
 import { Popup } from "./popup.js";
-import { filters } from "./filtersMock.js";
-
-// display filters
-displayFilters(filters, createFilter, makeFilterActive);
+import { filtersData } from "./filtersMock.js";
+import { Filter } from "./filter.js";
 
 // add film cards
 const moviesCategoeriesContainers = Array.from(
