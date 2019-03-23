@@ -8,6 +8,7 @@ import {
 import { Card } from "./card.js";
 import { film, films } from "./data.js";
 import { Popup } from "./popup.js";
+import { filters } from "./filtersMock.js";
 
 // display filters
 displayFilters(filters, createFilter, makeFilterActive);
@@ -44,6 +45,8 @@ const createFilmCard = (film, container, index) => {
 
     // const newCard = createFilmCard(updatedFilm, container, index);
   };
+  filmCard.onAddToWatchList = () => {};
+  filmCard.onMarkAsWatched = () => {};
 };
 let index = 0;
 for (let film of films) {

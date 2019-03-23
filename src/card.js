@@ -14,8 +14,13 @@ class Card extends Component {
     this._duration = data.duration;
     this._amountOfComments = data.amountOfComments;
     this._parentContainer = parentContainer;
+    this._watched = data.watched;
+    this._favorite = data.favorite;
+    this._watchlist = data.watchlist;
 
     this._onButtonClick = this._onButtonClick.bind(this);
+    this._addToWatchList = this._addToWatchList.bind(this);
+    this._markAsWatched = this._markAsWatched.bind(this);
   }
 
   _onButtonClick(event) {
@@ -24,14 +29,45 @@ class Card extends Component {
       this._onClick();
     }
   }
+  _addToWatchList(event) {
+    this._watchlist = true;
+    event.preventDefault();
+    if (typeof this._onAddToWatchList === `function`) {
+      this._onAddToWatchList();
+    }
+  }
+  _markAsWatched(event) {
+    this._watched = true;
+    event.preventDefault();
+    if (typeof this._onMarkAsWatched === `function`) {
+      this._onMarkAsWatched();
+    }
+  }
   set onClick(f) {
     this._onClick = f;
   }
+  set onAddToWatchList(f) {
+    this._onAddToWatchList = f;
+  }
+  set onMarkAsWatched(f) {
+    this._onMarkAsWatched = f;
+  }
+
   addEventListeners(index) {
     const commentsButton = Array.from(
       document.querySelectorAll(`.film-card__comments`)
     )[index];
     commentsButton.addEventListener(`click`, this._onButtonClick);
+
+    const watchlistBtn = Array.from(
+      document.querySelectorAll(`.film-card__controls-item--add-to-watchlist`)
+    )[index];
+    watchlistBtn.addEventListener(`click`, this._addToWatchList);
+
+    const watchedBtn = Array.from(
+      document.querySelectorAll(`.film-card__controls-item--mark-as-watched`)
+    )[index];
+    watchedBtn.addEventListener(`click`, this._markAsWatched);
   }
 
   render(index) {
