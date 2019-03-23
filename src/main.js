@@ -9,7 +9,7 @@ filtersData.map(elm => {
   const filter = new Filter(elm);
   filter.render();
 
-  filter.onFilter = () => {};
+  // filter.onFilter = () => {};
 });
 
 // add film cards
