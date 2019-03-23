@@ -27,27 +27,25 @@ class Card extends Component {
   set onClick(f) {
     this._onClick = f;
   }
-  addEventListeners() {
-    const commentsButton = document.querySelector(`.film-card__comments`);
+  addEventListeners(index) {
+    const commentsButton = Array.from(
+      document.querySelectorAll(`.film-card__comments`)
+    )[index];
     commentsButton.addEventListener(`click`, this._onButtonClick);
   }
 
-  render(newElement = null) {
+  render(index) {
     this._element = this.template;
-    if (arguments.length === 0) {
-      this._parentContainer.appendChild(this._element);
-      this.addEventListeners();
-    } else {
-      this._parentContainer.replaceChild(this._element, newElement);
-      this._element = newElement;
-      this.addEventListeners();
-    }
-    this.addEventListeners();
+    this._parentContainer.appendChild(this._element);
+    this.addEventListeners(index);
   }
-
+  replacewith(oldcard, newcard) {
+    this._parentContainer.replaceChild(newcard, oldcard);
+    this._element = newcard;
+  }
   unrender() {
     this.removeEventListeners();
-    this._parentContainer.removeChild(this._element);
+    // this._parentContainer.removeChild(this._element);
   }
 
   removeEventListeners() {
@@ -99,6 +97,17 @@ class Card extends Component {
     const commentsButton = card.querySelector(`.film-card__comments`);
     commentsButton.innerHTML = `${this._amountOfComments} comments`;
     return card;
+  }
+  update(data) {
+    this._name = data.name;
+    this._about = data.descriptionText;
+    this._posters = data.posters;
+    this._controls = data.controls;
+    this._onClick = null;
+    this._rating = data.rating;
+    this._year = data.year;
+    this._duration = data.duration;
+    this._amountOfComments = data.amountOfComments;
   }
 }
 

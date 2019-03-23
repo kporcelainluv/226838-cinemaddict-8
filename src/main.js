@@ -23,19 +23,26 @@ const [
   mostCommentedContainer
 ] = moviesCategoeriesContainers;
 
-const createFilmCard = (film, container) => {
+const createFilmCard = (film, container, index) => {
   const filmCard = new Card(film, container);
   const myPopUp = new Popup(film);
-  filmCard.render();
-
+  filmCard.render(index);
   filmCard.onClick = () => {
     myPopUp.render();
   };
 
   myPopUp.onClose = updatedFilm => {
     myPopUp.unrender();
-    filmCard.unrender();
-    createFilmCard(updatedFilm, container);
+    const oldCard = filmCard.element;
+    film.rating = updatedFilm.rating;
+    film.comments = updatedFilm.comments;
+
+    filmCard.update(film);
+    filmCard.render(index);
+    const newCard = filmCard.element;
+    filmCard.replacewith(oldCard, newCard);
+
+    // const newCard = createFilmCard(updatedFilm, container, index);
   };
 };
 let index = 0;
