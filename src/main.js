@@ -4,25 +4,6 @@ import { Popup } from "./popup.js";
 import { filtersData } from "./filtersMock.js";
 import { Filter } from "./filter.js";
 
-// display filters
-filtersData.map(elm => {
-  const filter = new Filter(elm);
-  filter.render();
-
-  // filter.onFilter = () => {};
-});
-
-// add film cards
-const moviesCategoeriesContainers = Array.from(
-  document.querySelectorAll(`.films-list__container`)
-);
-
-const [
-  allContainer,
-  topRatedContainer,
-  mostCommentedContainer
-] = moviesCategoeriesContainers;
-
 const createFilmCard = (film, container, index) => {
   const filmCard = new Card(film, container);
   const myPopUp = new Popup(film);
@@ -47,8 +28,45 @@ const createFilmCard = (film, container, index) => {
   filmCard.onAddToWatchList = () => {};
   filmCard.onMarkAsWatched = () => {};
 };
-let index = 0;
-for (let film of films) {
-  createFilmCard(film, allContainer, index);
-  index += 1;
-}
+
+const createFilmBoard = (films, container) => {
+  let index = 0;
+  for (let film of films) {
+    createFilmCard(film, container, index);
+    index += 1;
+  }
+};
+
+const clearFilmBoard = container => {
+  container.innerHtml = "";
+};
+
+const createPage = (films, container) => {
+  // display filters
+  filtersData.map(elm => {
+    const filter = new Filter(elm);
+    filter.render();
+
+    filter.onFilter = () => {
+      console.log("HERE");
+      clearFilmBoard();
+      const filteredFilms = films.filter(() => true);
+      createFilmBoard(filteredFilms, container);
+    };
+  });
+
+  createFilmBoard(films, container);
+};
+
+// add film cards
+const moviesCategoeriesContainers = Array.from(
+  document.querySelectorAll(`.films-list__container`)
+);
+
+const [
+  allContainer,
+  topRatedContainer,
+  mostCommentedContainer
+] = moviesCategoeriesContainers;
+
+createPage(films, allContainer);
