@@ -24,6 +24,7 @@ class Filter extends Component {
 
     const statsSection = document.querySelector(`.statistic`);
     statsSection.className = "statistic";
+    createChart();
   }
   get template() {
     const filter = document.createElement("a");
