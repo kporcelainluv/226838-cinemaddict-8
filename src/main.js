@@ -6,7 +6,7 @@ import {
 } from "./filter.js";
 
 import { Card } from "./card.js";
-import { film } from "./data.js";
+import { film, films } from "./data.js";
 import { Popup } from "./popup.js";
 
 // display filters
@@ -38,4 +38,8 @@ const createFilmCard = (film, container) => {
     createFilmCard(updatedFilm, container);
   };
 };
-createFilmCard(film, allContainer);
+let index = 0;
+for (let film of films) {
+  createFilmCard(film, allContainer, index);
+  index += 1;
+}
