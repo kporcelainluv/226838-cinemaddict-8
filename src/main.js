@@ -103,19 +103,26 @@ const page = new Observable({
 });
 
 page.subscribe(({ filterType, allFilms }) => {
-  const films = allFilms.filter(film => {
-    if (filterType === FILTER_TYPES.all) {
-      return true;
-    } else if (filterType === FILTER_TYPES.favorites) {
-      return film.favorites;
-    } else if (filterType === FILTER_TYPES.watchlist) {
-      return film.watchlist;
-    }
-  });
-
   clearFilters();
   clearFilmBoard(allContainer);
-  createPage(films, allContainer, page);
+
+  if (filterType === FILTER_TYPES.stats) {
+    createStatsPage(films, allContainer, page);
+  } else {
+    const films = allFilms.filter(film => {
+      if (filterType === FILTER_TYPES.all) {
+        return true;
+      } else if (filterType === FILTER_TYPES.favorites) {
+        return film.favorites;
+      } else if (filterType === FILTER_TYPES.watchlist) {
+        return film.watchlist;
+      } else if (filterType === FILTER_TYPES.history) {
+        return film.watched;
+      }
+    });
+
+    createPage(films, allContainer, page);
+  }
 });
 
 page.notify();
