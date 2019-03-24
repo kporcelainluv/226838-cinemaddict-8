@@ -33,10 +33,13 @@ class Card extends Component {
     }
   }
   _addToWatchList(event) {
-    this._watchlist = true;
+    this._watchlist = !this._watchlist;
     event.preventDefault();
     if (typeof this._onAddToWatchList === `function`) {
-      this._onAddToWatchList();
+      this._onAddToWatchList({
+        ...this._initialData,
+        watchlist: this._watchlist
+      });
     }
   }
   _markAsWatched(event) {
