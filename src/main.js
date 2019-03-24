@@ -41,7 +41,7 @@ const createFilmCard = (film, container, index) => {
   filmCard.onMarkAsWatched = updatedFilm => {
     page.update(({ allFilms, ...otherData }) => {
       const updatedAllFilms = allFilms.map(film => {
-        if (film.id === updateFilm.id) {
+        if (film.id === updatedFilm.id) {
           return updatedFilm;
         }
         return film;
@@ -49,7 +49,7 @@ const createFilmCard = (film, container, index) => {
 
       return {
         ...otherData,
-        allFilms: updateFilms
+        allFilms: updatedAllFilms
       };
     });
   };
@@ -105,6 +105,10 @@ const page = new Observable({
 });
 
 page.subscribe(({ filterType, allFilms }) => {
+  console.log({
+    allFilms
+  });
+
   const films = allFilms.filter(film => {
     if (filterType === FILTER_TYPES.all) {
       return true;
