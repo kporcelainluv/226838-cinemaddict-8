@@ -4,7 +4,6 @@ import { Popup } from "./popup.js";
 import { filtersData, FILTER_TYPES } from "./filtersMock.js";
 import { Filter } from "./filter.js";
 import { Observable } from "./observable";
-import { createChart } from "./formStats.js";
 import { Statistics } from "./statistics.js";
 
 const createFilmCard = (film, container) => {
@@ -117,15 +116,28 @@ const page = new Observable({
   allFilms: films
 });
 
-const createDataForStats = () => {};
+const createDataForStats = currentFilmsData => {
+  currentFilmsData = Array.from(currentFilmsData);
+  let amountOfFilms = 0;
+  let duration = 0;
+  let genres = [];
+  for (const film of currentFilmsData) {
+    if (film.watched) {
+      amountOfFilms += 1;
+      duration += film.duration;
+      genres.push(film.genre);
+    }
+  }
+  return { amountOfFilms, duration, genres };
+};
 
 page.subscribe(({ filterType, allFilms }) => {
+  const currentFilmsData = page.currentData().allFilms;
+  const stats = new Statistics(createDataForStats(currentFilmsData));
+  stats.unrender();
   if (filterType === FILTER_TYPES.stats) {
     displayFilmsContainer(false);
-    const stats = new Statistics(allFilms);
-    console.log(page.currentData());
     stats.render();
-    createChart();
   } else {
     displayFilmsContainer(true);
     clearFilters();
