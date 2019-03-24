@@ -1,8 +1,19 @@
 import { Card } from "./card.js";
-import { film, films } from "./data.js";
+import { film, films as filmList } from "./data.js";
 import { Popup } from "./popup.js";
-import { filtersData } from "./filtersMock.js";
+import { filtersData, FILTER_TYPES } from "./filtersMock.js";
 import { Filter } from "./filter.js";
+
+let films = filmList;
+
+const updateFilms = (films, film) => {
+  return films.map(f => {
+    if (f.id === film.id) {
+      return film;
+    }
+    return f;
+  });
+};
 
 const createFilmCard = (film, container, index) => {
   const filmCard = new Card(film, container);
@@ -25,8 +36,15 @@ const createFilmCard = (film, container, index) => {
 
     // const newCard = createFilmCard(updatedFilm, container, index);
   };
-  filmCard.onAddToWatchList = () => {};
-  filmCard.onMarkAsWatched = () => {};
+  filmCard.onAddToWatchList = () => {
+    console.log(filmCard, "watchlist");
+  };
+  filmCard.onMarkAsWatched = updatedFilm => {
+    console.log(filmCard, "watched");
+    const updatedFilms = updateFilms(films, updatedFilm);
+    clearFilmBoard(container);
+    createFilmBoard(updateFilms, container);
+  };
 };
 
 const createFilmBoard = (films, container) => {
@@ -42,19 +60,26 @@ const clearFilmBoard = container => {
 };
 
 const createPage = (films, container) => {
-  // display filters
   filtersData.map(elm => {
     const filter = new Filter(elm);
     filter.render();
 
-    filter.onFilter = () => {
-      console.log("HERE");
-      clearFilmBoard();
-      const filteredFilms = films.filter(() => true);
+    filter.onFilter = filterType => {
+      clearFilmBoard(container);
+      const filteredFilms = films.filter(film => {
+        if (filterType === FILTER_TYPES.all) {
+          return true;
+        } else if (filterType === FILTER_TYPES.favorites) {
+          console.log(film.favorites);
+          return film.favorites;
+        } else if (filterType === FILTER_TYPES.watchlist) {
+          console.log(film.watchlist);
+          return film.watchlist;
+        }
+      });
       createFilmBoard(filteredFilms, container);
     };
   });
-
   createFilmBoard(films, container);
 };
 
