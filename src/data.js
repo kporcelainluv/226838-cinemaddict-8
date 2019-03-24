@@ -41,7 +41,7 @@ const createFilm = () => {
       { text: "This film is great!", data: new Date(2019, 0, 1, 2, 3, 4) }
     ],
     watched: false,
-    favorite: false,
+    favorites: false,
     watchlist: false
   };
 
