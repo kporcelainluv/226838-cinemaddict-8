@@ -18,6 +18,8 @@ class Card extends Component {
     this._favorite = data.favorite;
     this._watchlist = data.watchlist;
 
+    this._initialData = data;
+
     this._onButtonClick = this._onButtonClick.bind(this);
     this._addToWatchList = this._addToWatchList.bind(this);
     this._markAsWatched = this._markAsWatched.bind(this);
@@ -37,10 +39,13 @@ class Card extends Component {
     }
   }
   _markAsWatched(event) {
-    this._watched = true;
+    this._watched = !this._watched;
     event.preventDefault();
     if (typeof this._onMarkAsWatched === `function`) {
-      this._onMarkAsWatched();
+      this._onMarkAsWatched({
+        ...this._initialData,
+        watched: this._watched
+      });
     }
   }
   set onClick(f) {
