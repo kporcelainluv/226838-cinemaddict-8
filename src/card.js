@@ -18,6 +18,7 @@ class Card extends Component {
     this._watched = data.watched;
     this._favorite = data.favorite;
     this._watchlist = data.watchlist;
+    this._genre = data.genre;
 
     this._initialData = data;
 
@@ -146,6 +147,8 @@ class Card extends Component {
       const controls = card.querySelector(`.film-card__controls`);
       card.removeChild(controls);
     }
+    const genre = card.querySelector(`.film-card__genre`);
+    genre.innerHTML = this._genre;
     const image = card.querySelector(`.film-card__poster`);
     image.src = `./images/posters/${this._posters}.jpg`;
     const rating = card.querySelector(`.film-card__rating`);
