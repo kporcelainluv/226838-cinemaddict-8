@@ -30,8 +30,6 @@ class Filter extends Component {
     filter.textContent = `${this._name}`;
     if (this._name === `Stats`) {
       filter.className += ` main-navigation__item--additional`;
-      const statsTemplate = document.querySelector(`.statistic`);
-      statsTemplate.className = "statistic visually-hidden";
     }
     if (this._amount) {
       const numberOfFilms = document.createElement("span");
