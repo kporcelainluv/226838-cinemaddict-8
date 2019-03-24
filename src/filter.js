@@ -1,12 +1,14 @@
-import { filters } from "./filtersMock.js";
+import { filters, FILTER_TYPES } from "./filtersMock.js";
 import { Component } from "./component.js";
 import { createChart } from "./formStats.js";
+// import { FILTER_TYPE }
 
 class Filter extends Component {
   constructor(data) {
     super();
     this._name = data.name;
     this._amount = data.amount || null;
+    this._type = data.type;
     this._filtersContainer = document.querySelector(".main-navigation");
 
     this._onFilter = this._onFilter.bind(this);
@@ -17,7 +19,9 @@ class Filter extends Component {
   }
   _onFilter(event) {
     event.preventDefault();
+    this._onFilter(this._type);
   }
+
   _onStats() {
     const filmsSection = document.querySelector(`.films`);
     filmsSection.className += " visually-hidden";
@@ -26,6 +30,7 @@ class Filter extends Component {
     statsSection.className = "statistic";
     createChart();
   }
+
   get template() {
     const filter = document.createElement("a");
     filter.className = `main-navigation__item main-navigation-${
@@ -51,47 +56,14 @@ class Filter extends Component {
     this._filtersContainer.appendChild(this._element);
     this.addEventListeners();
   }
+
   addEventListeners() {
-    const allMoviesBtn = document.querySelector(
+    const thisBtn = document.querySelector(
       `.main-navigation-${this._name.toLowerCase().split(" ")[0]}`
     );
-    if (allMoviesBtn) {
-      allMoviesBtn.addEventListener("click", this._onFilter);
-    }
-
-    const watchListBtn = document.querySelector(".main-navigation-watchlist");
-    if (watchListBtn) {
-      watchListBtn.addEventListener("click", this._onFilter);
-    }
-    const historyBtn = document.querySelector(".main-navigation-history");
-    if (historyBtn) {
-      historyBtn.addEventListener("click", this._onFilter);
-    }
-    const favoritesBtn = document.querySelector(
-      ".main-navigation__item main-navigation-favorites"
-    );
-    if (favoritesBtn) {
-      favoritesBtn.addEventListener("click", this._onFilter);
-    }
-    const statsBtn = document.querySelector(".main-navigation-stats");
-    if (statsBtn) {
-      statsBtn.addEventListener("click", this._onStats);
-    }
+    thisBtn.addEventListener("click", this._onFilter);
   }
-  // removeEventListeners() {
-  //   const allMoviesBtn = document.querySelector(".main-navigation-all");
-  //   allMoviesBtn.removeEventListener("click", this._onFilter);
-  //   const watchListBtn = document.querySelector(".main-navigation-watchlist");
-  //   watchListBtn.removeEventListener("click", this._onFilter);
-  //   const historyBtn = document.querySelector(".main-navigation-history");
-  //   historyBtn.removeEventListener("click", this._onFilter);
-  //   const favoritesBtn = document.querySelector(
-  //     ".main-navigation__item main-navigation-favorites"
-  //   );
-  //   favoritesBtn.removeEventListener("click", this._onFilter);
-  //   const statsBtn = document.querySelector(".main-navigation-stats");
-  //   statsBtn.removeEventListener("click", this._onStats);
-  // }
+  removeEventListeners() {}
 
   makeFilterActive(filter) {
     filter.className += ` main-navigation__item--active`;
