@@ -30,7 +30,7 @@ class Statistics {
     listOfGenres.sort((a, b) => {
       return b[1] - a[1];
     });
-    const topGenre = listOfGenres[0][0] || "None";
+    const topGenre = "None" || listOfGenres[0][0];
     return topGenre;
   }
   get template() {
@@ -57,18 +57,17 @@ class Statistics {
   }
   render() {
     this._element = this.template;
+    console.log("here", this._element);
     this._parent.appendChild(this._element);
     createChart();
   }
+
   unrender() {
+    console.log("there", this._element);
     if (this._element) {
       this._parent.removeChild(this._element);
     }
-    this._element = null;
-  }
-  display() {
-    const statsSection = document.querySelector(`.statistic`);
-    statsSection.className = "statistic";
+    // this._element = null;
   }
 }
 export { Statistics };
