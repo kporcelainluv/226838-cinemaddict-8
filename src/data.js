@@ -42,7 +42,8 @@ const createFilm = () => {
     ],
     watched: false,
     favorites: false,
-    watchlist: false
+    watchlist: false,
+    id: Math.floor(Math.random() * 10000000)
   };
 
   return film;
