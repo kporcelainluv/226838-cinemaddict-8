@@ -5,6 +5,7 @@ import { filtersData, FILTER_TYPES } from "./filtersMock.js";
 import { Filter } from "./filter.js";
 import { Observable } from "./observable";
 import { createChart } from "./formStats.js";
+import { Statistics } from "./statistics.js";
 
 const updateFilms = (films, film) => {
   return films.map(f => {
@@ -128,6 +129,9 @@ const page = new Observable({
 page.subscribe(({ filterType, allFilms }) => {
   if (filterType === FILTER_TYPES.stats) {
     displayFilmsContainer(false);
+    const stats = new Statistics(allFilms);
+    stats.render();
+    console.log(allFilms);
     createChart();
   } else {
     displayFilmsContainer(true);
