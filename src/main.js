@@ -62,25 +62,18 @@ const clearFilters = () => {
   document.querySelector("nav.main-navigation").innerHTML = "";
 };
 
-const createPage = (films, container) => {
+const createPage = (films, container, page) => {
   filtersData.map(elm => {
     const filter = new Filter(elm);
     filter.render();
 
     filter.onFilter = filterType => {
-      clearFilmBoard(container);
-      const filteredFilms = films.filter(film => {
-        if (filterType === FILTER_TYPES.all) {
-          return true;
-        } else if (filterType === FILTER_TYPES.favorites) {
-          console.log(film.favorites);
-          return film.favorites;
-        } else if (filterType === FILTER_TYPES.watchlist) {
-          console.log(film.watchlist);
-          return film.watchlist;
-        }
+      page.update(data => {
+        return {
+          ...data,
+          filterType
+        };
       });
-      createFilmBoard(filteredFilms, container);
     };
   });
   createFilmBoard(films, container);
@@ -98,24 +91,24 @@ const [
 ] = moviesCategoeriesContainers;
 
 const page = new Observable({
-  filter: FILTER_TYPES.all,
+  filterType: FILTER_TYPES.all,
   allFilms: films
 });
 
-page.subscribe(({ filter, allFilms }) => {
+page.subscribe(({ filterType, allFilms }) => {
   const films = allFilms.filter(film => {
-    if (filter === FILTER_TYPES.all) {
+    if (filterType === FILTER_TYPES.all) {
       return true;
-    } else if (filter === FILTER_TYPES.favorites) {
+    } else if (filterType === FILTER_TYPES.favorites) {
       return film.favorites;
-    } else if (filter === FILTER_TYPES.watchlist) {
+    } else if (filterType === FILTER_TYPES.watchlist) {
       return film.watchlist;
     }
   });
 
   clearFilters();
   clearFilmBoard(allContainer);
-  createPage(films, allContainer);
+  createPage(films, allContainer, page);
 });
 
 page.notify();
