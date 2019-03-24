@@ -38,7 +38,7 @@ class Card extends Component {
     if (typeof this._onAddToWatchList === `function`) {
       this._onAddToWatchList({
         ...this._initialData,
-        watched: this._watchlist
+        watchlist: this._watchlist
       });
     }
   }
