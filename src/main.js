@@ -7,15 +7,6 @@ import { Observable } from "./observable";
 import { createChart } from "./formStats.js";
 import { Statistics } from "./statistics.js";
 
-const updateFilms = (films, film) => {
-  return films.map(f => {
-    if (f.id === film.id) {
-      return film;
-    }
-    return f;
-  });
-};
-
 const createFilmCard = (film, container) => {
   const filmCard = new Card(film, container);
   const myPopUp = new Popup(film);
@@ -126,12 +117,14 @@ const page = new Observable({
   allFilms: films
 });
 
+const createDataForStats = () => {};
+
 page.subscribe(({ filterType, allFilms }) => {
   if (filterType === FILTER_TYPES.stats) {
     displayFilmsContainer(false);
     const stats = new Statistics(allFilms);
+    console.log(page.currentData());
     stats.render();
-    console.log(allFilms);
     createChart();
   } else {
     displayFilmsContainer(true);
