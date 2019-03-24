@@ -36,8 +36,20 @@ const createFilmCard = (film, container) => {
 
     // const newCard = createFilmCard(updatedFilm, container, index);
   };
-  filmCard.onAddToWatchList = () => {
-    console.log(filmCard, "watchlist");
+  filmCard.onAddToWatchList = updatedFilm => {
+    page.update(({ allFilms, ...otherData }) => {
+      const updatedAllFilms = allFilms.map(film => {
+        if (film.id === updatedFilm.id) {
+          return updatedFilm;
+        }
+        return film;
+      });
+
+      return {
+        ...otherData,
+        allFilms: updatedAllFilms
+      };
+    });
   };
   filmCard.onMarkAsWatched = updatedFilm => {
     page.update(({ allFilms, ...otherData }) => {
