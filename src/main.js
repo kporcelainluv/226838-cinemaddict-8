@@ -4,6 +4,7 @@ import { Popup } from "./popup.js";
 import { filtersData, FILTER_TYPES } from "./filtersMock.js";
 import { Filter } from "./filter.js";
 import { Observable } from "./observable";
+import { createChart } from "./formStats.js";
 
 const updateFilms = (films, film) => {
   return films.map(f => {
@@ -97,18 +98,29 @@ const [
   mostCommentedContainer
 ] = moviesCategoeriesContainers;
 
+const displayFilmsContainer = bool => {
+  if (!bool) {
+    const filmsContainer = document.querySelector(`.films`);
+    filmsContainer.className += " visually-hidden";
+  } else {
+    const filmsContainer = document.querySelector(`.films`);
+    filmsContainer.className = "films";
+  }
+};
+
 const page = new Observable({
   filterType: FILTER_TYPES.all,
   allFilms: films
 });
 
 page.subscribe(({ filterType, allFilms }) => {
-  clearFilters();
-  clearFilmBoard(allContainer);
-
   if (filterType === FILTER_TYPES.stats) {
-    createStatsPage(films, allContainer, page);
+    displayFilmsContainer(false);
+    createChart();
   } else {
+    displayFilmsContainer(true);
+    clearFilters();
+    clearFilmBoard(allContainer);
     const films = allFilms.filter(film => {
       if (filterType === FILTER_TYPES.all) {
         return true;
