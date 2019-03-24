@@ -14,10 +14,10 @@ const updateFilms = (films, film) => {
   });
 };
 
-const createFilmCard = (film, container, index) => {
+const createFilmCard = (film, container) => {
   const filmCard = new Card(film, container);
   const myPopUp = new Popup(film);
-  filmCard.render(index);
+  filmCard.render();
   filmCard.onClick = () => {
     myPopUp.render();
   };
@@ -29,7 +29,7 @@ const createFilmCard = (film, container, index) => {
     film.comments = updatedFilm.comments;
 
     filmCard.update(film);
-    filmCard.render(index);
+    filmCard.render();
     const newCard = filmCard.element;
     filmCard.replacewith(oldCard, newCard);
 
@@ -56,15 +56,13 @@ const createFilmCard = (film, container, index) => {
 };
 
 const createFilmBoard = (films, container) => {
-  let index = 0;
   for (let film of films) {
-    createFilmCard(film, container, index);
-    index += 1;
+    createFilmCard(film, container);
   }
 };
 
 const clearFilmBoard = container => {
-  container.innerHtml = "";
+  container.innerHTML = "";
 };
 
 const clearFilters = () => {
@@ -105,10 +103,6 @@ const page = new Observable({
 });
 
 page.subscribe(({ filterType, allFilms }) => {
-  console.log({
-    allFilms
-  });
-
   const films = allFilms.filter(film => {
     if (filterType === FILTER_TYPES.all) {
       return true;

@@ -4,6 +4,7 @@ import moment from "moment";
 class Card extends Component {
   constructor(data, parentContainer) {
     super();
+    this._id = data.id;
     this._name = data.name;
     this._about = data.descriptionText;
     this._posters = data.posters;
@@ -58,27 +59,27 @@ class Card extends Component {
     this._onMarkAsWatched = f;
   }
 
-  addEventListeners(index) {
-    const commentsButton = Array.from(
-      document.querySelectorAll(`.film-card__comments`)
-    )[index];
+  addEventListeners() {
+    const commentsButton = document.querySelector(
+      `.film-card__comments__${this._id}`
+    );
     commentsButton.addEventListener(`click`, this._onButtonClick);
 
-    const watchlistBtn = Array.from(
-      document.querySelectorAll(`.film-card__controls-item--add-to-watchlist`)
-    )[index];
+    const watchlistBtn = document.querySelector(
+      `.film-card__controls-item--add-to-watchlist__${this._id}`
+    );
     watchlistBtn.addEventListener(`click`, this._addToWatchList);
 
-    const watchedBtn = Array.from(
-      document.querySelectorAll(`.film-card__controls-item--mark-as-watched`)
-    )[index];
+    const watchedBtn = document.querySelector(
+      `.film-card__controls-item--mark-as-watched__${this._id}`
+    );
     watchedBtn.addEventListener(`click`, this._markAsWatched);
   }
 
-  render(index) {
+  render() {
     this._element = this.template;
     this._parentContainer.appendChild(this._element);
-    this.addEventListeners(index);
+    this.addEventListeners();
   }
   replacewith(oldcard, newcard) {
     this._parentContainer.replaceChild(newcard, oldcard);
@@ -90,8 +91,21 @@ class Card extends Component {
   }
 
   removeEventListeners() {
-    const commentsButton = document.querySelector(`.film-card__comments`);
+    const commentsButton = document.querySelector(
+      `.film-card__comments__${this._id}`
+    );
     commentsButton.removeEventListener(`click`, this._onButtonClick);
+
+    const watchlistBtn = document.querySelector(
+      `.film-card__controls-item--add-to-watchlist__${this._id}`
+    );
+    watchlistBtn.removeEventListener(`click`, this._addToWatchList);
+
+    const watchedBtn = document.querySelector(
+      `.film-card__controls-item--mark-as-watched__${this._id}`
+    );
+
+    watchedBtn.removeEventListener(`click`, this._markAsWatched);
   }
   update(data) {
     this._name = data.name;
@@ -132,6 +146,18 @@ class Card extends Component {
     const image = card.querySelector(`.film-card__poster`);
     image.src = `./images/posters/${this._posters}.jpg`;
     const rating = card.querySelector(`.film-card__rating`);
+
+    card
+      .querySelector(`.film-card__comments`)
+      .classList.add(`film-card__comments__${this._id}`);
+
+    card
+      .querySelector(`.film-card__controls-item--add-to-watchlist`)
+      .classList.add(`film-card__controls-item--add-to-watchlist__${this._id}`);
+
+    card
+      .querySelector(`.film-card__controls-item--mark-as-watched`)
+      .classList.add(`film-card__controls-item--mark-as-watched__${this._id}`);
 
     rating.innerHTML = this._rating;
 
