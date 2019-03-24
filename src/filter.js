@@ -12,7 +12,6 @@ class Filter extends Component {
     this._filtersContainer = document.querySelector(".main-navigation");
 
     this._onFilter = this._onFilter.bind(this);
-    this._onStats = this._onStats.bind(this);
   }
   set onFilter(f) {
     this._onFilter = f;
@@ -20,15 +19,6 @@ class Filter extends Component {
   _onFilter(event) {
     event.preventDefault();
     this._onFilter(this._type);
-  }
-
-  _onStats() {
-    const filmsSection = document.querySelector(`.films`);
-    filmsSection.className += " visually-hidden";
-
-    const statsSection = document.querySelector(`.statistic`);
-    statsSection.className = "statistic";
-    createChart();
   }
 
   get template() {
@@ -41,7 +31,7 @@ class Filter extends Component {
     if (this._name === `Stats`) {
       filter.className += ` main-navigation__item--additional`;
       const statsTemplate = document.querySelector(`.statistic`);
-      statsTemplate.className += " visually-hidden";
+      statsTemplate.className = "statistic visually-hidden";
     }
     if (this._amount) {
       const numberOfFilms = document.createElement("span");
