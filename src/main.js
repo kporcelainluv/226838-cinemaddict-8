@@ -39,10 +39,19 @@ const createFilmCard = (film, container, index) => {
     console.log(filmCard, "watchlist");
   };
   filmCard.onMarkAsWatched = updatedFilm => {
-    console.log(filmCard, "watched");
-    const updatedFilms = updateFilms(films, updatedFilm);
-    clearFilmBoard(container);
-    createFilmBoard(updateFilms, container);
+    page.update(({ allFilms, ...otherData }) => {
+      const updatedAllFilms = allFilms.map(film => {
+        if (film.id === updateFilm.id) {
+          return updatedFilm;
+        }
+        return film;
+      });
+
+      return {
+        ...otherData,
+        allFilms: updateFilms
+      };
+    });
   };
 };
 
