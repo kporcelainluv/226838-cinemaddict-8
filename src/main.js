@@ -1,10 +1,9 @@
 import { Card } from "./card.js";
-import { film, films as filmList } from "./data.js";
+import { film, films } from "./data.js";
 import { Popup } from "./popup.js";
 import { filtersData, FILTER_TYPES } from "./filtersMock.js";
 import { Filter } from "./filter.js";
-
-let films = filmList;
+import { Observable } from "./observable";
 
 const updateFilms = (films, film) => {
   return films.map(f => {
@@ -59,6 +58,10 @@ const clearFilmBoard = container => {
   container.innerHtml = "";
 };
 
+const clearFilters = () => {
+  document.querySelector("nav.main-navigation").innerHTML = "";
+};
+
 const createPage = (films, container) => {
   filtersData.map(elm => {
     const filter = new Filter(elm);
@@ -94,4 +97,25 @@ const [
   mostCommentedContainer
 ] = moviesCategoeriesContainers;
 
-createPage(films, allContainer);
+const page = new Observable({
+  filter: FILTER_TYPES.all,
+  allFilms: films
+});
+
+page.subscribe(({ filter, allFilms }) => {
+  const films = allFilms.filter(film => {
+    if (filter === FILTER_TYPES.all) {
+      return true;
+    } else if (filter === FILTER_TYPES.favorites) {
+      return film.favorites;
+    } else if (filter === FILTER_TYPES.watchlist) {
+      return film.watchlist;
+    }
+  });
+
+  clearFilters();
+  clearFilmBoard(allContainer);
+  createPage(films, allContainer);
+});
+
+page.notify();
