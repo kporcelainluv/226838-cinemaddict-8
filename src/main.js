@@ -132,11 +132,9 @@ const createDataForStats = currentFilmsData => {
 };
 
 page.subscribe(({ filterType, allFilms }) => {
-  const currentFilmsData = page.currentData().allFilms;
-  const stats = new Statistics(createDataForStats(currentFilmsData));
-  stats.unrender();
   if (filterType === FILTER_TYPES.stats) {
     displayFilmsContainer(false);
+    const stats = new Statistics(createDataForStats(allFilms));
     stats.render();
   } else {
     displayFilmsContainer(true);

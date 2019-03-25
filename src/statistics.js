@@ -57,14 +57,24 @@ class Statistics {
   }
   render() {
     this._element = this.template;
-    console.log("here", this._element);
+    console.log("rendering stats", this._element);
+    const statsSection = document.querySelector(".statistic");
+
+    console.log({
+      statsSection
+    });
+
+    if (statsSection) {
+      this._parent.removeChild(statsSection);
+    }
     this._parent.appendChild(this._element);
     createChart();
   }
 
   unrender() {
-    console.log("there", this._element);
+    console.log("trying to unrender stats", this._element);
     if (this._element) {
+      console.log("unrender stats");
       this._parent.removeChild(this._element);
     }
     // this._element = null;

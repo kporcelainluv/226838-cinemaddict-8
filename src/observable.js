@@ -16,9 +16,6 @@ export class Observable {
     this._data = f(this._data);
     this.notify();
   }
-  currentData() {
-    return this._data;
-  }
 
   notify() {
     this._observers.forEach(observer => observer(this._data));
