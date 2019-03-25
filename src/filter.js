@@ -1,42 +1,61 @@
-const filters = [
-  { name: `All movies` },
-  { name: `Watchlist`, filmsAmount: "13" },
-  { name: `History`, filmsAmount: "4" },
-  { name: `Favorites`, filmsAmount: "8" },
-  { name: `Stats` }
-];
+import { filters, FILTER_TYPES } from "./filtersMock.js";
+import { Component } from "./component.js";
+import { createChart } from "./formStats.js";
+// import { FILTER_TYPE }
 
-const makeFilterActive = filter => {
-  filter.className += ` main-navigation__item--active`;
-};
+class Filter extends Component {
+  constructor(data) {
+    super();
+    this._name = data.name;
+    this._amount = data.amount || null;
+    this._type = data.type;
+    this._filtersContainer = document.querySelector(".main-navigation");
 
-const createFilter = filter => {
-  const filterContainer = document.querySelector(".main-navigation");
-
-  const filterLink = document.createElement("a");
-  filterLink.className = "main-navigation__item";
-  filterLink.href = `#${filter["name"].toLowerCase().split(" ")[0]}`;
-  filterLink.textContent = `${filter["name"]}`;
-  if (filter["name"] === `Stats`) {
-    filterLink.className += ` main-navigation__item--additional`;
+    this._onFilter = this._onFilter.bind(this);
+  }
+  set onFilter(f) {
+    this._onFilter = f;
+  }
+  _onFilter(event) {
+    event.preventDefault();
+    this._onFilter(this._type);
   }
 
-  if (filter.hasOwnProperty("filmsAmount")) {
-    const numberOfFilms = document.createElement("span");
-    numberOfFilms.className = "main-navigation__item-count";
-    numberOfFilms.textContent = `${filter["filmsAmount"]}`;
-    filterLink.appendChild(numberOfFilms);
+  get template() {
+    const filter = document.createElement("a");
+    filter.className = `main-navigation__item main-navigation-${
+      this._name.toLowerCase().split(" ")[0]
+    }`;
+    filter.href = `#${this._name.toLowerCase().split(" ")[0]}`;
+    filter.textContent = `${this._name}`;
+    if (this._name === `Stats`) {
+      filter.className += ` main-navigation__item--additional`;
+    }
+    if (this._amount) {
+      const numberOfFilms = document.createElement("span");
+      numberOfFilms.className = "main-navigation__item-count";
+      numberOfFilms.textContent = `${this._amount}`;
+      filter.appendChild(numberOfFilms);
+    }
+    return filter;
   }
-  filterContainer.appendChild(filterLink);
-};
-const displayFilters = (filters, createFilter, makeFilterActive) => {
-  filters.map(elm => createFilter(elm));
+  render() {
+    this._element = this.template;
+    this._filtersContainer.appendChild(this._element);
+    this.addEventListeners();
+  }
 
-  const firstFilter = Array.from(
-    document.querySelectorAll(".main-navigation__item")
-  )[0];
+  addEventListeners() {
+    const thisBtn = document.querySelector(
+      `.main-navigation-${this._name.toLowerCase().split(" ")[0]}`
+    );
+    thisBtn.addEventListener("click", this._onFilter);
+  }
+  removeEventListeners() {}
 
-  makeFilterActive(firstFilter);
-};
+  makeFilterActive(filter) {
+    filter.className += ` main-navigation__item--active`;
+  }
+}
 
-export { displayFilters, filters, createFilter, makeFilterActive };
+export { Filter };

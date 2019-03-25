@@ -66,6 +66,96 @@
           <div class="films-list__container"></div>
         </section>
       </section>
+      <template class="statistics-template">
+        <section class="statistic">
+          <p class="statistic__rank">
+            Your rank <span class="statistic__rank-label"> Sci - Fighter</span>
+          </p>
+
+          <form
+            action="https://echo.htmlacademy.ru/"
+            method="get"
+            class="statistic__filters visually-hidden"
+          >
+            <p class="statistic__filters-description">Show stats:</p>
+
+            <input
+              type="radio"
+              class="statistic__filters-input visually-hidden"
+              name="statistic-filter"
+              id="statistic-all-time"
+              value="all-time"
+              checked
+            />
+            <label for="statistic-all-time" class="statistic__filters-label"
+              >All time</label
+            >
+
+            <input
+              type="radio"
+              class="statistic__filters-input visually-hidden"
+              name="statistic-filter"
+              id="statistic-today"
+              value="today"
+            />
+            <label for="statistic-today" class="statistic__filters-label"
+              >Today</label
+            >
+
+            <input
+              type="radio"
+              class="statistic__filters-input visually-hidden"
+              name="statistic-filter"
+              id="statistic-week"
+              value="week"
+            />
+            <label for="statistic-week" class="statistic__filters-label"
+              >Week</label
+            >
+
+            <input
+              type="radio"
+              class="statistic__filters-input visually-hidden"
+              name="statistic-filter"
+              id="statistic-month"
+              value="month"
+            />
+            <label for="statistic-month" class="statistic__filters-label"
+              >Month</label
+            >
+
+            <input
+              type="radio"
+              class="statistic__filters-input visually-hidden"
+              name="statistic-filter"
+              id="statistic-year"
+              value="year"
+            />
+            <label for="statistic-year" class="statistic__filters-label"
+              >Year</label
+            >
+          </form>
+
+          <ul class="statistic__text-list">
+            <li class="statistic__text-item">
+              <h4 class="statistic__item-title">You watched</h4>
+              <p class="statistic__item-text"></p>
+            </li>
+            <li class="statistic__text-item">
+              <h4 class="statistic__item-title">Total duration</h4>
+              <p class="statistic__item-text"></p>
+            </li>
+            <li class="statistic__text-item">
+              <h4 class="statistic__item-title">Top genre</h4>
+              <p class="statistic__item-text"></p>
+            </li>
+          </ul>
+
+          <div class="statistic__chart-wrap">
+            <canvas class="statistic__chart" width="1000"></canvas>
+          </div>
+        </section>
+      </template>
     </main>
 
     <footer class="footer">
@@ -84,7 +174,7 @@
         <p class="film-card__info">
           <span class="film-card__year">2018</span>
           <span class="film-card__duration">1h&nbsp;13m</span>
-          <span class="film-card__genre">Comedy</span>
+          <span class="film-card__genre"></span>
         </p>
         <img
           src="./images/posters/three-friends.jpg"
@@ -97,7 +187,7 @@
           nun in Romania and confront a malevolent force in the form of a
           demonic nun.
         </p>
-        <button class="film-card__comments">13 comments</button>
+        <button class="film-card__comments"></button>
 
         <form class="film-card__controls">
           <button
@@ -122,33 +212,65 @@
     <template class="popup-template">
       <div class="popup-portal">
         <div class="popup">
-          <div class="popup-image">
-            <img
-              class="popup-img-src"
-              src="./accused.jpg"
-              alt=""
-              height="300"
-              width="200"
-            />
+          <div class="film-details__form">
+            <div class="popup-image">
+              <img
+                class="popup-img-src"
+                src="./accused.jpg"
+                alt=""
+                height="300"
+                width="200"
+              />
+            </div>
+            <div class="popup-description">
+              <span class="rating-info"></span>
+              <p class="popup-description-option popup-name">
+                Name:
+              </p>
+              <p class="popup-description-option popup-rating">
+                rating:
+              </p>
+              <p class="popup-description-option popup-year">Film release:</p>
+              <p class="popup-description-option popup-duration">Duration:</p>
+              <p class="popup-description-option popup-genre">Genre:</p>
+              <p class="popup-description-option popup-description-text">
+                About:
+              </p>
+              <p>Changed your mind? Rate the film again</p>
+              <form class="update-rating__form">
+                <label for="rating"></label>
+                <select name="rating" id="rating">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+                <button type="submit">Update rating</button>
+              </form>
+              <form class="add-comment__form">
+                <p>Leave your comment</p>
+                <label for="comments"></label>
+                <textarea type="text" id="comments" name="comment"></textarea
+                ><br />
+                <button type="submit" class="submit-comment-button">
+                  Add comment
+                </button>
+              </form>
+              <ol class="existing-comments"></ol>
+            </div>
+            <button type="button" class="popup-button-close">x</button>
           </div>
-          <div class="popup-description">
-            <p class="popup-description-option popup-name">
-              Name:
-            </p>
-            <p class="popup-description-option popup-raiting">
-              Raiting:
-            </p>
-            <p class="popup-description-option popup-year">Year:</p>
-            <p class="popup-description-option popup-duration">Duration:</p>
-            <p class="popup-description-option popup-genre">Genre:</p>
-            <p class="popup-description-option popup-description-text">
-              About:
-            </p>
-          </div>
-          <button type="button" class="popup-button">x</button>
         </div>
       </div>
     </template>
+
     <script src="bundle.js"></script>
   </body>
 </html>

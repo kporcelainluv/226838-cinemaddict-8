@@ -10,15 +10,14 @@
   --horizontal-gap: 20px;
   --vertical-gap: 28px;
 
-  --font:'Open Sans', sans-serif;
+  --font: "Open Sans", sans-serif;
   --font-size: 16px;
   --font-size-smaller: 14px;
   --font-size-bigger: 20px;
 }
 
-
 html {
-  background: #121213 url('../images/background.png') no-repeat 50% 0;
+  background: #121213 url("../images/background.png") no-repeat 50% 0;
   display: flex;
   color: var(--text-color);
   font-size: var(--font-size);
@@ -27,7 +26,7 @@ html {
   min-width: 1240px;
   position: relative;
   min-height: 100%;
-  -webkit-font-smoothing: antialiased
+  -webkit-font-smoothing: antialiased;
 }
 
 .visually-hidden {
@@ -48,7 +47,6 @@ body {
   width: 100%;
 }
 
-
 a:link {
   opacity: 1;
   text-decoration: none;
@@ -58,7 +56,6 @@ a:link {
 a:hover {
   opacity: 0.7;
 }
-
 
 .header {
   align-items: center;
@@ -78,7 +75,6 @@ a:hover {
 .header__search {
   margin-right: 150px;
 }
-
 
 .logo {
   animation: logo-animation 3s ease-out;
@@ -126,7 +122,6 @@ a:hover {
   width: 615px;
 }
 
-
 .main-navigation {
   border-bottom: solid 2px var(--outline-color);
   display: flex;
@@ -142,7 +137,7 @@ a:hover {
 }
 
 .main-navigation__item-count {
-  background:rgba(0,46,255, 0.4);
+  background: rgba(0, 46, 255, 0.4);
   border-radius: 18px;
   font-weight: 500;
   padding: 0 10px;
@@ -157,7 +152,6 @@ a:hover {
   margin-left: auto;
   margin-right: 0;
 }
-
 
 .films {
   display: flex;
@@ -176,7 +170,6 @@ a:hover {
   flex-wrap: wrap;
   padding-bottom: var(--vertical-gap);
 }
-
 
 .film-card {
   flex-basis: 230px;
@@ -295,17 +288,16 @@ a:hover {
 }
 
 .film-card__controls-item--add-to-watchlist {
-  background-image: url('../images/icon-watchlist.png');
+  background-image: url("../images/icon-watchlist.png");
 }
 
 .film-card__controls-item--mark-as-watched {
-  background-image: url('../images/icon-watched.png');
+  background-image: url("../images/icon-watched.png");
 }
 
 .film-card__controls-item--favorite {
-  background-image: url('../images/icon-favorite.png');
+  background-image: url("../images/icon-favorite.png");
 }
-
 
 .film-card:hover .film-card__poster {
   bottom: calc(100% - 340px);
@@ -314,8 +306,6 @@ a:hover {
 .film-card:hover .film-card__controls {
   height: 50px;
 }
-
-
 
 .films-list__show-more {
   background: none;
@@ -349,7 +339,7 @@ a:hover {
 .films-list--extra:last-of-type::before {
   border-left: solid 1px var(--outline-color);
   bottom: 20px;
-  content: '';
+  content: "";
   height: calc(100% - 20px * 2);
   left: calc(-1 * var(--horizontal-gap) * 1.5);
   position: absolute;
@@ -361,10 +351,9 @@ a:hover {
   padding: var(--vertical-gap) 40px;
 }
 
-
 .footer {
   align-items: center;
-  background: url('../images/background.png') no-repeat 50% 0;
+  background: url("../images/background.png") no-repeat 50% 0;
   display: flex;
   height: 100px;
 }
@@ -482,7 +471,7 @@ a:hover {
 .film-details__user-rating {
   margin: 0;
   font-size: 21px;
-  color: #687fad
+  color: #687fad;
 }
 .film-details__row {
   margin: 7px 0;
@@ -532,13 +521,13 @@ a:hover {
   cursor: pointer;
 }
 .film-details__control-label:not(:first-of-type) {
-  border-left: 1px solid #31353f
+  border-left: 1px solid #31353f;
 }
 .film-details__control-label:hover {
   opacity: 0.7;
 }
 .film-details__control-label::before {
-  content: '';
+  content: "";
   width: 17px;
   height: 17px;
   position: absolute;
@@ -646,7 +635,7 @@ a:hover {
   position: relative;
 }
 .film-details__comment-author::after {
-  content: '';
+  content: "";
   position: absolute;
   right: 5px;
   top: 8px;
@@ -739,14 +728,14 @@ a:hover {
   position: absolute;
   top: 0;
   left: 7px;
-  content: '🤮';
+  content: "🤮";
   font-size: 30px;
 }
 .film-details__user-rating-score::after {
   position: absolute;
   top: 0;
   right: 23px;
-  content: '🏆';
+  content: "🏆";
   font-size: 30px;
 }
 .film-details__user-rating-label {
@@ -774,6 +763,7 @@ a:hover {
   padding-top: 30px;
   padding-bottom: 100px;
 }
+
 .statistic__rank {
   margin: 0;
   margin-bottom: 34px;
@@ -806,7 +796,7 @@ a:hover {
   position: relative;
 }
 .statistic__filters-input:checked + .statistic__filters-label::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -2px;
   width: 100%;
@@ -840,4 +830,106 @@ a:hover {
 .statistic__chart-wrap {
   margin-left: 30px;
   width: 1000px;
+}
+.popup-portal {
+  background-color: #121213;
+  border: 2px solid white;
+  width: 60%;
+  position: absolute;
+  right: 200px;
+  top: 300px;
+  z-index: 2;
+}
+.statistic__filters-description {
+  margin: 0;
+  margin-right: 30px;
+}
+.statistic__filters-label {
+  margin-right: 30px;
+  padding-bottom: 30px;
+  cursor: pointer;
+}
+.statistic__filters-label:hover {
+  color: var(--text-color-active);
+  opacity: 0.8;
+}
+.statistic__filters-input:checked + .statistic__filters-label {
+  color: var(--text-color-active);
+}
+
+.film-details__form {
+  display: flex;
+  position: relative;
+}
+.statistic__filters-input:checked + .statistic__filters-label::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background-color: var(--text-color-active);
+}
+.statistic__text-list {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+  margin-bottom: 100px;
+}
+.statistic__item-title {
+  margin: 0;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: normal;
+}
+
+.statistic__item-text {
+  margin: 0;
+  font-size: 50px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+}
+
+.popup-button-close {
+  height: 50px;
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+  background-color: transparent;
+  color: white;
+  border: none;
+}
+.statistic__item-description {
+  font-size: 20px;
+  padding: 0 5px;
+}
+.statistic__chart-wrap {
+  margin-left: 30px;
+  width: 1000px;
+}
+.rating-info {
+  font-size: 48px;
+  font-weight: 900;
+  color: #c7c4e7;
+}
+.rating-button {
+  background-color: #c7c4e7;
+  cursor: pointer;
+}
+.existing-comments {
+  margin-top: 30px;
+}
+.existing-comment {
+  display: flex;
+}
+
+.comment p {
+  margin: 0;
+  padding: 0;
+  margin-left: 20px;
+}
+.comment p:first-child {
+  font-size: 10px;
+  margin-bottom: 10px;
 }
