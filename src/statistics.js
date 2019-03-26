@@ -18,7 +18,7 @@ class Statistics {
   }
 
   _getTopGenre() {
-    let allGenres = {};
+    const allGenres = {};
     for (let genre of this._genres) {
       if (allGenres.hasOwnProperty(genre)) {
         allGenres[genre] = allGenres[genre] + 1;
