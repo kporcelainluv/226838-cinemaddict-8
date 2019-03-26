@@ -87,12 +87,24 @@ const countWatchedFavoriteWatchlist = films => {
   }
   return [watched, favorite, watchlist];
 };
-const createPage = (films, container, page) => {
+const createPage = (allFilms, filterType, container, page) => {
+  const films = allFilms.filter(film => {
+    if (filterType === FILTER_TYPES.all) {
+      return true;
+    } else if (filterType === FILTER_TYPES.favorites) {
+      return film.favorites;
+    } else if (filterType === FILTER_TYPES.watchlist) {
+      return film.watchlist;
+    } else if (filterType === FILTER_TYPES.history) {
+      return film.watched;
+    }
+  });
+
   const [
     watchedFilms,
     favoriteFilms,
     watchlistFilms
-  ] = countWatchedFavoriteWatchlist(films);
+  ] = countWatchedFavoriteWatchlist(allFilms);
   filtersData.map(elm => {
     const filter = new Filter(elm, watchedFilms, favoriteFilms, watchlistFilms);
     filter.render();
@@ -162,19 +174,8 @@ page.subscribe(({ filterType, allFilms }) => {
     if (statsSection) {
       clearFilmBoard(statsSection);
     }
-    const films = allFilms.filter(film => {
-      if (filterType === FILTER_TYPES.all) {
-        return true;
-      } else if (filterType === FILTER_TYPES.favorites) {
-        return film.favorites;
-      } else if (filterType === FILTER_TYPES.watchlist) {
-        return film.watchlist;
-      } else if (filterType === FILTER_TYPES.history) {
-        return film.watched;
-      }
-    });
 
-    createPage(films, allContainer, page);
+    createPage(allFilms, filterType, allContainer, page);
   }
 });
 
