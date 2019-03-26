@@ -3,23 +3,40 @@ import moment from "moment";
 
 const addEventListeners = (
   cardTemplate,
-  { id },
+  card,
   { onAddToWatchList, onMarkAsWatched, onAddToFavourites, onClickToComments }
 ) => {
+  const { id } = card;
+
   const commentsButton = cardTemplate.querySelector(
     `.film-card__comments__${id}`
   );
-  commentsButton.addEventListener(`click`, onClickToComments);
+  commentsButton.addEventListener(`click`, e => {
+    e.preventDefault();
+    onClickToComments();
+  });
 
   const watchlistBtn = cardTemplate.querySelector(
     `.film-card__controls-item--add-to-watchlist__${id}`
   );
-  watchlistBtn.addEventListener(`click`, onAddToWatchList);
+  watchlistBtn.addEventListener(`click`, e => {
+    e.preventDefault();
+    onAddToWatchList({
+      ...card,
+      watchlist: !card.watchlist
+    });
+  });
 
   const watchedBtn = cardTemplate.querySelector(
     `.film-card__controls-item--mark-as-watched__${id}`
   );
-  watchedBtn.addEventListener(`click`, onMarkAsWatched); // ????
+  watchedBtn.addEventListener(`click`, e => {
+    e.preventDefault();
+    onMarkAsWatched({
+      ...card,
+      watched: !card.watched
+    });
+  });
 };
 
 const createCard = ({
@@ -38,7 +55,7 @@ const createCard = ({
     .querySelector(`.card-template`)
     .content.querySelector(`.film-card`)
     .cloneNode(true);
-  if (!this._controls) {
+  if (!controls) {
     card.className += ` film-card--no-controls`;
     card.querySelector(
       `.film-card__comments`
@@ -59,11 +76,13 @@ const createCard = ({
     const controls = card.querySelector(`.film-card__controls`);
     card.removeChild(controls);
   }
-  const genre = card.querySelector(`.film-card__genre`);
-  genre.textContent = genre;
+  const genreNode = card.querySelector(`.film-card__genre`);
+  genreNode.textContent = genre;
   const image = card.querySelector(`.film-card__poster`);
   image.src = `./images/posters/${posters}.jpg`;
-  const rating = card.querySelector(`.film-card__rating`);
+
+  const ratingNode = card.querySelector(`.film-card__rating`);
+  ratingNode.textContent = rating;
 
   card
     .querySelector(`.film-card__comments`)
@@ -76,8 +95,6 @@ const createCard = ({
   card
     .querySelector(`.film-card__controls-item--mark-as-watched`)
     .classList.add(`film-card__controls-item--mark-as-watched__${id}`);
-
-  rating.textContent = rating;
 
   const commentsButton = card.querySelector(`.film-card__comments`);
   commentsButton.textContent = `${amountOfComments} comments`;
