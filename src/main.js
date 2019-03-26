@@ -9,53 +9,43 @@ import { filtersData, FILTER_TYPES } from "./filtersMock.js";
 import { films } from "./data.js";
 
 const createFilmCard = (film, container) => {
-  const filmCard = new Card(film, container);
-  const myPopUp = new Popup(film);
-  filmCard.render();
-  filmCard.onClick = () => {
+  const addControlToFilm = updatedFilm => {
+    pageState.update(({ allFilms, ...otherData }) => {
+      const updatedAllFilms = allFilms.map(film => {
+        if (film.id === updatedFilm.id) {
+          return updatedFilm;
+        }
+        return film;
+      });
+
+      return {
+        ...otherData,
+        allFilms: updatedAllFilms
+      };
+    });
+  };
+  const onAddToWatchList = addControlToFilm;
+  const onMarkAsWatched = addControlToFilm;
+  const onAddToFavourites = addControlToFilm;
+  const onClickToComments = () => {
+    const myPopUp = new Popup(film);
     myPopUp.render();
+    myPopUp.onClose = updatedFilm => {
+      myPopUp.unrender();
+      addControlToFilm(updatedFilm);
+    };
   };
-  myPopUp.onClose = updatedFilm => {
-    myPopUp.unrender();
-    const oldCard = filmCard.element;
-    film.rating = updatedFilm.rating;
-    film.comments = updatedFilm.comments;
 
-    filmCard.update(film);
-    filmCard.render();
-    const newCard = filmCard.element;
-    filmCard.replacewith(oldCard, newCard);
-  };
-  filmCard.onAddToWatchList = updatedFilm => {
-    pageState.update(({ allFilms, ...otherData }) => {
-      const updatedAllFilms = allFilms.map(film => {
-        if (film.id === updatedFilm.id) {
-          return updatedFilm;
-        }
-        return film;
-      });
-
-      return {
-        ...otherData,
-        allFilms: updatedAllFilms
-      };
-    });
-  };
-  filmCard.onMarkAsWatched = updatedFilm => {
-    pageState.update(({ allFilms, ...otherData }) => {
-      const updatedAllFilms = allFilms.map(film => {
-        if (film.id === updatedFilm.id) {
-          return updatedFilm;
-        }
-        return film;
-      });
-
-      return {
-        ...otherData,
-        allFilms: updatedAllFilms
-      };
-    });
-  };
+  const filmCard = Card1.render(
+    film,
+    {
+      onAddToWatchList,
+      onMarkAsWatched,
+      onAddToFavourites,
+      onClickToComments
+    },
+    container
+  );
 };
 
 const createFilmBoard = (films, container) => {
