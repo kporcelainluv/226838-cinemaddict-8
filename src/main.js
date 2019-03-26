@@ -1,10 +1,11 @@
-import { Card } from "./card.js";
-import { films } from "./data.js";
-import { Popup } from "./popup.js";
+import { default as Card } from "./card.js";
+import { default as Popup } from "./popup.js";
+import { default as Filter } from "./filter.js";
+import { default as Observable } from "./observable";
+import { default as Statistics } from "./statistics.js";
+
 import { filtersData, FILTER_TYPES } from "./filtersMock.js";
-import { Filter } from "./filter.js";
-import { Observable } from "./observable";
-import { Statistics } from "./statistics.js";
+import { films } from "./data.js";
 
 const createFilmCard = (film, container) => {
   const filmCard = new Card(film, container);

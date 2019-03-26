@@ -6,7 +6,7 @@ export const FILTER_TYPES = {
   stats: "Stats"
 };
 
-const filtersData = [
+export const filtersData = [
   { name: "All movies", type: FILTER_TYPES.all },
   { name: "Watchlist", amount: 0, type: FILTER_TYPES.watchlist },
   { name: "History", amount: 0, type: FILTER_TYPES.history },
@@ -16,4 +16,3 @@ const filtersData = [
     type: FILTER_TYPES.stats
   }
 ];
-export { filtersData };

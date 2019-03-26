@@ -1,7 +1,7 @@
-import { Component } from "./component.js";
+import { default as Component } from "./component.js";
 import moment from "moment";
 
-class Popup extends Component {
+export default class Popup extends Component {
   constructor(data) {
     super();
     this._name = data.name;
@@ -173,5 +173,3 @@ class Popup extends Component {
     return popUpTemplate;
   }
 }
-
-export { Popup };

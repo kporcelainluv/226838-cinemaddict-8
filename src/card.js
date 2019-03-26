@@ -1,7 +1,7 @@
-import { Component } from "./component.js";
+import { default as Component } from "./component.js";
 import moment from "moment";
 
-class Card extends Component {
+export default class Card extends Component {
   constructor(data, parentContainer) {
     super();
     this._id = data.id;
@@ -172,5 +172,3 @@ class Card extends Component {
     this._amountOfComments = data.amountOfComments;
   }
 }
-
-export { Card };

@@ -1,4 +1,4 @@
-export class Observable {
+export default class Observable {
   constructor(data) {
     this._data = data;
     this._observers = [];

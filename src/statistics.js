@@ -1,6 +1,6 @@
 import moment from "moment";
 import { createChart } from "./formStats.js";
-class Statistics {
+export default class Statistics {
   constructor(data) {
     this._element = null;
     this._amountOfFilms = data.amountOfFilms;
@@ -77,4 +77,3 @@ class Statistics {
     }
   }
 }
-export { Statistics };

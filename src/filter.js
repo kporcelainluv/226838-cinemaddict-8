@@ -1,6 +1,6 @@
-import { Component } from "./component.js";
+import { default as Component } from "./component.js";
 
-class Filter extends Component {
+export default class Filter extends Component {
   constructor(data, watchedFilms, favoriteFilms, watchlistFilms) {
     super();
     this._name = data.name;
@@ -69,5 +69,3 @@ class Filter extends Component {
     filter.className += ` main-navigation__item--active`;
   }
 }
-
-export { Filter };
