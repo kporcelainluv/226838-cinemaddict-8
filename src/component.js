@@ -15,8 +15,8 @@ class Component {
   render() {}
   unrender() {}
   update() {}
-  addEventListeners() {}
-  removeEventListeners() {}
+  _addEventListeners() {}
+  _removeEventListeners() {}
 }
 
 export { Component };

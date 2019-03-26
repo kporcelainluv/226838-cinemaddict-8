@@ -1,5 +1,5 @@
 import { Card } from "./card.js";
-import { film, films } from "./data.js";
+import { films } from "./data.js";
 import { Popup } from "./popup.js";
 import { filtersData, FILTER_TYPES } from "./filtersMock.js";
 import { Filter } from "./filter.js";

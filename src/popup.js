@@ -71,17 +71,17 @@ class Popup extends Component {
 
   render() {
     this._element = this.template;
-    this.addEventListeners();
+    this._addEventListeners();
     this._parentContainer.appendChild(this._element);
   }
 
   unrender() {
-    this.removeEventListeners();
+    this._removeEventListeners();
     this._parentContainer.removeChild(this._element);
     this._element = null;
   }
 
-  addEventListeners() {
+  _addEventListeners() {
     const popUpClose = this._element.querySelector(`.popup-button-close`);
     popUpClose.addEventListener(`click`, this._onButtonClose);
 
@@ -94,7 +94,7 @@ class Popup extends Component {
     formAddComment.addEventListener(`submit`, this._onAddComment);
   }
 
-  removeEventListeners() {
+  _removeEventListeners() {
     const popUpClose = this._element.querySelector(`.popup-button-close`);
     popUpClose.removeEventListener(`click`, this._onButtonClose);
     const formUpdateRating = this._element.querySelector(

@@ -2,9 +2,7 @@ import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
 const createChart = genreList => {
-  console.log(genreList);
   const statisticCtx = document.querySelector(`.statistic__chart`);
-  // Обязательно рассчитайте высоту canvas, она зависит от количества элементов диаграммы
   const BAR_HEIGHT = 50;
   statisticCtx.height = BAR_HEIGHT * 5;
   const myChart = new Chart(statisticCtx, {

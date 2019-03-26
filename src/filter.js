@@ -1,7 +1,4 @@
-import { filters, FILTER_TYPES } from "./filtersMock.js";
 import { Component } from "./component.js";
-import { createChart } from "./formStats.js";
-// import { FILTER_TYPE }
 
 class Filter extends Component {
   constructor(data, watchedFilms, favoriteFilms, watchlistFilms) {
@@ -57,16 +54,16 @@ class Filter extends Component {
   render() {
     this._element = this.template;
     this._filtersContainer.appendChild(this._element);
-    this.addEventListeners();
+    this._addEventListeners();
   }
 
-  addEventListeners() {
+  _addEventListeners() {
     const thisBtn = document.querySelector(
       `.main-navigation-${this._name.toLowerCase().split(" ")[0]}`
     );
     thisBtn.addEventListener("click", this._onFilter);
   }
-  removeEventListeners() {}
+  _removeEventListeners() {}
 
   makeFilterActive(filter) {
     filter.className += ` main-navigation__item--active`;

@@ -75,7 +75,6 @@ class Statistics {
     if (this._element) {
       this._parent.removeChild(this._element);
     }
-    // this._element = null;
   }
 }
 export { Statistics };

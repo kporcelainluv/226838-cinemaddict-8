@@ -63,7 +63,7 @@ class Card extends Component {
     this._onMarkAsWatched = f;
   }
 
-  addEventListeners() {
+  _addEventListeners() {
     const commentsButton = document.querySelector(
       `.film-card__comments__${this._id}`
     );
@@ -83,18 +83,17 @@ class Card extends Component {
   render() {
     this._element = this.template;
     this._parentContainer.appendChild(this._element);
-    this.addEventListeners();
+    this._addEventListeners();
   }
   replacewith(oldcard, newcard) {
     this._parentContainer.replaceChild(newcard, oldcard);
     this._element = newcard;
   }
   unrender() {
-    this.removeEventListeners();
-    // this._parentContainer.removeChild(this._element);
+    this._removeEventListeners();
   }
 
-  removeEventListeners() {
+  _removeEventListeners() {
     const commentsButton = document.querySelector(
       `.film-card__comments__${this._id}`
     );
@@ -110,15 +109,6 @@ class Card extends Component {
     );
 
     watchedBtn.removeEventListener(`click`, this._markAsWatched);
-  }
-  update(data) {
-    this._name = data.name;
-    this._about = data.descriptionText;
-    this._posters = data.posters;
-    this._controls = data.controls;
-    this._onClick = null;
-    this._rating = data.rating;
-    this._amountOfComments = data.amountOfComments;
   }
   get template() {
     const card = document
@@ -142,7 +132,6 @@ class Card extends Component {
 
     const filmDuration = card.querySelector(`.film-card__duration`);
     filmDuration.innerHTML = moment(this._duration).format(`hh:mm`);
-    // check if film card has control buttons
     if (!this._controls) {
       const controls = card.querySelector(`.film-card__controls`);
       card.removeChild(controls);
