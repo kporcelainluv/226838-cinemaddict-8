@@ -44,9 +44,9 @@ export default class Statistics {
       .content.querySelector(`.statistic`)
       .cloneNode(true);
     const statisticsData = stats.querySelectorAll(`.statistic__item-text`);
-    statisticsData[0].innerHTML = this._amountOfFilms;
+    statisticsData[0].textContent = this._amountOfFilms;
     const amountOfFilmsDesc = document.createElement("span");
-    amountOfFilmsDesc.innerHTML = "movies";
+    amountOfFilmsDesc.textContent = "movies";
     amountOfFilmsDesc.className = "statistic__item-description";
     statisticsData[0].appendChild(amountOfFilmsDesc);
     const totalDuration = `${
@@ -57,7 +57,7 @@ export default class Statistics {
     statisticsData[1].innerHTML = totalDuration;
 
     this._topGenre = this._getTopGenre();
-    statisticsData[2].innerHTML = `${this._topGenre}`;
+    statisticsData[2].textContent = `${this._topGenre}`;
     return stats;
   }
   render() {

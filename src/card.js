@@ -128,16 +128,16 @@ export default class Card extends Component {
     filmTitle.textContent = this._name;
 
     const filmYear = card.querySelector(`.film-card__year`);
-    filmYear.innerHTML = moment(this._year).format(`YYYY`);
+    filmYear.textContent = moment(this._year).format(`YYYY`);
 
     const filmDuration = card.querySelector(`.film-card__duration`);
-    filmDuration.innerHTML = moment(this._duration).format(`hh:mm`);
+    filmDuration.textContent = moment(this._duration).format(`hh:mm`);
     if (!this._controls) {
       const controls = card.querySelector(`.film-card__controls`);
       card.removeChild(controls);
     }
     const genre = card.querySelector(`.film-card__genre`);
-    genre.innerHTML = this._genre;
+    genre.textContent = this._genre;
     const image = card.querySelector(`.film-card__poster`);
     image.src = `./images/posters/${this._posters}.jpg`;
     const rating = card.querySelector(`.film-card__rating`);
@@ -154,10 +154,10 @@ export default class Card extends Component {
       .querySelector(`.film-card__controls-item--mark-as-watched`)
       .classList.add(`film-card__controls-item--mark-as-watched__${this._id}`);
 
-    rating.innerHTML = this._rating;
+    rating.textContent = this._rating;
 
     const commentsButton = card.querySelector(`.film-card__comments`);
-    commentsButton.innerHTML = `${this._amountOfComments} comments`;
+    commentsButton.textContent = `${this._amountOfComments} comments`;
     return card;
   }
   update(data) {

@@ -65,7 +65,7 @@ export default class Popup extends Component {
   _createSpanElement(popUpTemplate, className, classConst) {
     const element = popUpTemplate.querySelector(`.${className}`);
     const span = document.createElement(`span`);
-    span.innerText = ` ${classConst}`;
+    span.textContent = ` ${classConst}`;
     element.appendChild(span);
   }
 
@@ -123,7 +123,7 @@ export default class Popup extends Component {
     const image = popUpTemplate.querySelector(`.popup-img-src`);
     image.src = `./images/posters/${this._posters}.jpg`;
     const ratingInBigLetters = popUpTemplate.querySelector(`.rating-info`);
-    ratingInBigLetters.innerHTML = this._rating;
+    ratingInBigLetters.textContent = this._rating;
     this._createSpanElement(popUpTemplate, `popup-name`, this._name);
     this._createSpanElement(popUpTemplate, `popup-rating`, this._rating);
     this._createSpanElement(
@@ -157,7 +157,7 @@ export default class Popup extends Component {
     const listOfComments = popUpTemplate.querySelector(`.existing-comments`);
     for (const comment of this._comments) {
       const commentNode = document.createElement(`li`);
-      commentNode.innerHTML = comment.text;
+      commentNode.textContent = comment.text;
       listOfComments.appendChild(commentNode);
     }
 
