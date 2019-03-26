@@ -13,7 +13,7 @@ class Statistics {
     }
     this._topGenre = "";
     this._genres = data.genres;
-
+    this._genreList = [];
     this._parent = document.querySelector(`.main`);
   }
 
@@ -26,11 +26,16 @@ class Statistics {
         allGenres[genre] = 1;
       }
     }
+    this._genreList = allGenres;
     const listOfGenres = Object.entries(allGenres);
     listOfGenres.sort((a, b) => {
       return b[1] - a[1];
     });
-    const topGenre = "None" || listOfGenres[0][0];
+
+    let topGenre = "None";
+    if (listOfGenres.length > 0) {
+      topGenre = listOfGenres[0][0];
+    }
     return topGenre;
   }
   get template() {
@@ -57,24 +62,17 @@ class Statistics {
   }
   render() {
     this._element = this.template;
-    console.log("rendering stats", this._element);
     const statsSection = document.querySelector(".statistic");
-
-    console.log({
-      statsSection
-    });
 
     if (statsSection) {
       this._parent.removeChild(statsSection);
     }
     this._parent.appendChild(this._element);
-    createChart();
+    createChart(this._genreList);
   }
 
   unrender() {
-    console.log("trying to unrender stats", this._element);
     if (this._element) {
-      console.log("unrender stats");
       this._parent.removeChild(this._element);
     }
     // this._element = null;
