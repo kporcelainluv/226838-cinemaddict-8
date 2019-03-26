@@ -13,7 +13,6 @@ const createFilmCard = (film, container) => {
   filmCard.onClick = () => {
     myPopUp.render();
   };
-
   myPopUp.onClose = updatedFilm => {
     myPopUp.unrender();
     const oldCard = filmCard.element;
@@ -24,8 +23,6 @@ const createFilmCard = (film, container) => {
     filmCard.render();
     const newCard = filmCard.element;
     filmCard.replacewith(oldCard, newCard);
-
-    // const newCard = createFilmCard(updatedFilm, container, index);
   };
   filmCard.onAddToWatchList = updatedFilm => {
     page.update(({ allFilms, ...otherData }) => {
@@ -72,10 +69,31 @@ const clearFilmBoard = container => {
 const clearFilters = () => {
   document.querySelector("nav.main-navigation").innerHTML = "";
 };
-
+const countWatchedFavoriteWatchlist = films => {
+  let watched = 0;
+  let favorite = 0;
+  let watchlist = 0;
+  for (let film of films) {
+    if (film.watched) {
+      watched += 1;
+    }
+    if (film.favorite) {
+      favorite += 1;
+    }
+    if (film.watchlist) {
+      watchlist += 1;
+    }
+  }
+  return [watched, favorite, watchlist];
+};
 const createPage = (films, container, page) => {
+  const [
+    watchedFilms,
+    favoriteFilms,
+    watchlistFilms
+  ] = countWatchedFavoriteWatchlist(films);
   filtersData.map(elm => {
-    const filter = new Filter(elm);
+    const filter = new Filter(elm, watchedFilms, favoriteFilms, watchlistFilms);
     filter.render();
 
     filter.onFilter = filterType => {
@@ -90,7 +108,6 @@ const createPage = (films, container, page) => {
   createFilmBoard(films, container);
 };
 
-// add film cards
 const moviesCategoeriesContainers = Array.from(
   document.querySelectorAll(`.films-list__container`)
 );
@@ -140,6 +157,10 @@ page.subscribe(({ filterType, allFilms }) => {
     displayFilmsContainer(true);
     clearFilters();
     clearFilmBoard(allContainer);
+    const statsSection = document.querySelector(".statistic");
+    if (statsSection) {
+      clearFilmBoard(statsSection);
+    }
     const films = allFilms.filter(film => {
       if (filterType === FILTER_TYPES.all) {
         return true;
