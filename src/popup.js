@@ -4,17 +4,30 @@ import moment from "moment";
 export default class Popup extends Component {
   constructor(data) {
     super();
+    this._id = data.id;
+    this._descriptionText = data.descriptionText;
+    this._totalRaiting = data.totalRating;
+    this._actors = data.actors;
     this._name = data.name;
-    this._rating = data.rating;
-    this._year = data.year;
-    this._duration = data.duration;
+    this._director = data.director;
+    this._alternativeName = data.alternativeName;
     this._genre = data.genre;
-    this._about = data.descriptionText;
-    this._posters = data.posters;
+    this._poster = data.poster;
+    this._releaseDate = data.releaseDate;
+    this._country = data.country;
+    this._duration = data.duration;
+    this._writers = data.writers || [];
+    this._comments = data.comments;
+    // [data, text. author, emotion]
+    this._watched = data.watched;
+    this._watchlist = data.watchlist;
+    this._favorite = data.favorite;
+    this._controls = true;
+    this._personalRating = data.personalRating;
+    this._amountOfComments = data.amountOfComments;
+
     this._onClose = null;
 
-    this._amountOfComments = data.amountOfComments;
-    this._comments = data.comments;
     this._initialFilmData = data;
     this._parentContainer = document.querySelector(`body`);
 
@@ -23,6 +36,18 @@ export default class Popup extends Component {
     this._onAddComment = this._onAddComment.bind(this);
   }
 
+  emotions(key) {
+    switch (key) {
+      case `sleeping`:
+        return `😴`;
+      case `neutral-face`:
+        return `😐`;
+      case `grinning`:
+        return `😀`;
+      default:
+        return ``;
+    }
+  }
   set onClose(f) {
     this._onClose = f;
   }
@@ -49,7 +74,10 @@ export default class Popup extends Component {
 
     this._comments = [
       ...this._comments,
-      { text: formData.get(`comment`), date: new Date() }
+      {
+        text: formData.get(`comment`),
+        date: new Date()
+      }
     ];
 
     this._onButtonClose(event);
@@ -81,94 +109,144 @@ export default class Popup extends Component {
     this._element = null;
   }
 
-  _addEventListeners() {
-    const popUpClose = this._element.querySelector(`.popup-button-close`);
-    popUpClose.addEventListener(`click`, this._onButtonClose);
+  // _addEventListeners() {
+  //   const popUpClose = this._element.querySelector(`.film-details__close-btn`);
+  //   popUpClose.addEventListener(`click`, this._onButtonClose);
 
-    const formUpdateRating = this._element.querySelector(
-      `.update-rating__form`
-    );
-    formUpdateRating.addEventListener(`submit`, this._onUpdateRating);
+  //   const formUpdateRating = this._element.querySelector(
+  //     `.update-rating__form`
+  //   );
+  //   formUpdateRating.addEventListener(`submit`, this._onUpdateRating);
 
-    const formAddComment = this._element.querySelector(`.add-comment__form`);
-    formAddComment.addEventListener(`submit`, this._onAddComment);
-  }
+  //   const formAddComment = this._element.querySelector(`.add-comment__form`);
+  //   formAddComment.addEventListener(`submit`, this._onAddComment);
+  // }
 
-  _removeEventListeners() {
-    const popUpClose = this._element.querySelector(`.popup-button-close`);
-    popUpClose.removeEventListener(`click`, this._onButtonClose);
-    const formUpdateRating = this._element.querySelector(
-      `.update-rating__form`
-    );
-    formUpdateRating.removeEventListener(`submit`, this._onUpdateRating);
+  // _removeEventListeners() {
+  //   const popUpClose = this._element.querySelector(`.film-details__close-btn`);
+  //   popUpClose.removeEventListener(`click`, this._onButtonClose);
+  //   const formUpdateRating = this._element.querySelector(
+  //     `.update-rating__form`
+  //   );
+  //   formUpdateRating.removeEventListener(`submit`, this._onUpdateRating);
 
-    const formAddComment = this._element.querySelector(`.add-comment__form`);
-    formAddComment.removeEventListener(`submit`, this._onAddComment);
-  }
+  //   const formAddComment = this._element.querySelector(`.add-comment__form`);
+  //   formAddComment.removeEventListener(`submit`, this._onAddComment);
+  // }
   update(data) {
+    this._id = this._id;
+    this._descriptionText = data.descriptionText;
+    this._totalRaiting = data.totalRating;
+    this._actors = data.actors;
     this._name = data.name;
-    this._about = data.descriptionText;
-    this._posters = data.posters;
-    this._controls = data.controls;
-    this._onClick = null;
-    this._rating = data.rating;
+    this._director = filmInfo.director;
+    this._alternativeName = data.alternativeName;
+    this._genre = data.genre;
+    this._poster = data.poster;
+    this._releaseDate = data.releaseDate;
+    this._country = data.country;
+    this._duration = data.duration;
+    this._writers = data.writers || [];
+    this._comments = data.comments;
+    // [data, text. author, emotion]
+    this._watched = data.watched;
+    this._watchlist = data.watchlist;
+    this._favorite = data.favorite;
+    this._controls = true;
+    this._personalRating = data.personalRaiting;
     this._amountOfComments = data.amountOfComments;
+    this._ageRating = data.ageRating;
+  }
+  createComment(emoji, commentText, author, date) {
+    const li = document.createElement("li");
+    li.className = "film-details__comment";
+    const span = document.createElement("span");
+    span.innerText = this.emotions(emoji);
+    span.className = "film-details__comment-emoji";
+    const div = document.createElement("div");
+    const pText = document.createElement("p");
+    pText.className = "film-details__comment-text";
+    const pInfo = document.createElement("p");
+    pInfo.innerText = commentText;
+    pInfo.className = "film-details__comment-info";
+    const spanAuthor = document.createElement("span");
+    spanAuthor.className = `film-details__comment-author`;
+    spanAuthor.innerText = author;
+    const spanDate = document.createElement("span");
+    spanDate.className = "film-details__comment-day";
+    spanDate.innerText = date;
+    pInfo.appendChild(spanAuthor);
+    pInfo.appendChild(spanDate);
+    div.appendChild(pText);
+    div.appendChild(pInfo);
+    li.appendChild(span);
+    li.appendChild(div);
+    console.log(li);
+    return li;
   }
 
   get template() {
     const popUpTemplate = document
       .querySelector(`.popup-template`)
-      .content.querySelector(`.popup-portal`)
+      .content.querySelector(`.film-details`)
       .cloneNode(true);
-    const image = popUpTemplate.querySelector(`.popup-img-src`);
-    image.src = `./images/posters/${this._posters}.jpg`;
-    const ratingInBigLetters = popUpTemplate.querySelector(`.rating-info`);
-    ratingInBigLetters.textContent = this._rating;
-    this._createSpanElement(popUpTemplate, `popup-name`, this._name);
-    this._createSpanElement(popUpTemplate, `popup-rating`, this._rating);
-    this._createSpanElement(
-      popUpTemplate,
-      `popup-year`,
-      moment(this._year).format(`DD.MM.YYYY`)
-    );
-    this._createSpanElement(
-      popUpTemplate,
-      `popup-duration`,
-      moment(this._duration).format(`hh:mm`)
-    );
-    this._createSpanElement(popUpTemplate, `popup-genre`, this._genre);
-    this._createSpanElement(
-      popUpTemplate,
-      `popup-description-text`,
-      this._about
+    popUpTemplate.querySelector(`.film-details__title`).innerText = this._name;
+    popUpTemplate.querySelector(
+      `.film-details__title-original`
+    ).innerText = `Original: ${this._alternativeName}`;
+    const filmInfo = popUpTemplate.querySelectorAll(`.film-details__cell`);
+    filmInfo[0].innerText = this._director;
+    filmInfo[1].innerText = this._writers;
+    filmInfo[2].innerText = this._actors;
+    filmInfo[3].innerText = `${moment(this._releaseDate).format(
+      `DD.MM.YYYY`
+    )} (${this._country})`;
+
+    filmInfo[4].innerText = `${this._duration} min`;
+    filmInfo[5].innerText = this._country;
+    filmInfo[6].innerText = this._genre;
+    popUpTemplate.querySelector(
+      `.film-details__film-description`
+    ).innerText = this._descriptionText;
+    popUpTemplate.querySelector(
+      `.film-details__comments-title`
+    ).innerText = `Comments ${this._amountOfComments}`;
+    popUpTemplate.querySelector(`.film-details__age`).innerText = `${
+      this.ageRating
+    }+`;
+    popUpTemplate.querySelector(
+      `.film-details__total-rating`
+    ).innerText = this._totalRaiting;
+    popUpTemplate.querySelector(
+      `.film-details__user-rating`
+    ).innerText = `Your rate ${this._personalRating}`;
+    const commentsFiled = popUpTemplate.querySelector(
+      `.film-details__comments-list`
     );
 
-    const ratingOptions = popUpTemplate.querySelectorAll(
-      `select#rating > option`
-    );
-    for (const option of ratingOptions) {
-      const x = [Number(option.value)];
-
-      if (x[0] === this._rating[0]) {
-        option.selected = true;
-      }
+    for (let comment of this._comments) {
+      commentsFiled.appendChild(
+        this.createComment(
+          comment.emotion,
+          comment.comment,
+          comment.author,
+          moment(comment.date)
+            .startOf("day")
+            .fromNow()
+        )
+      );
     }
 
-    const listOfComments = popUpTemplate.querySelector(`.existing-comments`);
-    for (const comment of this._comments) {
-      const commentNode = document.createElement(`li`);
-      commentNode.textContent = comment.text;
-      listOfComments.appendChild(commentNode);
-    }
+    // const ratingOptions = popUpTemplate.querySelectorAll(
+    //   `select#rating > option`
+    // );
+    // for (const option of ratingOptions) {
+    //   const x = [Number(option.value)];
 
-    const form = popUpTemplate.querySelector(`.film-details__form`);
-    const input = document.createElement(`input`);
-    input.type = `text`;
-    input.name = `rating`;
-    input.value = this._rating;
-    input.className = `input-rating-btn-value`;
-    input.style.display = `none`;
-    form.appendChild(input);
+    //   if (x[0] === this._rating[0]) {
+    //     option.selected = true;
+    //   }
+    // }
 
     return popUpTemplate;
   }
