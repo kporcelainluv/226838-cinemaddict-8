@@ -3,58 +3,49 @@ import { default as Popup } from "./popup.js";
 import { default as Filter } from "./filter.js";
 import { default as Observable } from "./observable";
 import { default as Statistics } from "./statistics.js";
+import Card1 from "./card1";
 
 import { filtersData, FILTER_TYPES } from "./filtersMock.js";
 import { films } from "./data.js";
 
 const createFilmCard = (film, container) => {
-  const filmCard = new Card(film, container);
-  const myPopUp = new Popup(film);
-  filmCard.render();
-  filmCard.onClick = () => {
+  const addControlToFilm = updatedFilm => {
+    pageState.update(({ allFilms, ...otherData }) => {
+      const updatedAllFilms = allFilms.map(film => {
+        if (film.id === updatedFilm.id) {
+          return updatedFilm;
+        }
+        return film;
+      });
+
+      return {
+        ...otherData,
+        allFilms: updatedAllFilms
+      };
+    });
+  };
+  const onAddToWatchList = addControlToFilm;
+  const onMarkAsWatched = addControlToFilm;
+  const onAddToFavourites = addControlToFilm;
+  const onClickToComments = () => {
+    const myPopUp = new Popup(film);
     myPopUp.render();
+    myPopUp.onClose = updatedFilm => {
+      myPopUp.unrender();
+      addControlToFilm(updatedFilm);
+    };
   };
-  myPopUp.onClose = updatedFilm => {
-    myPopUp.unrender();
-    const oldCard = filmCard.element;
-    film.rating = updatedFilm.rating;
-    film.comments = updatedFilm.comments;
 
-    filmCard.update(film);
-    filmCard.render();
-    const newCard = filmCard.element;
-    filmCard.replacewith(oldCard, newCard);
-  };
-  filmCard.onAddToWatchList = updatedFilm => {
-    page.update(({ allFilms, ...otherData }) => {
-      const updatedAllFilms = allFilms.map(film => {
-        if (film.id === updatedFilm.id) {
-          return updatedFilm;
-        }
-        return film;
-      });
-
-      return {
-        ...otherData,
-        allFilms: updatedAllFilms
-      };
-    });
-  };
-  filmCard.onMarkAsWatched = updatedFilm => {
-    page.update(({ allFilms, ...otherData }) => {
-      const updatedAllFilms = allFilms.map(film => {
-        if (film.id === updatedFilm.id) {
-          return updatedFilm;
-        }
-        return film;
-      });
-
-      return {
-        ...otherData,
-        allFilms: updatedAllFilms
-      };
-    });
-  };
+  const filmCard = Card1.render(
+    film,
+    {
+      onAddToWatchList,
+      onMarkAsWatched,
+      onAddToFavourites,
+      onClickToComments
+    },
+    container
+  );
 };
 
 const createFilmBoard = (films, container) => {
@@ -87,7 +78,7 @@ const countWatchedFavoriteWatchlist = films => {
   }
   return [watched, favorite, watchlist];
 };
-const createPage = (allFilms, filterType, container, page) => {
+const createPage = (allFilms, filterType, container, pageState) => {
   const films = allFilms.filter(film => {
     if (filterType === FILTER_TYPES.all) {
       return true;
@@ -105,12 +96,13 @@ const createPage = (allFilms, filterType, container, page) => {
     favoriteFilms,
     watchlistFilms
   ] = countWatchedFavoriteWatchlist(allFilms);
+
   filtersData.map(elm => {
     const filter = new Filter(elm, watchedFilms, favoriteFilms, watchlistFilms);
     filter.render();
 
     filter.onFilter = filterType => {
-      page.update(data => {
+      pageState.update(data => {
         return {
           ...data,
           filterType
@@ -118,6 +110,7 @@ const createPage = (allFilms, filterType, container, page) => {
       });
     };
   });
+
   createFilmBoard(films, container);
 };
 
@@ -141,7 +134,7 @@ const displayFilmsContainer = bool => {
   }
 };
 
-const page = new Observable({
+const pageState = new Observable({
   filterType: FILTER_TYPES.all,
   allFilms: films
 });
@@ -161,7 +154,7 @@ const createDataForStats = currentFilmsData => {
   return { amountOfFilms, duration, genres };
 };
 
-page.subscribe(({ filterType, allFilms }) => {
+pageState.subscribe(({ filterType, allFilms }) => {
   if (filterType === FILTER_TYPES.stats) {
     displayFilmsContainer(false);
     const stats = new Statistics(createDataForStats(allFilms));
@@ -175,8 +168,8 @@ page.subscribe(({ filterType, allFilms }) => {
       clearFilmBoard(statsSection);
     }
 
-    createPage(allFilms, filterType, allContainer, page);
+    createPage(allFilms, filterType, allContainer, pageState);
   }
 });
 
-page.notify();
+pageState.notify();
