@@ -54,4 +54,4 @@ const films = Array(10)
   .fill(0)
   .map(() => createFilm());
 
-export { film, films };
+export { films };

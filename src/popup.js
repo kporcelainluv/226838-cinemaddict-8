@@ -1,7 +1,7 @@
-import { Component } from "./component.js";
+import { default as Component } from "./component.js";
 import moment from "moment";
 
-class Popup extends Component {
+export default class Popup extends Component {
   constructor(data) {
     super();
     this._name = data.name;
@@ -65,23 +65,23 @@ class Popup extends Component {
   _createSpanElement(popUpTemplate, className, classConst) {
     const element = popUpTemplate.querySelector(`.${className}`);
     const span = document.createElement(`span`);
-    span.innerText = ` ${classConst}`;
+    span.textContent = ` ${classConst}`;
     element.appendChild(span);
   }
 
   render() {
     this._element = this.template;
-    this.addEventListeners();
+    this._addEventListeners();
     this._parentContainer.appendChild(this._element);
   }
 
   unrender() {
-    this.removeEventListeners();
+    this._removeEventListeners();
     this._parentContainer.removeChild(this._element);
     this._element = null;
   }
 
-  addEventListeners() {
+  _addEventListeners() {
     const popUpClose = this._element.querySelector(`.popup-button-close`);
     popUpClose.addEventListener(`click`, this._onButtonClose);
 
@@ -94,7 +94,7 @@ class Popup extends Component {
     formAddComment.addEventListener(`submit`, this._onAddComment);
   }
 
-  removeEventListeners() {
+  _removeEventListeners() {
     const popUpClose = this._element.querySelector(`.popup-button-close`);
     popUpClose.removeEventListener(`click`, this._onButtonClose);
     const formUpdateRating = this._element.querySelector(
@@ -123,7 +123,7 @@ class Popup extends Component {
     const image = popUpTemplate.querySelector(`.popup-img-src`);
     image.src = `./images/posters/${this._posters}.jpg`;
     const ratingInBigLetters = popUpTemplate.querySelector(`.rating-info`);
-    ratingInBigLetters.innerHTML = this._rating;
+    ratingInBigLetters.textContent = this._rating;
     this._createSpanElement(popUpTemplate, `popup-name`, this._name);
     this._createSpanElement(popUpTemplate, `popup-rating`, this._rating);
     this._createSpanElement(
@@ -157,7 +157,7 @@ class Popup extends Component {
     const listOfComments = popUpTemplate.querySelector(`.existing-comments`);
     for (const comment of this._comments) {
       const commentNode = document.createElement(`li`);
-      commentNode.innerHTML = comment.text;
+      commentNode.textContent = comment.text;
       listOfComments.appendChild(commentNode);
     }
 
@@ -173,5 +173,3 @@ class Popup extends Component {
     return popUpTemplate;
   }
 }
-
-export { Popup };

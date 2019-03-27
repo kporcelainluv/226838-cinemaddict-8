@@ -1,4 +1,4 @@
-class Component {
+export default class Component {
   constructor() {
     if (new.target === Component) {
       throw new Error(`Can't instantiate Component, only concrete one.`);
@@ -15,8 +15,6 @@ class Component {
   render() {}
   unrender() {}
   update() {}
-  addEventListeners() {}
-  removeEventListeners() {}
+  _addEventListeners() {}
+  _removeEventListeners() {}
 }
-
-export { Component };

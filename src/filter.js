@@ -1,14 +1,15 @@
-import { filters, FILTER_TYPES } from "./filtersMock.js";
-import { Component } from "./component.js";
-import { createChart } from "./formStats.js";
-// import { FILTER_TYPE }
+import { default as Component } from "./component.js";
 
-class Filter extends Component {
-  constructor(data) {
+export default class Filter extends Component {
+  constructor(data, watchedFilms, favoriteFilms, watchlistFilms) {
     super();
     this._name = data.name;
-    this._amount = data.amount || null;
+    this._amountPresense = data.hasOwnProperty("amount");
+    this._amount = data.amount;
     this._type = data.type;
+    this._watchedFilms = watchedFilms;
+    this._favoriteFilms = favoriteFilms;
+    this._watchlistFilms = watchlistFilms;
     this._filtersContainer = document.querySelector(".main-navigation");
 
     this._onFilter = this._onFilter.bind(this);
@@ -31,10 +32,21 @@ class Filter extends Component {
     if (this._name === `Stats`) {
       filter.className += ` main-navigation__item--additional`;
     }
-    if (this._amount) {
+    if (this._amountPresense) {
       const numberOfFilms = document.createElement("span");
       numberOfFilms.className = "main-navigation__item-count";
-      numberOfFilms.textContent = `${this._amount}`;
+
+      switch (this._type) {
+        case "Watchlist":
+          numberOfFilms.textContent = `${this._watchlistFilms}`;
+          break;
+        case "History":
+          numberOfFilms.textContent = `${this._watchedFilms}`;
+          break;
+        case "Favorite":
+          numberOfFilms.textContent = `${this._favoriteFilms}`;
+          break;
+      }
       filter.appendChild(numberOfFilms);
     }
     return filter;
@@ -42,20 +54,18 @@ class Filter extends Component {
   render() {
     this._element = this.template;
     this._filtersContainer.appendChild(this._element);
-    this.addEventListeners();
+    this._addEventListeners();
   }
 
-  addEventListeners() {
+  _addEventListeners() {
     const thisBtn = document.querySelector(
       `.main-navigation-${this._name.toLowerCase().split(" ")[0]}`
     );
     thisBtn.addEventListener("click", this._onFilter);
   }
-  removeEventListeners() {}
+  _removeEventListeners() {}
 
   makeFilterActive(filter) {
     filter.className += ` main-navigation__item--active`;
   }
 }
-
-export { Filter };
