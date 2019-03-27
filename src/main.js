@@ -8,8 +8,7 @@ import Card1 from "./card1";
 import { filtersData, FILTER_TYPES } from "./filtersMock.js";
 import { films } from "./data.js";
 
-import { createCall } from "./fetch.js";
-createCall();
+import { getData } from "./fetch.js";
 
 const createFilmCard = (film, container) => {
   const addControlToFilm = updatedFilm => {
@@ -179,6 +178,10 @@ pageState.notify();
 
 getData().then(fetchedFilms => {
   pageState.update(s => {
+    console.log({
+      a: fetchedFilms[0],
+      b: films[0]
+    });
     return {
       ...s,
       allFilms: fetchedFilms
