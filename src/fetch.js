@@ -1,18 +1,4 @@
 import "whatwg-fetch";
-const authorizationKey = `Basic eo0w590ik29889a`;
-
-const method = `GET`;
-const body = null;
-const headers = new Headers();
-headers.append("Authorization", "Basic yukz590ik29889a");
-
-const getTasks = () => {};
-
-const createTask = ({ task }) => {};
-
-const updateTask = ({ id, data }) => {};
-
-const deleteTask = ({ id }) => {};
 
 const tranform = films => {
   const arr = [];
@@ -43,9 +29,11 @@ const tranform = films => {
   return arr;
 };
 
-export const getData = () => {
+const getData = (url, method, body) => {
+  const headers = new Headers();
+  headers.append("Authorization", "Basic yukz590ik29889a");
   return window
-    .fetch(`https://es8-demo-srv.appspot.com/moowle/movies`, {
+    .fetch(`https://es8-demo-srv.appspot.com/moowle/${url}`, {
       method,
       body,
       headers
@@ -58,9 +46,21 @@ export const getData = () => {
           `Неизвестный статус: ${response.status} ${response.statusText}`
         );
       }
-    })
-    .then(json => {
-      console.log(json);
-      return tranform(json);
     });
 };
+const getTasks = () => {
+  const url = `movies`;
+  const method = `GET`;
+  const body = null;
+  return getData(url, method, body).then(json => {
+    return tranform(json);
+  });
+};
+
+const createTask = ({ task }) => {};
+
+const updateTask = ({ id, data }) => {};
+
+const deleteTask = ({ id }) => {};
+
+export { getTasks };
