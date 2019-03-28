@@ -4,19 +4,12 @@ export default class Statistics {
   constructor(data) {
     this._element = null;
     this._amountOfFilms = data.amountOfFilms;
-    if (data.duration === 0) {
-      this._hours = 0;
-      this._mins = 0;
-    } else {
-      this._hours = moment(data.duration).format(`h`);
-      this._mins = moment(data.duration).format(`mm`);
-    }
+    this._duration = data.duration;
     this._topGenre = "";
     this._genres = data.genres;
-    this._genreList = [];
+    this._genreList = {};
     this._parent = document.querySelector(`.main`);
   }
-
   _getTopGenre() {
     const allGenres = {};
     for (let genre of this._genres) {
@@ -27,6 +20,7 @@ export default class Statistics {
       }
     }
     this._genreList = allGenres;
+    console.log("here", this._genreList);
     const listOfGenres = Object.entries(allGenres);
     listOfGenres.sort((a, b) => {
       return b[1] - a[1];
@@ -49,11 +43,9 @@ export default class Statistics {
     amountOfFilmsDesc.textContent = "movies";
     amountOfFilmsDesc.className = "statistic__item-description";
     statisticsData[0].appendChild(amountOfFilmsDesc);
-    const totalDuration = `${
-      this._hours
-    } <span class="statistic__item-description">h</span> ${
-      this._mins
-    } <span class="statistic__item-description"> m</span >`;
+    const hours = Math.floor(this._duration / 60) || "";
+    const minutes = this._duration % 60 || "";
+    const totalDuration = `${hours} <span class="statistic__item-description">h</span> ${minutes} <span class="statistic__item-description"> m</span >`;
     statisticsData[1].innerHTML = totalDuration;
 
     this._topGenre = this._getTopGenre();
