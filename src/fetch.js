@@ -30,7 +30,6 @@ const tranform = films => {
     filmInfo.favorite = film.user_details.favorite;
     filmInfo.controls = true;
     filmInfo.personalRating = film.user_details.personal_rating;
-    filmInfo.amountOfComments = film.comments.length;
 
     arr.push(filmInfo);
   }
@@ -39,7 +38,12 @@ const tranform = films => {
 
 const toRaw = data => {
   let film = {};
-  film.id = film.id;
+  film["film_info"] = {};
+  film["film_info"]["release"] = {};
+  film["comments"] = {};
+  film["user_details"] = {};
+
+  film.id = data.id;
   film.film_info.description = data.descriptionText;
   film.film_info.age_rating = data.age_rating;
   film.film_info.total_rating = data.totalRating;
@@ -53,19 +57,15 @@ const toRaw = data => {
   film.film_info.release.date = data.releaseDate;
   film.film_info.release.release_country = data.country;
 
-  film.film_info.runtimedata.duration = data.duration;
+  film.film_info.duration = data.duration;
   film.film_info.writers = data.writers || [];
   film.comments = data.comments;
-  film.comments.date = data.comments.data;
-  film.comments.comment = data.comments.text;
-  film.comments.author = data.comments.author;
-  film.comments.emotion = data.comments.emotion;
 
   film.user_details.already_watched = data.watched;
   film.user_details.watchlist = data.watchlist;
   film.user_details.favorite = data.favorite;
   film.user_details.personal_rating = data.personalRating;
-  film.comments.length = data.amountOfComments;
+  console.log(film);
   return film;
 };
 const getData = (url, method, body) => {
@@ -97,11 +97,14 @@ const getFilms = () => {
 };
 
 const updateServerFilm = data => {
+  console.log(data);
+
   const url = `movies/${data.id}`;
   const method = `PUT`;
   const body = JSON.stringify(toRaw(data));
   return getData(url, method, body).then(response => {
-    return response.json();
+    console.log(response.status);
+    return response.status;
   });
 };
 
