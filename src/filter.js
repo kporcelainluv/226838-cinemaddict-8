@@ -43,7 +43,7 @@ export default class Filter extends Component {
         case "History":
           numberOfFilms.textContent = `${this._watchedFilms}`;
           break;
-        case "Favorite":
+        case "Favorites":
           numberOfFilms.textContent = `${this._favoriteFilms}`;
           break;
       }
