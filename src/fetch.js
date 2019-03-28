@@ -1,4 +1,5 @@
 import "whatwg-fetch";
+import loadingMessage from "./mistakeMessage.js";
 
 const tranform = films => {
   const arr = [];
@@ -65,7 +66,6 @@ const toRaw = data => {
   film.user_details.watchlist = data.watchlist;
   film.user_details.favorite = data.favorite;
   film.user_details.personal_rating = data.personalRating;
-  console.log(film);
   return film;
 };
 const getData = (url, method, body) => {
@@ -80,11 +80,14 @@ const getData = (url, method, body) => {
     .then(response => {
       if (response.ok) {
         return response.json();
-      } else {
-        throw new Error(
-          `Неизвестный статус: ${response.status} ${response.statusText}`
-        );
+      } else if (response.status === 404) {
+        console.log(response.status, "dude you ails");
+        return [];
+        // loadingMessage();
       }
+      throw new Error(
+        `Неизвестный статус: ${response.status} ${response.statusText}`
+      );
     });
 };
 const getFilms = () => {
