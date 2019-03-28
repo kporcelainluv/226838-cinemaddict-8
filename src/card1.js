@@ -41,11 +41,11 @@ const addEventListeners = (
 
 const createCard = ({
   id,
-  rating,
+  totalRating,
   actors,
   name,
   about,
-  posters,
+  poster,
   controls,
   year,
   duration,
@@ -80,10 +80,10 @@ const createCard = ({
   const genreNode = card.querySelector(`.film-card__genre`);
   genreNode.textContent = genre;
   const image = card.querySelector(`.film-card__poster`);
-  image.src = posters;
+  image.src = poster;
 
   const ratingNode = card.querySelector(`.film-card__rating`);
-  ratingNode.textContent = rating;
+  ratingNode.textContent = totalRating;
 
   card
     .querySelector(`.film-card__comments`)
