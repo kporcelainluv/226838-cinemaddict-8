@@ -51,7 +51,41 @@ export default class Popup extends Component {
   set onClose(f) {
     this._onClose = f;
   }
+  _onButtonClose(event) {
+    event.preventDefault();
+    const newData = {
+      ...this._initialFilmData,
+      personalRating: this.personalRating,
+      comments: this._comments
+    };
 
+    if (typeof this._onClose === `function`) {
+      this._onClose(newData);
+    }
+    this.update(newData);
+  }
+
+  _onAddComment(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const newCommnent = formData.get(`comment`);
+    const emoji = formData.get(`comment-emoji`);
+    this._comments = [
+      ...this._comments,
+      {
+        text: newCommnent,
+        data: parseInt(moment(Date.now()).format("x")),
+        author: "You",
+        emotion: emoji
+      }
+    ];
+  }
+
+  _onUpdateRating(event) {
+    event.preventDefault();
+    this._personalRating = event.target.value;
+    this._onButtonClose(event);
+  }
   _onButtonClose(event) {
     event.preventDefault();
     const newData = {
@@ -85,29 +119,6 @@ export default class Popup extends Component {
     this._element = null;
   }
 
-  _onUpdateRating(event) {
-    console.log("here");
-    event.preventDefault();
-    this._personalRating = event.target.value;
-    this.update(this);
-    this._element = this.template;
-    // this._onButtonClose(event);
-  }
-  _onAddComment(e) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const newCommnent = formData.get(`comment`);
-    const emoji = formData.get(`comment-emoji`);
-    this._comments = [
-      ...this._comments,
-      {
-        text: newCommnent,
-        data: new Date(),
-        author: "You",
-        emotion: emoji
-      }
-    ];
-  }
   _addEventListeners() {
     const popUpClose = this._element.querySelector(`.film-details__close-btn`);
     popUpClose.addEventListener(`click`, this._onButtonClose);
@@ -138,7 +149,7 @@ export default class Popup extends Component {
   // }
   update(data) {
     console.log("update", data);
-    // this._id = data.id;
+    this._id = data.id;
     this._descriptionText = data.descriptionText;
     this._totalRaiting = data.totalRating;
     this._actors = data.actors;
