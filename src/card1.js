@@ -42,41 +42,32 @@ const addEventListeners = (
 const createCard = ({
   id,
   totalRating,
-  actors,
   name,
-  about,
+  descriptionText,
   poster,
-  controls,
-  year,
+  releaseDate,
   duration,
-  amountOfComments,
+  comments,
   genre
 }) => {
   const card = document
     .querySelector(`.card-template`)
     .content.querySelector(`.film-card`)
     .cloneNode(true);
-  if (!controls) {
-    card.className += ` film-card--no-controls`;
-    card.querySelector(
-      `.film-card__comments`
-    ).style.padding = `0px 0px 40px 0px`;
-  }
   const filmDescription = card.querySelector(`.film-card__description`);
-  filmDescription.textContent = about;
+  filmDescription.textContent = descriptionText;
 
   const filmTitle = card.querySelector(`.film-card__title`);
   filmTitle.textContent = name;
 
   const filmYear = card.querySelector(`.film-card__year`);
-  filmYear.textContent = moment(year).format(`YYYY`);
+  filmYear.textContent = moment(releaseDate).format(`YYYY`);
 
   const filmDuration = card.querySelector(`.film-card__duration`);
-  filmDuration.textContent = moment(duration).format(`hh:mm`);
-  if (!controls) {
-    const controls = card.querySelector(`.film-card__controls`);
-    card.removeChild(controls);
-  }
+  const hours = Math.floor(duration / 60) || "";
+  const minutes = duration % 60 || "";
+  filmDuration.textContent = `${hours}h ${minutes}m`;
+
   const genreNode = card.querySelector(`.film-card__genre`);
   genreNode.textContent = genre;
   const image = card.querySelector(`.film-card__poster`);
@@ -97,7 +88,7 @@ const createCard = ({
     .classList.add(`film-card__controls-item--mark-as-watched__${id}`);
 
   const commentsButton = card.querySelector(`.film-card__comments`);
-  commentsButton.textContent = `${amountOfComments} comments`;
+  commentsButton.textContent = `${comments.length} comments`;
   return card;
 };
 
