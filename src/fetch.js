@@ -97,13 +97,10 @@ const getFilms = () => {
 };
 
 const updateServerFilm = data => {
-  console.log(data);
-
   const url = `movies/${data.id}`;
   const method = `PUT`;
   const body = JSON.stringify(toRaw(data));
   return getData(url, method, body).then(response => {
-    console.log(response.status);
     return response.status;
   });
 };

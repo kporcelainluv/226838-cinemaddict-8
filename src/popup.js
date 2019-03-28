@@ -86,9 +86,11 @@ export default class Popup extends Component {
   }
 
   _onUpdateRating(event) {
+    console.log("here");
     event.preventDefault();
     this._personalRating = event.target.value;
-
+    this.update(this);
+    this._element = this.template;
     // this._onButtonClose(event);
   }
   _onAddComment(e) {
@@ -135,7 +137,8 @@ export default class Popup extends Component {
   //   formAddComment.removeEventListener(`submit`, this._onAddComment);
   // }
   update(data) {
-    this._id = this._id;
+    console.log("update", data);
+    // this._id = data.id;
     this._descriptionText = data.descriptionText;
     this._totalRaiting = data.totalRating;
     this._actors = data.actors;
@@ -149,11 +152,14 @@ export default class Popup extends Component {
     this._duration = data.duration;
     this._writers = data.writers || [];
     this._comments = data.comments;
+    // [data, text. author, emotion]
     this._watched = data.watched;
     this._watchlist = data.watchlist;
     this._favorite = data.favorite;
     this._controls = true;
-    this._personalRating = data.personalRaiting;
+    this._personalRating = data.personalRating;
+
+    this._onClose = null;
     this._age_rating = data.age_rating;
   }
   createComment(emoji, commentText, author, date) {
