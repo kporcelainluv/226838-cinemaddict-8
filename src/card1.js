@@ -15,6 +15,17 @@ const addEventListeners = (
     e.preventDefault();
     onClickToComments();
   });
+  //1
+  const favoritesBtn = cardTemplate.querySelector(
+    `.film-card__controls-item--favorite__${id}`
+  );
+  favoritesBtn.addEventListener(`click`, e => {
+    e.preventDefault();
+    onAddToFavourites({
+      ...card,
+      favorite: !card.favorite
+    });
+  });
 
   const watchlistBtn = cardTemplate.querySelector(
     `.film-card__controls-item--add-to-watchlist__${id}`
@@ -86,6 +97,10 @@ const createCard = ({
   card
     .querySelector(`.film-card__controls-item--mark-as-watched`)
     .classList.add(`film-card__controls-item--mark-as-watched__${id}`);
+
+  card
+    .querySelector(`.film-card__controls-item--favorite`)
+    .classList.add(`film-card__controls-item--favorite__${id}`);
 
   const commentsButton = card.querySelector(`.film-card__comments`);
   commentsButton.textContent = `${comments.length} comments`;
