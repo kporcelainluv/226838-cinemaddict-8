@@ -84,13 +84,12 @@ export default class Popup extends Component {
   _onUpdateRating(event) {
     event.preventDefault();
     this._personalRating = event.target.value;
-    this._onButtonClose(event);
   }
   _onButtonClose(event) {
     event.preventDefault();
     const newData = {
       ...this._initialFilmData,
-      rating: this._rating,
+      personalRating: this._personalRating,
       comments: this._comments
     };
 
