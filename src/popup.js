@@ -24,7 +24,6 @@ export default class Popup extends Component {
     this._favorite = data.favorite;
     this._controls = true;
     this._personalRating = data.personalRating;
-    this._amountOfComments = data.amountOfComments;
 
     this._onClose = null;
     this._age_rating = data.age_rating;
@@ -58,8 +57,7 @@ export default class Popup extends Component {
     const newData = {
       ...this._initialFilmData,
       rating: this._rating,
-      comments: this._comments,
-      amountOfComments: this._comments.length
+      comments: this._comments
     };
 
     if (typeof this._onClose === `function`) {
@@ -142,7 +140,7 @@ export default class Popup extends Component {
     this._totalRaiting = data.totalRating;
     this._actors = data.actors;
     this._name = data.name;
-    this._director = filmInfo.director;
+    this._director = data.director;
     this._alternativeName = data.alternativeName;
     this._genre = data.genre;
     this._poster = data.poster;
@@ -151,13 +149,11 @@ export default class Popup extends Component {
     this._duration = data.duration;
     this._writers = data.writers || [];
     this._comments = data.comments;
-    // [data, text. author, emotion]
     this._watched = data.watched;
     this._watchlist = data.watchlist;
     this._favorite = data.favorite;
     this._controls = true;
     this._personalRating = data.personalRaiting;
-    this._amountOfComments = data.amountOfComments;
     this._age_rating = data.age_rating;
   }
   createComment(emoji, commentText, author, date) {
@@ -219,7 +215,7 @@ export default class Popup extends Component {
     ).innerText = this._descriptionText;
     popUpTemplate.querySelector(
       `.film-details__comments-title`
-    ).innerText = `Comments ${this._amountOfComments}`;
+    ).innerText = `Comments ${this._comments.length}`;
 
     popUpTemplate.querySelector(`.film-details__age`).innerText = `${
       this._age_rating
