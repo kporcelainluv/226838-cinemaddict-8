@@ -154,7 +154,7 @@ const createDataForStats = currentFilmsData => {
     if (film.watched) {
       amountOfFilms += 1;
       duration += film.duration;
-      genres.push(film.genre);
+      genres.push(...film.genre);
     }
   }
   return { amountOfFilms, duration, genres };
