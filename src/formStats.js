@@ -9,16 +9,10 @@ const createChart = genreList => {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
     data: {
-      labels: [`Sci-Fi`, `Animation`, `Fantasy`, `Comedy`, `TV Series`],
+      labels: Object.keys(genreList),
       datasets: [
         {
-          data: [
-            genreList[`Sci-Fi`] || 0,
-            genreList[`Animation`] || 0,
-            genreList[`Fantasy`] || 0,
-            genreList[`Comedy`] || 0,
-            genreList[`TV Series`] || 0
-          ],
+          data: [...Object.values(genreList)],
           backgroundColor: `#ffe800`,
           hoverBackgroundColor: `#ffe800`,
           anchor: `start`
