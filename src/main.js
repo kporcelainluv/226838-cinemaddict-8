@@ -8,11 +8,15 @@ import Card1 from "./card1";
 import { filtersData, FILTER_TYPES } from "./filtersMock.js";
 import { films } from "./data.js";
 
-import { getFilms } from "./fetch.js";
+import { getFilms, updateServerFilm } from "./fetch.js";
 
 const createFilmCard = (film, container) => {
   const addControlToFilm = updatedFilm => {
+    updateServerFilm(updatedFilm);
     pageState.update(({ allFilms, ...otherData }) => {
+      for (let filmData of allFilms) {
+        //
+      }
       const updatedAllFilms = allFilms.map(film => {
         if (film.id === updatedFilm.id) {
           return updatedFilm;
