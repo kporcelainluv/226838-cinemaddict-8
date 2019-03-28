@@ -27,6 +27,7 @@ export default class Popup extends Component {
     this._amountOfComments = data.amountOfComments;
 
     this._onClose = null;
+    this._age_rating = data.age_rating;
 
     this._initialFilmData = data;
     this._parentContainer = document.querySelector(`body`);
@@ -83,13 +84,6 @@ export default class Popup extends Component {
     this._onButtonClose(event);
   }
 
-  _onUpdateRating(event) {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    this._rating = formData.get(`rating`);
-    this._onButtonClose(event);
-  }
-
   _createSpanElement(popUpTemplate, className, classConst) {
     const element = popUpTemplate.querySelector(`.${className}`);
     const span = document.createElement(`span`);
@@ -109,18 +103,27 @@ export default class Popup extends Component {
     this._element = null;
   }
 
-  // _addEventListeners() {
-  //   const popUpClose = this._element.querySelector(`.film-details__close-btn`);
-  //   popUpClose.addEventListener(`click`, this._onButtonClose);
+  _onUpdateRating(event) {
+    event.preventDefault();
+    this._personalRating = event.target.value;
 
-  //   const formUpdateRating = this._element.querySelector(
-  //     `.update-rating__form`
-  //   );
-  //   formUpdateRating.addEventListener(`submit`, this._onUpdateRating);
+    // this._onButtonClose(event);
+  }
 
-  //   const formAddComment = this._element.querySelector(`.add-comment__form`);
-  //   formAddComment.addEventListener(`submit`, this._onAddComment);
-  // }
+  _addEventListeners() {
+    const popUpClose = this._element.querySelector(`.film-details__close-btn`);
+    popUpClose.addEventListener(`click`, this._onButtonClose);
+
+    const formUpdateRating = this._element.querySelectorAll(
+      `.film-details__user-rating-input`
+    );
+    for (let rating of formUpdateRating) {
+      rating.addEventListener(`click`, this._onUpdateRating);
+    }
+
+    // const formAddComment = this._element.querySelector(`.add-comment__form`);
+    // formAddComment.addEventListener(`submit`, this._onAddComment);
+  }
 
   // _removeEventListeners() {
   //   const popUpClose = this._element.querySelector(`.film-details__close-btn`);
@@ -155,7 +158,7 @@ export default class Popup extends Component {
     this._controls = true;
     this._personalRating = data.personalRaiting;
     this._amountOfComments = data.amountOfComments;
-    this._ageRating = data.ageRating;
+    this._age_rating = data.age_rating;
   }
   createComment(emoji, commentText, author, date) {
     const li = document.createElement("li");
@@ -181,7 +184,6 @@ export default class Popup extends Component {
     div.appendChild(pInfo);
     li.appendChild(span);
     li.appendChild(div);
-    console.log(li);
     return li;
   }
 
@@ -211,8 +213,9 @@ export default class Popup extends Component {
     popUpTemplate.querySelector(
       `.film-details__comments-title`
     ).innerText = `Comments ${this._amountOfComments}`;
+
     popUpTemplate.querySelector(`.film-details__age`).innerText = `${
-      this.ageRating
+      this._age_rating
     }+`;
     popUpTemplate.querySelector(
       `.film-details__total-rating`
@@ -236,6 +239,10 @@ export default class Popup extends Component {
         )
       );
     }
+    const ratingValueButton = popUpTemplate.querySelectorAll(
+      `.film-details__user-rating-input`
+    );
+    console.log(ratingValueButton);
 
     // const ratingOptions = popUpTemplate.querySelectorAll(
     //   `select#rating > option`

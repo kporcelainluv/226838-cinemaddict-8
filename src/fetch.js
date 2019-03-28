@@ -5,7 +5,6 @@ const tranform = films => {
   for (let film of films) {
     let filmInfo = {};
     filmInfo.id = film.id;
-    filmInfo.ageRating = film.film_info.age_rating;
     filmInfo.descriptionText = film.film_info.description;
     filmInfo.age_rating = film.film_info.age_rating;
     filmInfo.totalRating = film.film_info.total_rating;
