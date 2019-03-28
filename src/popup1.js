@@ -105,21 +105,20 @@ export default class Popup extends Component {
   _onAddComment(event) {
     event.preventDefault();
 
+    console.log("HERE");
+
     const formData = new FormData(event.target);
 
     this._comments = [
       ...this._comments,
       { text: formData.get(`comment`), date: new Date() }
     ];
-
-    this._onButtonClose(event);
   }
 
   _onUpdateRating(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     this._rating = formData.get(`rating`);
-    this._onButtonClose(event);
   }
 
   unrender() {
