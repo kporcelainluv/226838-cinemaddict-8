@@ -14,7 +14,7 @@ const tranform = films => {
     filmInfo.alternativeName = film.film_info.alternative_title;
     filmInfo.director = film.film_info.director;
     filmInfo.genre = film.film_info.genre;
-    filmInfo.posters = film.film_info.poster;
+    filmInfo.poster = film.film_info.poster;
     filmInfo.releaseDate = film.film_info.release.date;
     filmInfo.country = film.film_info.release.release_country;
     filmInfo.duration = film.film_info.runtime;
@@ -61,7 +61,6 @@ const getFilms = () => {
   const method = `GET`;
   const body = null;
   return getData(url, method, body).then(json => {
-    console.log(json);
     return tranform(json);
   });
 };
