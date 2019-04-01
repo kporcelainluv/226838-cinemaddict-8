@@ -81,9 +81,7 @@ const getData = (url, method, body) => {
       if (response.ok) {
         return response.json();
       } else if (response.status === 404) {
-        console.log(response.status, "dude you ails");
         return [];
-        // loadingMessage();
       }
       throw new Error(
         `Неизвестный статус: ${response.status} ${response.statusText}`
