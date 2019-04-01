@@ -933,3 +933,20 @@ a:hover {
   font-size: 10px;
   margin-bottom: 10px;
 }
+.loading,
+.error {
+  position: fixed;
+  z-index: 99999999;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: black;
+}
+.loading h1,
+.error h1 {
+  z-index: 1000;
+  position: absolute;
+  top: 200px;
+  left: 300px;
+}
