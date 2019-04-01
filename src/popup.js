@@ -172,24 +172,27 @@ export default class Popup extends Component {
     this._onClose = null;
     this._age_rating = data.age_rating;
   }
-  createComment(emoji, commentText, author, date) {
+  createComment(comment) {
+    console.log("here", comment.comment);
     const li = document.createElement("li");
     li.className = "film-details__comment";
     const span = document.createElement("span");
-    span.innerText = this.emotions(emoji);
+    span.innerText = this.emotions(comment.emotion);
     span.className = "film-details__comment-emoji";
     const div = document.createElement("div");
     const pText = document.createElement("p");
     pText.className = "film-details__comment-text";
     const pInfo = document.createElement("p");
-    pInfo.innerText = commentText;
+    pInfo.innerText = comment.comment || comment.text;
     pInfo.className = "film-details__comment-info";
     const spanAuthor = document.createElement("span");
     spanAuthor.className = `film-details__comment-author`;
-    spanAuthor.innerText = author;
+    spanAuthor.innerText = comment.author;
     const spanDate = document.createElement("span");
     spanDate.className = "film-details__comment-day";
-    spanDate.innerText = date;
+    spanDate.innerText = moment(comment.date)
+      .startOf("day")
+      .fromNow();
     pInfo.appendChild(spanAuthor);
     pInfo.appendChild(spanDate);
     div.appendChild(pText);
@@ -247,16 +250,8 @@ export default class Popup extends Component {
     );
 
     for (let comment of this._comments) {
-      commentsFiled.appendChild(
-        this.createComment(
-          comment.emotion,
-          comment.comment,
-          comment.author,
-          moment(comment.date)
-            .startOf("day")
-            .fromNow()
-        )
-      );
+      console.log(comment);
+      commentsFiled.appendChild(this.createComment(comment));
     }
     const ratingValueButton = popUpTemplate.querySelectorAll(
       `.film-details__user-rating-input`
