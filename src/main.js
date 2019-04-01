@@ -33,6 +33,7 @@ const createFilmCard = (film, container) => {
   const onAddToWatchList = addControlToFilm;
   const onMarkAsWatched = addControlToFilm;
   const onAddToFavourites = addControlToFilm;
+  const loadNextFIveFilms = () => {};
   const onClickToComments = () => {
     const myPopUp = new Popup(film);
     myPopUp.render();
@@ -40,6 +41,8 @@ const createFilmCard = (film, container) => {
       myPopUp.unrender();
       addControlToFilm(updatedFilm);
     };
+    myPopUp.onAddComment = updateServerFilm;
+    myPopUp.onAddToWatchList = addControlToFilm;
   };
 
   const filmCard = Card1.render(
@@ -48,7 +51,8 @@ const createFilmCard = (film, container) => {
       onAddToWatchList,
       onMarkAsWatched,
       onAddToFavourites,
-      onClickToComments
+      onClickToComments,
+      loadNextFIveFilms
     },
     container
   );

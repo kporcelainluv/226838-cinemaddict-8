@@ -52,17 +52,19 @@ export default class Popup extends Component {
     this._onClose = f;
   }
   _onButtonClose(event) {
-    event.preventDefault();
     const newData = {
       ...this._initialFilmData,
-      personalRating: this.personalRating,
+      personalRating: this._personalRating,
       comments: this._comments
     };
-
     if (typeof this._onClose === `function`) {
       this._onClose(newData);
     }
     this.update(newData);
+  }
+
+  set onAddComment(f) {
+    this._onAddComment = f;
   }
 
   _onAddComment(event) {
@@ -79,24 +81,19 @@ export default class Popup extends Component {
         emotion: emoji
       }
     ];
-  }
-
-  _onUpdateRating(event) {
-    event.preventDefault();
-    this._personalRating = event.target.value;
-  }
-  _onButtonClose(event) {
-    event.preventDefault();
     const newData = {
       ...this._initialFilmData,
       personalRating: this._personalRating,
       comments: this._comments
     };
-
-    if (typeof this._onClose === `function`) {
-      this._onClose(newData);
+    if (typeof this._onAddComment === `function`) {
+      this._onAddComment(newData);
     }
-    this.update(newData);
+  }
+
+  _onUpdateRating(event) {
+    event.preventDefault();
+    this._personalRating = event.target.value;
   }
 
   _createSpanElement(popUpTemplate, className, classConst) {
@@ -133,6 +130,46 @@ export default class Popup extends Component {
       `.film-details__new-comment`
     );
     formAddComment.addEventListener(`submit`, this._onAddComment);
+
+    const favoritesBtn = this._element.querySelector(
+      `.film-details__control-label--favorite`
+    );
+    favoritesBtn.addEventListener(`click`, e => {
+      e.preventDefault();
+      onAddToFavourites({
+        ...this._initialFilmData,
+        favorite: !this._favorite
+      });
+    });
+
+    const watchlistBtn = this._element.querySelector(
+      `.film-details__control-label--watchlist`
+    );
+    watchlistBtn.addEventListener(`click`, e => {
+      e.preventDefault();
+      onAddToWatchList({
+        ...this._initialFilmData,
+        watchlist: !this._watchlist
+      });
+    });
+
+    const watchedBtn = this._element.querySelector(
+      `.film-details__control-label--watched`
+    );
+    watchedBtn.addEventListener(`click`, e => {
+      e.preventDefault();
+      onMarkAsWatched({
+        ...this._initialFilmData,
+        watched: !this._watched
+      });
+    });
+    // window.addEventListener("keydown", e => {
+    //   e.preventDefault();
+    //   if (e.keyCode === 27) {
+    //     console.log("here");
+    //     this._onButtonClose(event);
+    //   }
+    // });
   }
 
   // _removeEventListeners() {
@@ -147,7 +184,6 @@ export default class Popup extends Component {
   //   formAddComment.removeEventListener(`submit`, this._onAddComment);
   // }
   update(data) {
-    console.log("update", data);
     this._id = data.id;
     this._descriptionText = data.descriptionText;
     this._totalRaiting = data.totalRating;
@@ -173,7 +209,6 @@ export default class Popup extends Component {
     this._age_rating = data.age_rating;
   }
   createComment(comment) {
-    console.log("here", comment.comment);
     const li = document.createElement("li");
     li.className = "film-details__comment";
     const span = document.createElement("span");
@@ -250,7 +285,6 @@ export default class Popup extends Component {
     );
 
     for (let comment of this._comments) {
-      console.log(comment);
       commentsFiled.appendChild(this.createComment(comment));
     }
     const ratingValueButton = popUpTemplate.querySelectorAll(

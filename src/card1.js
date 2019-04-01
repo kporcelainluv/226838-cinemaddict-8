@@ -4,7 +4,13 @@ import moment from "moment";
 const addEventListeners = (
   cardTemplate,
   card,
-  { onAddToWatchList, onMarkAsWatched, onAddToFavourites, onClickToComments }
+  {
+    onAddToWatchList,
+    onMarkAsWatched,
+    onAddToFavourites,
+    onClickToComments,
+    loadNextFIveFilms
+  }
 ) => {
   const { id } = card;
 
@@ -15,7 +21,6 @@ const addEventListeners = (
     e.preventDefault();
     onClickToComments();
   });
-  //1
   const favoritesBtn = cardTemplate.querySelector(
     `.film-card__controls-item--favorite__${id}`
   );
@@ -47,6 +52,11 @@ const addEventListeners = (
       ...card,
       watched: !card.watched
     });
+  });
+  const loadMoreButton = document.querySelector(`.films-list__show-more`);
+  loadMoreButton.addEventListener("click", e => {
+    e.preventDefault();
+    loadNextFIveFilms();
   });
 };
 
