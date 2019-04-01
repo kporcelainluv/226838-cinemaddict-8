@@ -1,5 +1,4 @@
 import "whatwg-fetch";
-import loadingMessage from "./mistakeMessage.js";
 
 const tranform = films => {
   const arr = [];
@@ -79,13 +78,15 @@ const getData = (url, method, body) => {
     })
     .then(response => {
       if (response.ok) {
+        const message = document.querySelector(".loading");
+        message.className += " visually-hidden";
         return response.json();
-      } else if (response.status === 404) {
-        return [];
       }
-      throw new Error(
-        `Неизвестный статус: ${response.status} ${response.statusText}`
-      );
+    })
+    .catch(err => {
+      const errorMessage = document.querySelector(`.error`);
+      errorMessage.className = "error";
+      console.log("here", err);
     });
 };
 const getFilms = () => {
