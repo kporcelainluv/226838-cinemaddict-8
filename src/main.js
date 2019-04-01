@@ -116,7 +116,6 @@ const createPage = (allFilms, filterType, container, pageState) => {
       });
     };
   });
-
   createFilmBoard(films, container);
 };
 
