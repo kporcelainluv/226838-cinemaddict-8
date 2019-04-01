@@ -24,6 +24,12 @@
   </head>
 
   <body>
+    <div class="loading">
+      <h1> Loading movies...</h1>
+    </div>
+    <div class="error visually-hidden">
+      <h1> Something went wrong while loading movies. <br> Check your connection or try again later</h1>
+    </div>
     <header class="header">
       <h1 class="header__logo logo">Moowle</h1>
       <form class="header__search search">
@@ -332,7 +338,7 @@
             </h3>
 
             <ul class="film-details__comments-list">
-            
+
             </ul>
 
             <form class="film-details__new-comment">
@@ -527,12 +533,6 @@
           </section>
         </form>
       </section>
-    </template>
-    <template class="loading-message">
-      <h1> Loading movies...</h1>
-    </template>
-    <template class="error-message">
-      <h1> Something went wrong while loading movies. Check your connection or try again later</h1>
     </template>
 
     <script src="bundle.js"></script>
