@@ -86,7 +86,6 @@ const getData = (url, method, body) => {
     .catch(err => {
       const errorMessage = document.querySelector(`.error`);
       errorMessage.className = "error";
-      console.log("here", err);
     });
 };
 const getFilms = () => {
