@@ -1,5 +1,5 @@
 import { default as Card } from "./card.js";
-import { default as Popup } from "./popup.js";
+import { default as Popup } from "./popup1.js";
 import { default as Filter } from "./filter.js";
 import { default as Observable } from "./observable";
 import { default as Statistics } from "./statistics.js";

@@ -1,129 +1,289 @@
 import { default as Component } from "./component.js";
 import moment from "moment";
 
-const createSpanElement = (popUpTemplate, className, classConst) => {
-  const element = popUpTemplate.querySelector(`.${className}`);
-  const span = document.createElement(`span`);
-  span.textContent = ` ${classConst}`;
-  element.appendChild(span);
-};
-
-const addEventListeners = (
-  popUpTemplate,
-  { onButtonClose, onUpdateRating, onAddComment }
-) => {
-  const popUpClose = popUpTemplate.querySelector(`.popup-button-close`);
-  popUpClose.addEventListener(`click`, e => {
-    e.preventDefault();
-    onButtonClose;
-  });
-
-  const formUpdateRating = popUpTemplate.querySelector(`.update-rating__form`);
-  formUpdateRating.addEventListener(`submit`, e => {
-    e.preventDefault();
-    onUpdateRating;
-  });
-
-  const formAddComment = popUpTemplate.querySelector(`.add-comment__form`);
-  formAddComment.addEventListener(`submit`, e => {
-    e.preventDefault();
-    onAddComment;
-  });
-};
-
-const createPopUp = card => {
-  const popUpTemplate = document
-    .querySelector(`.popup-template`)
-    .content.querySelector(`.popup-portal`)
-    .cloneNode(true);
-  const image = popUpTemplate.querySelector(`.popup-img-src`);
-  image.src = `./images/posters/${card.posters}.jpg`;
-  const ratingInBigLetters = popUpTemplate.querySelector(`.rating-info`);
-  ratingInBigLetters.textContent = card.rating;
-  createSpanElement(popUpTemplate, `popup-name`, card.name);
-  createSpanElement(popUpTemplate, `popup-rating`, card.rating);
-  createSpanElement(
-    popUpTemplate,
-    `popup-year`,
-    moment(card.year).format(`DD.MM.YYYY`)
-  );
-  createSpanElement(
-    popUpTemplate,
-    `popup-duration`,
-    moment(card.duration).format(`hh:mm`)
-  );
-  createSpanElement(popUpTemplate, `popup-genre`, card.genre);
-  createSpanElement(popUpTemplate, `popup-description-text`, card.about);
-
-  const ratingOptions = popUpTemplate.querySelectorAll(
-    `select#rating > option`
-  );
-  for (const option of ratingOptions) {
-    const x = [Number(option.value)];
-
-    if (x[0] === card.rating[0]) {
-      option.selected = true;
-    }
+const getEmoji = key => {
+  switch (key) {
+    case `sleeping`:
+      return `😴`;
+    case `neutral-face`:
+      return `😐`;
+    case `grinning`:
+      return `😀`;
+    default:
+      return ``;
   }
-
-  const listOfComments = popUpTemplate.querySelector(`.existing-comments`);
-  for (const comment of card.comments) {
-    const commentNode = document.createElement(`li`);
-    commentNode.textContent = comment.text;
-    listOfComments.appendChild(commentNode);
-  }
-
-  const form = popUpTemplate.querySelector(`.film-details__form`);
-  const input = document.createElement(`input`);
-  input.type = `text`;
-  input.name = `rating`;
-  input.value = card.rating;
-  input.className = `input-rating-btn-value`;
-  input.style.display = `none`;
-  form.appendChild(input);
-
-  return popUpTemplate;
 };
 
 export default class Popup extends Component {
-  static render(card, handlers) {
-    const parent = document.querySelector(`body`);
-    const popUpTemplate = createPopUp(card);
-    addEventListeners(popUpTemplate, card, handlers);
-    parent.appendChild(popUpTemplate);
+  constructor(data) {
+    super();
+    this._id = data.id;
+    this._descriptionText = data.descriptionText;
+    this._totalRaiting = data.totalRating;
+    this._actors = data.actors;
+    this._name = data.name;
+    this._director = data.director;
+    this._alternativeName = data.alternativeName;
+    this._genre = data.genre;
+    this._poster = data.poster;
+    this._releaseDate = data.releaseDate;
+    this._country = data.country;
+    this._duration = data.duration;
+    this._writers = data.writers || [];
+    this._comments = data.comments;
+    // [data, text. author, emotion]
+    this._watched = data.watched;
+    this._watchlist = data.watchlist;
+    this._favorite = data.favorite;
+    this._controls = true;
+    this._personalRating = data.personalRating;
+
+    this._onClose = null;
+    this._age_rating = data.age_rating;
+
+    this._initialFilmData = data;
+    this._parentContainer = document.querySelector(`body`);
+
+    this._onButtonClose = this._onButtonClose.bind(this);
+    this._onUpdateRating = this._onUpdateRating.bind(this);
+    this._AddComment = this._AddComment.bind(this);
+  }
+
+  set onClose(f) {
+    this._onClose = f;
   }
   _onButtonClose(event) {
-    event.preventDefault();
     const newData = {
       ...this._initialFilmData,
-      rating: this._rating,
-      comments: this._comments,
-      amountOfComments: this._comments.length
+      personalRating: this._personalRating,
+      comments: this._comments
     };
+    if (typeof this._onClose === `function`) {
+      this._onClose(newData);
+    }
+    this.update(newData);
   }
 
-  _onAddComment(event) {
+  set onAddComment(f) {
+    this._onAddComment = f;
+  }
+
+  _AddComment(event) {
     event.preventDefault();
-
-    console.log("HERE");
-
     const formData = new FormData(event.target);
-
+    const newCommnent = formData.get(`comment`);
+    const emoji = formData.get(`comment-emoji`);
     this._comments = [
       ...this._comments,
-      { text: formData.get(`comment`), date: new Date() }
+      {
+        text: newCommnent,
+        data: parseInt(moment(Date.now()).format("x")),
+        author: "You",
+        emotion: emoji
+      }
     ];
+    const newData = {
+      ...this._initialFilmData,
+      personalRating: this._personalRating,
+      comments: this._comments
+    };
+    if (typeof this._onAddComment === `function`) {
+      this._onAddComment(newData);
+    }
   }
 
   _onUpdateRating(event) {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    this._rating = formData.get(`rating`);
+    this._personalRating = event.target.value;
+  }
+
+  _createSpanElement(popUpTemplate, className, classConst) {
+    const element = popUpTemplate.querySelector(`.${className}`);
+    const span = document.createElement(`span`);
+    span.textContent = ` ${classConst}`;
+    element.appendChild(span);
+  }
+
+  render() {
+    this._element = this.template;
+    this._addEventListeners();
+    this._parentContainer.appendChild(this._element);
   }
 
   unrender() {
     this._removeEventListeners();
     this._parentContainer.removeChild(this._element);
     this._element = null;
+  }
+
+  _addEventListeners() {
+    const popUpClose = this._element.querySelector(`.film-details__close-btn`);
+    popUpClose.addEventListener(`click`, this._onButtonClose);
+
+    const formUpdateRating = this._element.querySelectorAll(
+      `.film-details__user-rating-input`
+    );
+    for (let rating of formUpdateRating) {
+      rating.addEventListener(`click`, this._onUpdateRating);
+    }
+
+    const formAddComment = this._element.querySelector(
+      `.film-details__new-comment`
+    );
+    formAddComment.addEventListener(`submit`, this._AddComment);
+
+    const favoritesBtn = this._element.querySelector(
+      `.film-details__control-label--favorite`
+    );
+    favoritesBtn.addEventListener(`click`, e => {
+      e.preventDefault();
+      onAddToFavourites({
+        ...this._initialFilmData,
+        favorite: !this._favorite
+      });
+    });
+
+    const watchlistBtn = this._element.querySelector(
+      `.film-details__control-label--watchlist`
+    );
+    watchlistBtn.addEventListener(`click`, e => {
+      e.preventDefault();
+      onAddToWatchList({
+        ...this._initialFilmData,
+        watchlist: !this._watchlist
+      });
+    });
+
+    const watchedBtn = this._element.querySelector(
+      `.film-details__control-label--watched`
+    );
+    watchedBtn.addEventListener(`click`, e => {
+      e.preventDefault();
+      onMarkAsWatched({
+        ...this._initialFilmData,
+        watched: !this._watched
+      });
+    });
+  }
+  update(data) {
+    this._id = data.id;
+    this._descriptionText = data.descriptionText;
+    this._totalRaiting = data.totalRating;
+    this._actors = data.actors;
+    this._name = data.name;
+    this._director = data.director;
+    this._alternativeName = data.alternativeName;
+    this._genre = data.genre;
+    this._poster = data.poster;
+    this._releaseDate = data.releaseDate;
+    this._country = data.country;
+    this._duration = data.duration;
+    this._writers = data.writers || [];
+    this._comments = data.comments;
+    // [data, text. author, emotion]
+    this._watched = data.watched;
+    this._watchlist = data.watchlist;
+    this._favorite = data.favorite;
+    this._controls = true;
+    this._personalRating = data.personalRating;
+
+    this._onClose = null;
+    this._age_rating = data.age_rating;
+  }
+  createComment(comment) {
+    const li = document.createElement("li");
+    li.className = "film-details__comment";
+    const span = document.createElement("span");
+    span.innerText = getEmoji(comment.emotion);
+    span.className = "film-details__comment-emoji";
+    const div = document.createElement("div");
+    const pText = document.createElement("p");
+    pText.className = "film-details__comment-text";
+    const pInfo = document.createElement("p");
+    pInfo.innerText = comment.comment || comment.text;
+    pInfo.className = "film-details__comment-info";
+    const spanAuthor = document.createElement("span");
+    spanAuthor.className = `film-details__comment-author`;
+    spanAuthor.innerText = comment.author;
+    const spanDate = document.createElement("span");
+    spanDate.className = "film-details__comment-day";
+    spanDate.innerText = moment(comment.date)
+      .startOf("day")
+      .fromNow();
+    pInfo.appendChild(spanAuthor);
+    pInfo.appendChild(spanDate);
+    div.appendChild(pText);
+    div.appendChild(pInfo);
+    li.appendChild(span);
+    li.appendChild(div);
+    return li;
+  }
+
+  get template() {
+    const popUpTemplate = document
+      .querySelector(`.popup-template`)
+      .content.querySelector(`.film-details`)
+      .cloneNode(true);
+    popUpTemplate.querySelector(`.film-details__title`).innerText = this._name;
+    popUpTemplate.querySelector(
+      `.film-details__user-rating-title`
+    ).innerText = this._name;
+    popUpTemplate.querySelector(`.film-details__poster-img`).src = this._poster;
+    popUpTemplate.querySelector(
+      `.film-details__user-rating-img`
+    ).src = this._poster;
+    popUpTemplate.querySelector(
+      `.film-details__title-original`
+    ).innerText = `Original: ${this._alternativeName}`;
+    const filmInfo = popUpTemplate.querySelectorAll(`.film-details__cell`);
+    filmInfo[0].innerText = this._director;
+    filmInfo[1].innerText = this._writers;
+    filmInfo[2].innerText = this._actors;
+    filmInfo[3].innerText = `${moment(this._releaseDate).format(
+      `DD.MM.YYYY`
+    )} (${this._country})`;
+
+    filmInfo[4].innerText = `${this._duration} min`;
+    filmInfo[5].innerText = this._country;
+    filmInfo[6].innerText = this._genre;
+    popUpTemplate.querySelector(
+      `.film-details__film-description`
+    ).innerText = this._descriptionText;
+    popUpTemplate.querySelector(
+      `.film-details__comments-title`
+    ).innerText = `Comments ${this._comments.length}`;
+
+    popUpTemplate.querySelector(`.film-details__age`).innerText = `${
+      this._age_rating
+    }+`;
+    popUpTemplate.querySelector(
+      `.film-details__total-rating`
+    ).innerText = this._totalRaiting;
+    popUpTemplate.querySelector(
+      `.film-details__user-rating`
+    ).innerText = `Your rate ${this._personalRating}`;
+    const commentsFiled = popUpTemplate.querySelector(
+      `.film-details__comments-list`
+    );
+
+    for (let comment of this._comments) {
+      commentsFiled.appendChild(this.createComment(comment));
+    }
+    const ratingValueButton = popUpTemplate.querySelectorAll(
+      `.film-details__user-rating-input`
+    );
+
+    for (let button of ratingValueButton) {
+      if (parseInt(button.value) === Math.floor(this._personalRating)) {
+        button.checked = true;
+      }
+    }
+    const filmControls = popUpTemplate.querySelectorAll(
+      ".film-details__control-input"
+    );
+    filmControls[0].checked = this._watchlist;
+    filmControls[1].checked = this._watched;
+    filmControls[2].checked = this._favorite;
+    return popUpTemplate;
   }
 }
