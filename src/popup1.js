@@ -213,13 +213,6 @@ export default class Popup extends Component {
     this._personalRating = event.target.value;
   }
 
-  _createSpanElement(popUpTemplate, className, classConst) {
-    const element = popUpTemplate.querySelector(`.${className}`);
-    const span = document.createElement(`span`);
-    span.textContent = ` ${classConst}`;
-    element.appendChild(span);
-  }
-
   render() {
     this._element = getTemplate(this._initialFilmData, createComment);
     this._addEventListeners();
