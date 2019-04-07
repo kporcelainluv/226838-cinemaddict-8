@@ -130,6 +130,15 @@ const createComment = comment => {
   return li;
 };
 
+const createUserComment = ({ text, emotion }) => {
+  return {
+    text,
+    data: parseInt(moment(Date.now()).format("x")),
+    author: "You",
+    emotion
+  };
+};
+
 const addEventListeners = (
   template,
   {
@@ -152,7 +161,17 @@ const addEventListeners = (
   }
 
   const formAddComment = template.querySelector(`.film-details__new-comment`);
-  formAddComment.addEventListener(`submit`, onAddComment);
+  formAddComment.addEventListener(`submit`, e => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const [text, emotion] = [
+      formData.get(`comment`),
+      formData.get(`comment-emoji`)
+    ];
+    const newComment = createUserComment({ text, emotion });
+    onAddComment(newComment);
+  });
 
   const favoritesBtn = template.querySelector(
     `.film-details__control-label--favorite`
