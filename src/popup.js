@@ -33,7 +33,7 @@ export default class Popup extends Component {
 
     this._onButtonClose = this._onButtonClose.bind(this);
     this._onUpdateRating = this._onUpdateRating.bind(this);
-    this._onAddComment = this._onAddComment.bind(this);
+    this._AddComment = this._AddComment.bind(this);
   }
 
   emotions(key) {
@@ -67,7 +67,7 @@ export default class Popup extends Component {
     this._onAddComment = f;
   }
 
-  _onAddComment(event) {
+  _AddComment(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const newCommnent = formData.get(`comment`);
@@ -129,7 +129,7 @@ export default class Popup extends Component {
     const formAddComment = this._element.querySelector(
       `.film-details__new-comment`
     );
-    formAddComment.addEventListener(`submit`, this._onAddComment);
+    formAddComment.addEventListener(`submit`, this._AddComment);
 
     const favoritesBtn = this._element.querySelector(
       `.film-details__control-label--favorite`
