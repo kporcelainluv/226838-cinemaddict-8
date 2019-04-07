@@ -157,7 +157,10 @@ const addEventListeners = (
     `.film-details__user-rating-input`
   );
   for (let rating of formUpdateRating) {
-    rating.addEventListener(`click`, onUpdateRating);
+    rating.addEventListener(`click`, e => {
+      const selectedRating = 8;
+      onUpdateRating(selectedRating);
+    });
   }
 
   const formAddComment = template.querySelector(`.film-details__new-comment`);
