@@ -130,6 +130,46 @@ const createComment = comment => {
   return li;
 };
 
+const addEventListeners = (
+  template,
+  {
+    onButtonClose,
+    onUpdateRating,
+    onAddComment,
+    onAddToFavourites,
+    onAddToWatchlist,
+    onMarkAsWatched
+  }
+) => {
+  const popUpClose = template.querySelector(`.film-details__close-btn`);
+  popUpClose.addEventListener(`click`, onButtonClose);
+
+  const formUpdateRating = template.querySelectorAll(
+    `.film-details__user-rating-input`
+  );
+  for (let rating of formUpdateRating) {
+    rating.addEventListener(`click`, onUpdateRating);
+  }
+
+  const formAddComment = template.querySelector(`.film-details__new-comment`);
+  formAddComment.addEventListener(`submit`, onAddComment);
+
+  const favoritesBtn = template.querySelector(
+    `.film-details__control-label--favorite`
+  );
+  favoritesBtn.addEventListener(`click`, onAddToFavourites);
+
+  const watchlistBtn = template.querySelector(
+    `.film-details__control-label--watchlist`
+  );
+  watchlistBtn.addEventListener(`click`, onAddToWatchlist);
+
+  const watchedBtn = template.querySelector(
+    `.film-details__control-label--watched`
+  );
+  watchedBtn.addEventListener(`click`, onMarkAsWatched);
+};
+
 export default class Popup extends Component {
   constructor(data) {
     super();
