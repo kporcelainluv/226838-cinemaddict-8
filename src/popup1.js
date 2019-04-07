@@ -14,6 +14,93 @@ const getEmoji = key => {
   }
 };
 
+const getTemplate = (film, createComment) => {
+  const {
+    name,
+    poster,
+    alternativeName,
+    director,
+    writers,
+    actors,
+    country,
+    releaseDate,
+    duration,
+    genre,
+    descriptionText,
+    age_rating,
+    personalRating,
+    comments,
+    watchlist,
+    watched,
+    favorite,
+    totalRating
+  } = film;
+
+  const popUpTemplate = document
+    .querySelector(`.popup-template`)
+    .content.querySelector(`.film-details`)
+    .cloneNode(true);
+  popUpTemplate.querySelector(`.film-details__title`).innerText = name;
+  popUpTemplate.querySelector(
+    `.film-details__user-rating-title`
+  ).innerText = name;
+  popUpTemplate.querySelector(`.film-details__poster-img`).src = poster;
+  popUpTemplate.querySelector(`.film-details__user-rating-img`).src = poster;
+  popUpTemplate.querySelector(
+    `.film-details__title-original`
+  ).innerText = `Original: ${alternativeName}`;
+  const filmInfo = popUpTemplate.querySelectorAll(`.film-details__cell`);
+  filmInfo[0].innerText = director;
+  filmInfo[1].innerText = writers;
+  filmInfo[2].innerText = actors;
+  filmInfo[3].innerText = `${moment(releaseDate).format(
+    `DD.MM.YYYY`
+  )} (${country})`;
+
+  filmInfo[4].innerText = `${duration} min`;
+  filmInfo[5].innerText = country;
+  filmInfo[6].innerText = genre;
+  popUpTemplate.querySelector(
+    `.film-details__film-description`
+  ).innerText = descriptionText;
+  popUpTemplate.querySelector(
+    `.film-details__comments-title`
+  ).innerText = `Comments ${comments.length}`;
+
+  popUpTemplate.querySelector(
+    `.film-details__age`
+  ).innerText = `${age_rating}+`;
+  popUpTemplate.querySelector(
+    `.film-details__total-rating`
+  ).innerText = totalRating;
+  popUpTemplate.querySelector(
+    `.film-details__user-rating`
+  ).innerText = `Your rate ${personalRating}`;
+  const commentsFiled = popUpTemplate.querySelector(
+    `.film-details__comments-list`
+  );
+
+  for (let comment of comments) {
+    commentsFiled.appendChild(createComment(comment));
+  }
+  const ratingValueButton = popUpTemplate.querySelectorAll(
+    `.film-details__user-rating-input`
+  );
+
+  for (let button of ratingValueButton) {
+    if (parseInt(button.value) === Math.floor(personalRating)) {
+      button.checked = true;
+    }
+  }
+  const filmControls = popUpTemplate.querySelectorAll(
+    ".film-details__control-input"
+  );
+  filmControls[0].checked = watchlist;
+  filmControls[1].checked = watched;
+  filmControls[2].checked = favorite;
+  return popUpTemplate;
+};
+
 export default class Popup extends Component {
   constructor(data) {
     super();
@@ -105,7 +192,10 @@ export default class Popup extends Component {
   }
 
   render() {
-    this._element = this.template;
+    this._element = getTemplate(
+      this._initialFilmData,
+      this.createComment.bind(this)
+    );
     this._addEventListeners();
     this._parentContainer.appendChild(this._element);
   }
@@ -217,73 +307,5 @@ export default class Popup extends Component {
     li.appendChild(span);
     li.appendChild(div);
     return li;
-  }
-
-  get template() {
-    const popUpTemplate = document
-      .querySelector(`.popup-template`)
-      .content.querySelector(`.film-details`)
-      .cloneNode(true);
-    popUpTemplate.querySelector(`.film-details__title`).innerText = this._name;
-    popUpTemplate.querySelector(
-      `.film-details__user-rating-title`
-    ).innerText = this._name;
-    popUpTemplate.querySelector(`.film-details__poster-img`).src = this._poster;
-    popUpTemplate.querySelector(
-      `.film-details__user-rating-img`
-    ).src = this._poster;
-    popUpTemplate.querySelector(
-      `.film-details__title-original`
-    ).innerText = `Original: ${this._alternativeName}`;
-    const filmInfo = popUpTemplate.querySelectorAll(`.film-details__cell`);
-    filmInfo[0].innerText = this._director;
-    filmInfo[1].innerText = this._writers;
-    filmInfo[2].innerText = this._actors;
-    filmInfo[3].innerText = `${moment(this._releaseDate).format(
-      `DD.MM.YYYY`
-    )} (${this._country})`;
-
-    filmInfo[4].innerText = `${this._duration} min`;
-    filmInfo[5].innerText = this._country;
-    filmInfo[6].innerText = this._genre;
-    popUpTemplate.querySelector(
-      `.film-details__film-description`
-    ).innerText = this._descriptionText;
-    popUpTemplate.querySelector(
-      `.film-details__comments-title`
-    ).innerText = `Comments ${this._comments.length}`;
-
-    popUpTemplate.querySelector(`.film-details__age`).innerText = `${
-      this._age_rating
-    }+`;
-    popUpTemplate.querySelector(
-      `.film-details__total-rating`
-    ).innerText = this._totalRaiting;
-    popUpTemplate.querySelector(
-      `.film-details__user-rating`
-    ).innerText = `Your rate ${this._personalRating}`;
-    const commentsFiled = popUpTemplate.querySelector(
-      `.film-details__comments-list`
-    );
-
-    for (let comment of this._comments) {
-      commentsFiled.appendChild(this.createComment(comment));
-    }
-    const ratingValueButton = popUpTemplate.querySelectorAll(
-      `.film-details__user-rating-input`
-    );
-
-    for (let button of ratingValueButton) {
-      if (parseInt(button.value) === Math.floor(this._personalRating)) {
-        button.checked = true;
-      }
-    }
-    const filmControls = popUpTemplate.querySelectorAll(
-      ".film-details__control-input"
-    );
-    filmControls[0].checked = this._watchlist;
-    filmControls[1].checked = this._watched;
-    filmControls[2].checked = this._favorite;
-    return popUpTemplate;
   }
 }
