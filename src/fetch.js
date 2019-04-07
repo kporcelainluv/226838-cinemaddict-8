@@ -28,6 +28,7 @@ const tranform = films => {
     filmInfo.watched = film.user_details.already_watched;
     filmInfo.watchlist = film.user_details.watchlist;
     filmInfo.favorite = film.user_details.favorite;
+    filmInfo.watching_date = film.user_details.watching_date;
     filmInfo.controls = true;
     filmInfo.personalRating = film.user_details.personal_rating;
 
@@ -57,7 +58,7 @@ const toRaw = data => {
   film.film_info.release.date = data.releaseDate;
   film.film_info.release.release_country = data.country;
 
-  film.film_info.duration = data.duration;
+  film.film_info.runtime = data.duration;
   film.film_info.writers = data.writers || [];
   film.comments = data.comments;
 
@@ -65,6 +66,7 @@ const toRaw = data => {
   film.user_details.watchlist = data.watchlist;
   film.user_details.favorite = data.favorite;
   film.user_details.personal_rating = data.personalRating;
+  film.user_details.watching_date = data.watching_date;
   return film;
 };
 const getData = (url, method, body) => {
