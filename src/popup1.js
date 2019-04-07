@@ -101,6 +101,35 @@ const getTemplate = (film, createComment) => {
   return popUpTemplate;
 };
 
+const createComment = comment => {
+  const li = document.createElement("li");
+  li.className = "film-details__comment";
+  const span = document.createElement("span");
+  span.innerText = getEmoji(comment.emotion);
+  span.className = "film-details__comment-emoji";
+  const div = document.createElement("div");
+  const pText = document.createElement("p");
+  pText.className = "film-details__comment-text";
+  const pInfo = document.createElement("p");
+  pInfo.innerText = comment.comment || comment.text;
+  pInfo.className = "film-details__comment-info";
+  const spanAuthor = document.createElement("span");
+  spanAuthor.className = `film-details__comment-author`;
+  spanAuthor.innerText = comment.author;
+  const spanDate = document.createElement("span");
+  spanDate.className = "film-details__comment-day";
+  spanDate.innerText = moment(comment.date)
+    .startOf("day")
+    .fromNow();
+  pInfo.appendChild(spanAuthor);
+  pInfo.appendChild(spanDate);
+  div.appendChild(pText);
+  div.appendChild(pInfo);
+  li.appendChild(span);
+  li.appendChild(div);
+  return li;
+};
+
 export default class Popup extends Component {
   constructor(data) {
     super();
@@ -192,10 +221,7 @@ export default class Popup extends Component {
   }
 
   render() {
-    this._element = getTemplate(
-      this._initialFilmData,
-      this.createComment.bind(this)
-    );
+    this._element = getTemplate(this._initialFilmData, createComment);
     this._addEventListeners();
     this._parentContainer.appendChild(this._element);
   }
@@ -279,33 +305,5 @@ export default class Popup extends Component {
 
     this._onClose = null;
     this._age_rating = data.age_rating;
-  }
-  createComment(comment) {
-    const li = document.createElement("li");
-    li.className = "film-details__comment";
-    const span = document.createElement("span");
-    span.innerText = getEmoji(comment.emotion);
-    span.className = "film-details__comment-emoji";
-    const div = document.createElement("div");
-    const pText = document.createElement("p");
-    pText.className = "film-details__comment-text";
-    const pInfo = document.createElement("p");
-    pInfo.innerText = comment.comment || comment.text;
-    pInfo.className = "film-details__comment-info";
-    const spanAuthor = document.createElement("span");
-    spanAuthor.className = `film-details__comment-author`;
-    spanAuthor.innerText = comment.author;
-    const spanDate = document.createElement("span");
-    spanDate.className = "film-details__comment-day";
-    spanDate.innerText = moment(comment.date)
-      .startOf("day")
-      .fromNow();
-    pInfo.appendChild(spanAuthor);
-    pInfo.appendChild(spanDate);
-    div.appendChild(pText);
-    div.appendChild(pInfo);
-    li.appendChild(span);
-    li.appendChild(div);
-    return li;
   }
 }
