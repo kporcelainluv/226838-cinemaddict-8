@@ -219,6 +219,7 @@ export const render = ({ film, eventHandlers }) => {
   const template = getTemplate(film, createComment);
   addEventListeners(template, eventHandlers);
   smartAppendChild(template);
+  return template;
 };
 
 export const Popup = {

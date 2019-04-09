@@ -3,6 +3,7 @@ import { Popup } from "./popup1.js";
 import { default as Filter } from "./filter.js";
 import { default as Observable } from "./observable";
 import { default as Statistics } from "./statistics.js";
+import { Film } from "./film";
 import Card1 from "./card1";
 
 import { filtersData, FILTER_TYPES } from "./filtersMock.js";
@@ -11,29 +12,6 @@ import { films } from "./data.js";
 import { getFilms, updateServerFilm } from "./fetch.js";
 
 const createFilmCard = (film, container) => {
-  const popupState = new Observable({
-    film,
-    isOpened: false
-  });
-
-  popupState.subscribe(({ film, isOpened }) => {
-    if (isOpened) {
-      Popup.render({
-        film,
-        eventHandlers: {
-          onButtonClose: () => {
-            Popup.unrender();
-          },
-          onUpdateRating: () => {},
-          onAddComment: () => {},
-          onAddToFavourites: () => {},
-          onAddToWatchlist: () => {},
-          onMarkAsWatched: () => {}
-        }
-      });
-    }
-  });
-
   const addControlToFilm = updatedFilm => {
     updateServerFilm(updatedFilm);
     pageState.update(({ allFilms, ...otherData }) => {
@@ -58,11 +36,18 @@ const createFilmCard = (film, container) => {
   const onAddToFavourites = addControlToFilm;
   const loadNextFIveFilms = () => {};
   const onClickToComments = () => {
-    popupState.update(({ film, isOpened }) => {
-      return {
-        film,
-        isOpened: true
-      };
+    const popupElement = Popup.render({
+      film,
+      eventHandlers: {
+        onButtonClose: () => {
+          Popup.unrender();
+        },
+        onUpdateRating: () => {},
+        onAddComment: () => {},
+        onAddToFavourites: () => {},
+        onAddToWatchlist: () => {},
+        onMarkAsWatched: () => {}
+      }
     });
   };
 
