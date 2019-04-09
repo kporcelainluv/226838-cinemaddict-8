@@ -192,173 +192,25 @@ const addEventListeners = (
   watchedBtn.addEventListener(`click`, onMarkAsWatched);
 };
 
-export default class Popup extends Component {
-  constructor(data) {
-    super();
-    this._id = data.id;
-    this._descriptionText = data.descriptionText;
-    this._totalRaiting = data.totalRating;
-    this._actors = data.actors;
-    this._name = data.name;
-    this._director = data.director;
-    this._alternativeName = data.alternativeName;
-    this._genre = data.genre;
-    this._poster = data.poster;
-    this._releaseDate = data.releaseDate;
-    this._country = data.country;
-    this._duration = data.duration;
-    this._writers = data.writers || [];
-    this._comments = data.comments;
-    // [data, text. author, emotion]
-    this._watched = data.watched;
-    this._watchlist = data.watchlist;
-    this._favorite = data.favorite;
-    this._controls = true;
-    this._personalRating = data.personalRating;
+const createSmartAppendChild = () => {
+  let currentTemplate = undefined;
+  const parent = document.querySelector("body");
 
-    this._onClose = null;
-    this._age_rating = data.age_rating;
-
-    this._initialFilmData = data;
-    this._parentContainer = document.querySelector(`body`);
-
-    this._onButtonClose = this._onButtonClose.bind(this);
-    this._onUpdateRating = this._onUpdateRating.bind(this);
-    this._AddComment = this._AddComment.bind(this);
-  }
-
-  set onClose(f) {
-    this._onClose = f;
-  }
-  _onButtonClose(event) {
-    const newData = {
-      ...this._initialFilmData,
-      personalRating: this._personalRating,
-      comments: this._comments
-    };
-    if (typeof this._onClose === `function`) {
-      this._onClose(newData);
+  const smartAppendChild = template => {
+    if (currentTemplate) {
+      parent.removeChild(currentTemplate);
     }
-    this.update(newData);
-  }
+    parent.appendChild(template);
+    currentTemplate = template;
+  };
 
-  set onAddComment(f) {
-    this._onAddComment = f;
-  }
+  return smartAppendChild;
+};
 
-  _AddComment(event) {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const newCommnent = formData.get(`comment`);
-    const emoji = formData.get(`comment-emoji`);
-    this._comments = [
-      ...this._comments,
-      {
-        text: newCommnent,
-        data: parseInt(moment(Date.now()).format("x")),
-        author: "You",
-        emotion: emoji
-      }
-    ];
-    const newData = {
-      ...this._initialFilmData,
-      personalRating: this._personalRating,
-      comments: this._comments
-    };
-    if (typeof this._onAddComment === `function`) {
-      this._onAddComment(newData);
-    }
-  }
+const smartAppendChild = createSmartAppendChild();
 
-  _onUpdateRating(event) {
-    event.preventDefault();
-    this._personalRating = event.target.value;
-  }
-
-  render() {
-    this._element = getTemplate(this._initialFilmData, createComment);
-    this._addEventListeners();
-    this._parentContainer.appendChild(this._element);
-  }
-
-  unrender() {
-    this._removeEventListeners();
-    this._parentContainer.removeChild(this._element);
-    this._element = null;
-  }
-
-  _addEventListeners() {
-    const popUpClose = this._element.querySelector(`.film-details__close-btn`);
-    popUpClose.addEventListener(`click`, this._onButtonClose);
-
-    const formUpdateRating = this._element.querySelectorAll(
-      `.film-details__user-rating-input`
-    );
-    for (let rating of formUpdateRating) {
-      rating.addEventListener(`click`, this._onUpdateRating);
-    }
-
-    const formAddComment = this._element.querySelector(
-      `.film-details__new-comment`
-    );
-    formAddComment.addEventListener(`submit`, this._AddComment);
-
-    const favoritesBtn = this._element.querySelector(
-      `.film-details__control-label--favorite`
-    );
-    favoritesBtn.addEventListener(`click`, e => {
-      e.preventDefault();
-      onAddToFavourites({
-        ...this._initialFilmData,
-        favorite: !this._favorite
-      });
-    });
-
-    const watchlistBtn = this._element.querySelector(
-      `.film-details__control-label--watchlist`
-    );
-    watchlistBtn.addEventListener(`click`, e => {
-      e.preventDefault();
-      onAddToWatchList({
-        ...this._initialFilmData,
-        watchlist: !this._watchlist
-      });
-    });
-
-    const watchedBtn = this._element.querySelector(
-      `.film-details__control-label--watched`
-    );
-    watchedBtn.addEventListener(`click`, e => {
-      e.preventDefault();
-      onMarkAsWatched({
-        ...this._initialFilmData,
-        watched: !this._watched
-      });
-    });
-  }
-  update(data) {
-    this._id = data.id;
-    this._descriptionText = data.descriptionText;
-    this._totalRaiting = data.totalRating;
-    this._actors = data.actors;
-    this._name = data.name;
-    this._director = data.director;
-    this._alternativeName = data.alternativeName;
-    this._genre = data.genre;
-    this._poster = data.poster;
-    this._releaseDate = data.releaseDate;
-    this._country = data.country;
-    this._duration = data.duration;
-    this._writers = data.writers || [];
-    this._comments = data.comments;
-    // [data, text. author, emotion]
-    this._watched = data.watched;
-    this._watchlist = data.watchlist;
-    this._favorite = data.favorite;
-    this._controls = true;
-    this._personalRating = data.personalRating;
-
-    this._onClose = null;
-    this._age_rating = data.age_rating;
-  }
-}
+export const render = ({ film, eventHandlers }) => {
+  const template = getTemplate(film, createComment);
+  addEventListeners(template, eventHandlers);
+  smartAppendChild(template);
+};
