@@ -3,7 +3,6 @@ import "whatwg-fetch";
 import { tranform, toRaw } from "./transformers.js";
 
 const getData = (url, method, body) => {
-  const headers = new Headers();
   headers.append("Authorization", "Basic yukz590ik29889a");
   return window
     .fetch(`https://es8-demo-srv.appspot.com/moowle/${url}`, {
@@ -47,3 +46,7 @@ const addComment = ({ id, data }) => {};
 const addRating = ({ id, data }) => {};
 
 export { getFilms, updateServerFilm };
+
+export const API = {
+  updateServerFilm
+};
