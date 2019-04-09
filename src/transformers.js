@@ -18,10 +18,6 @@ export const tranform = films => {
     filmInfo.duration = film.film_info.runtime;
     filmInfo.writers = film.film_info.writers || film.film_info.writes || [];
     filmInfo.comments = film.comments;
-    filmInfo.comments.data = film.comments.date;
-    filmInfo.comments.text = film.comments.comment;
-    filmInfo.comments.author = film.comments.author;
-    filmInfo.comments.emotion = film.comments.emotion;
 
     filmInfo.watched = film.user_details.already_watched;
     filmInfo.watchlist = film.user_details.watchlist;
