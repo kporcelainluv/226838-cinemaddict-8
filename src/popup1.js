@@ -141,8 +141,8 @@ const createComment = comment => {
 
 const createUserComment = ({ text, emotion }) => {
   return {
-    text,
-    data: parseInt(moment(Date.now()).format("x")),
+    comment: text,
+    date: parseInt(moment(Date.now()).format("x")),
     author: "You",
     emotion
   };
