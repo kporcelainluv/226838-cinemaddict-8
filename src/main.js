@@ -36,7 +36,7 @@ const createFilmCard = (film, container) => {
   const onAddToFavourites = addControlToFilm;
   const loadNextFIveFilms = () => {};
   const onClickToComments = () => {
-    const popupElement = Popup.render({
+    const { updateRating } = Popup.render({
       film,
       eventHandlers: {
         onButtonClose: () => {
@@ -44,7 +44,10 @@ const createFilmCard = (film, container) => {
         },
         onUpdateRating: () => {},
         onAddComment: () => {},
-        onAddToFavourites: () => {},
+        onAddToFavourites: () => {
+          const newFilm = Film.updatePersonalRating(5, film);
+          updateRating(newFilm);
+        },
         onAddToWatchlist: () => {},
         onMarkAsWatched: () => {}
       }

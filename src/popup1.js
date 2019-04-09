@@ -1,4 +1,5 @@
 import { default as Component } from "./component.js";
+import { Film } from "./film";
 import moment from "moment";
 
 const getEmoji = key => {
@@ -12,6 +13,13 @@ const getEmoji = key => {
     default:
       return ``;
   }
+};
+
+const updateRating = template => film => {
+  const personalRating = Film.getPersonalRating(film);
+  template.querySelector(
+    `.film-details__user-rating`
+  ).innerText = `Your rate ${personalRating}`;
 };
 
 const getTemplate = (film, createComment) => {
@@ -74,9 +82,9 @@ const getTemplate = (film, createComment) => {
   popUpTemplate.querySelector(
     `.film-details__total-rating`
   ).innerText = totalRating;
-  popUpTemplate.querySelector(
-    `.film-details__user-rating`
-  ).innerText = `Your rate ${personalRating}`;
+
+  updateRating(popUpTemplate)(film);
+
   const commentsFiled = popUpTemplate.querySelector(
     `.film-details__comments-list`
   );
@@ -217,11 +225,15 @@ const createSmartAppendChild = () => {
 
 const [smartAppendChild, smartRemoveChild] = createSmartAppendChild();
 
+const updateComments = () => {
+  console.log("update comments");
+};
+
 export const render = ({ film, eventHandlers }) => {
   const template = getTemplate(film, createComment);
   addEventListeners(template, eventHandlers);
   smartAppendChild(template);
-  return template;
+  return { updateRating: updateRating(template), updateComments: () => {} };
 };
 
 export const Popup = {
