@@ -1,6 +1,7 @@
 export const tranform = films => {
   const arr = [];
   for (let film of films) {
+    console.log(film);
     let filmInfo = {};
     filmInfo.id = film.id;
     filmInfo.descriptionText = film.film_info.description;
@@ -18,7 +19,6 @@ export const tranform = films => {
     filmInfo.duration = film.film_info.runtime;
     filmInfo.writers = film.film_info.writers || film.film_info.writes || [];
     filmInfo.comments = film.comments;
-
     filmInfo.watched = film.user_details.already_watched;
     filmInfo.watchlist = film.user_details.watchlist;
     filmInfo.favorite = film.user_details.favorite;
@@ -46,14 +46,13 @@ export const toRaw = data => {
   film.film_info.title = data.name;
   film.film_info.director = data.director;
   film.film_info.alternative_title = data.alternativeName;
-  film.film_info.director = data.director;
   film.film_info.genre = data.genre;
   film.film_info.poster = data.poster;
   film.film_info.release.date = data.releaseDate;
   film.film_info.release.release_country = data.country;
-
   film.film_info.runtime = data.duration;
   film.film_info.writers = data.writers || [];
+
   film.comments = data.comments;
 
   film.user_details.already_watched = data.watched;
