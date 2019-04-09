@@ -4,6 +4,7 @@ import { default as Filter } from "./filter.js";
 import { default as Observable } from "./observable";
 import { default as Statistics } from "./statistics.js";
 import { Film } from "./film";
+import { API } from "./fetch";
 import Card1 from "./card1";
 
 import { filtersData, FILTER_TYPES } from "./filtersMock.js";
@@ -43,7 +44,12 @@ const createFilmCard = (film, container) => {
           Popup.unrender();
         },
         onUpdateRating: () => {},
-        onAddComment: () => {},
+        onAddComment: newComment => {
+          const newFilm = Film.addComment(newComment, film);
+          API.updateServerFilm(newFilm).then(res => {
+            console.log(res);
+          });
+        },
         onAddToFavourites: () => {
           const newFilm = Film.updatePersonalRating(5, film);
           updateRating(newFilm);
