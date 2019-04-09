@@ -204,10 +204,16 @@ const createSmartAppendChild = () => {
     currentTemplate = template;
   };
 
-  return smartAppendChild;
+  const smartRemoveChild = () => {
+    if (currentTemplate) {
+      parent.removeChild(currentTemplate);
+    }
+  };
+
+  return [smartAppendChild, smartRemoveChild];
 };
 
-const smartAppendChild = createSmartAppendChild();
+const [smartAppendChild, smartRemoveChild] = createSmartAppendChild();
 
 export const render = ({ film, eventHandlers }) => {
   const template = getTemplate(film, createComment);
@@ -216,5 +222,6 @@ export const render = ({ film, eventHandlers }) => {
 };
 
 export const Popup = {
-  render
+  render,
+  unrender: smartRemoveChild
 };

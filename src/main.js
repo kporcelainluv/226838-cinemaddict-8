@@ -18,7 +18,19 @@ const createFilmCard = (film, container) => {
 
   popupState.subscribe(({ film, isOpened }) => {
     if (isOpened) {
-      Popup.render({ film, eventHandlers: {} });
+      Popup.render({
+        film,
+        eventHandlers: {
+          onButtonClose: () => {
+            Popup.unrender();
+          },
+          onUpdateRating: () => {},
+          onAddComment: () => {},
+          onAddToFavourites: () => {},
+          onAddToWatchlist: () => {},
+          onMarkAsWatched: () => {}
+        }
+      });
     }
   });
 
