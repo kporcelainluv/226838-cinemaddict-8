@@ -1,5 +1,5 @@
 import { default as Card } from "./card.js";
-import { default as Popup } from "./popup1.js";
+import { Popup } from "./popup1.js";
 import { default as Filter } from "./filter.js";
 import { default as Observable } from "./observable";
 import { default as Statistics } from "./statistics.js";
@@ -11,6 +11,17 @@ import { films } from "./data.js";
 import { getFilms, updateServerFilm } from "./fetch.js";
 
 const createFilmCard = (film, container) => {
+  const popupState = new Observable({
+    film,
+    isOpened: false
+  });
+
+  popupState.subscribe(({ film, isOpened }) => {
+    if (isOpened) {
+      Popup.render({ film, eventHandlers: {} });
+    }
+  });
+
   const addControlToFilm = updatedFilm => {
     updateServerFilm(updatedFilm);
     pageState.update(({ allFilms, ...otherData }) => {
@@ -35,14 +46,12 @@ const createFilmCard = (film, container) => {
   const onAddToFavourites = addControlToFilm;
   const loadNextFIveFilms = () => {};
   const onClickToComments = () => {
-    const myPopUp = new Popup(film);
-    myPopUp.render();
-    myPopUp.onClose = updatedFilm => {
-      myPopUp.unrender();
-      addControlToFilm(updatedFilm);
-    };
-    myPopUp.onAddComment = updateServerFilm;
-    myPopUp.onAddToWatchList = addControlToFilm;
+    popupState.update(({ film, isOpened }) => {
+      return {
+        film,
+        isOpened: true
+      };
+    });
   };
 
   const filmCard = Card1.render(

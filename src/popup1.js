@@ -214,3 +214,7 @@ export const render = ({ film, eventHandlers }) => {
   addEventListeners(template, eventHandlers);
   smartAppendChild(template);
 };
+
+export const Popup = {
+  render
+};
