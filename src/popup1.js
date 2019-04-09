@@ -40,6 +40,7 @@ const getTemplate = (film, createComment) => {
     .querySelector(`.popup-template`)
     .content.querySelector(`.film-details`)
     .cloneNode(true);
+
   popUpTemplate.querySelector(`.film-details__title`).innerText = name;
   popUpTemplate.querySelector(
     `.film-details__user-rating-title`
@@ -207,6 +208,7 @@ const createSmartAppendChild = () => {
   const smartRemoveChild = () => {
     if (currentTemplate) {
       parent.removeChild(currentTemplate);
+      currentTemplate = undefined;
     }
   };
 
