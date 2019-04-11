@@ -5,5 +5,9 @@ export const Film = {
   updatePersonalRating: (newPersonalRating, film) => ({
     ...film,
     personalRating: newPersonalRating
+  }),
+  addComment: (newComment, film) => ({
+    ...film,
+    comments: [...film.comments, newComment]
   })
 };
