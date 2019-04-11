@@ -10,5 +10,32 @@ export const Film = {
     ...film,
     comments: [...film.comments, newComment]
   }),
-  getComments: film => film.comments
+  getComments: film => film.comments,
+  toggleWatched: film => {
+    return {
+      ...film,
+      watched: !film.watched
+    };
+  },
+  toggleWatched: film => {
+    return {
+      ...film,
+      watched: !film.watched
+    };
+  },
+  toggleFavorite: film => {
+    return {
+      ...film,
+      favorite: !film.favorite
+    };
+  },
+  toggleWatchlist: film => {
+    return {
+      ...film,
+      watchlist: !film.watchlist
+    };
+  },
+  equals: (f1, f2) => {
+    return f1.id === f2.id;
+  }
 };

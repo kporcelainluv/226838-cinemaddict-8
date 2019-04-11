@@ -12,7 +12,7 @@ import { films } from "./data.js";
 
 import { getFilms, updateServerFilm } from "./fetch.js";
 
-const createFilmCard = (film, container) => {
+const createFilmCard = (film, container, pageState) => {
   const addControlToFilm = updatedFilm => {
     updateServerFilm(updatedFilm);
     pageState.update(({ allFilms, ...otherData }) => {
@@ -37,6 +37,8 @@ const createFilmCard = (film, container) => {
   const onAddToFavourites = addControlToFilm;
   const loadNextFIveFilms = () => {};
   const onClickToComments = () => {
+    let filmState = film;
+
     const {
       updateRating,
       addComment,
@@ -48,6 +50,19 @@ const createFilmCard = (film, container) => {
       eventHandlers: {
         onButtonClose: () => {
           Popup.unrender();
+          pageState.update(state => {
+            const updatedAllFilms = state.allFilms.map(f => {
+              if (Film.equals(f, filmState)) {
+                return filmState;
+              }
+              return f;
+            });
+
+            return {
+              ...state,
+              allFilms: updatedAllFilms
+            };
+          });
         },
         onUpdateRating: () => {},
         onAddComment: newComment => {
@@ -57,17 +72,25 @@ const createFilmCard = (film, container) => {
           API.updateServerFilm(newFilm)
             .then(() => {
               addComment(newComment, newFilm);
+              filmState = newFilm;
             })
             .catch(() => {
               showError();
             });
         },
-        onAddToFavourites: () => {
+        onToggleFavorites: () => {
           const newFilm = Film.updatePersonalRating(5, film);
           updateRating(newFilm);
         },
-        onAddToWatchlist: () => {},
-        onMarkAsWatched: () => {}
+        onAddToFavourites: () => {
+          filmState = Film.toggleFavorite(filmState);
+        },
+        onAddToWatchlist: () => {
+          filmState = Film.toggleWatchlist(filmState);
+        },
+        onMarkAsWatched: () => {
+          filmState = Film.toggleWatched(filmState);
+        }
       }
     });
   };
@@ -85,9 +108,9 @@ const createFilmCard = (film, container) => {
   );
 };
 
-const createFilmBoard = (films, container) => {
+const createFilmBoard = (films, container, pageState) => {
   for (let film of films) {
-    createFilmCard(film, container);
+    createFilmCard(film, container, pageState);
   }
 };
 
@@ -147,7 +170,7 @@ const createPage = (allFilms, filterType, container, pageState) => {
       });
     };
   });
-  createFilmBoard(films, container);
+  createFilmBoard(films, container, pageState);
 };
 
 const moviesCategoeriesContainers = Array.from(
