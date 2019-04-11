@@ -3,7 +3,8 @@ import { Film } from "./film";
 import moment from "moment";
 
 const Template = {
-  getCommentInput: t => t.querySelector(`.film-details__comment-input`)
+  getCommentInput: t => t.querySelector(`.film-details__comment-input`),
+  getCommentsTitleElm: t => t.querySelector(`.film-details__comments-title`)
 };
 
 const getEmoji = key => {
@@ -24,6 +25,13 @@ const updateRating = template => film => {
   template.querySelector(
     `.film-details__user-rating`
   ).innerText = `Your rate ${personalRating}`;
+};
+
+const updateCommentsTitle = template => film => {
+  const comments = Film.getComments(film);
+  Template.getCommentsTitleElm(template).innerText = `Comments ${
+    comments.length
+  }`;
 };
 
 const getTemplate = (film, createComment) => {
@@ -76,9 +84,7 @@ const getTemplate = (film, createComment) => {
   popUpTemplate.querySelector(
     `.film-details__film-description`
   ).innerText = descriptionText;
-  popUpTemplate.querySelector(
-    `.film-details__comments-title`
-  ).innerText = `Comments ${comments.length}`;
+  updateCommentsTitle(popUpTemplate)(film);
 
   popUpTemplate.querySelector(
     `.film-details__age`
@@ -237,7 +243,8 @@ const hideError = template => () => {
   Template.getCommentInput(template).classList.remove("shake", "input-error");
 };
 
-const addComment = template => comment => {
+const addComment = template => (comment, film) => {
+  updateCommentsTitle(template)(film);
   Template.getCommentInput(template).disabled = false;
 
   const commentsFiled = template.querySelector(`.film-details__comments-list`);

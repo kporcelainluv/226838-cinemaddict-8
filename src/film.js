@@ -9,5 +9,6 @@ export const Film = {
   addComment: (newComment, film) => ({
     ...film,
     comments: [...film.comments, newComment]
-  })
+  }),
+  getComments: film => film.comments
 };

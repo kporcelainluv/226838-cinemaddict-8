@@ -56,7 +56,7 @@ const createFilmCard = (film, container) => {
           const newFilm = Film.addComment(newComment, film);
           API.updateServerFilm(newFilm)
             .then(() => {
-              addComment(newComment);
+              addComment(newComment, newFilm);
             })
             .catch(() => {
               showError();
