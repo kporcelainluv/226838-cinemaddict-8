@@ -238,8 +238,7 @@ const hideError = template => () => {
 };
 
 const addComment = template => comment => {
-  hideError(template)();
-  commentInput.disabled = false;
+  Template.getCommentInput(template).disabled = false;
 
   const commentsFiled = template.querySelector(`.film-details__comments-list`);
   commentsFiled.appendChild(createComment(comment));
@@ -258,7 +257,9 @@ export const render = ({ film, eventHandlers }) => {
   return {
     updateRating: updateRating(template),
     addComment: addComment(template),
-    showError: showError(template)
+    showError: showError(template),
+    hideError: hideError(template),
+    disableCommentForm: disableCommentForm(template)
   };
 };
 

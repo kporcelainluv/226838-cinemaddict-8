@@ -38,9 +38,7 @@ const updateServerFilm = data => {
   const url = `movies/${data.id}`;
   const method = `PUT`;
   const body = JSON.stringify(toRaw(data));
-  return getData(url, method, body).then(response => {
-    return response.status;
-  });
+  return getData(url, method, body);
 };
 
 const addComment = ({ id, data }) => {};

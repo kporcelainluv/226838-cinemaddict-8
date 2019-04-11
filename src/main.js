@@ -37,7 +37,13 @@ const createFilmCard = (film, container) => {
   const onAddToFavourites = addControlToFilm;
   const loadNextFIveFilms = () => {};
   const onClickToComments = () => {
-    const { updateRating } = Popup.render({
+    const {
+      updateRating,
+      addComment,
+      showError,
+      hideError,
+      disableCommentForm
+    } = Popup.render({
       film,
       eventHandlers: {
         onButtonClose: () => {
@@ -45,10 +51,16 @@ const createFilmCard = (film, container) => {
         },
         onUpdateRating: () => {},
         onAddComment: newComment => {
+          hideError();
+          disableCommentForm();
           const newFilm = Film.addComment(newComment, film);
-          API.updateServerFilm(newFilm).then(res => {
-            console.log(res);
-          });
+          API.updateServerFilm(newFilm)
+            .then(() => {
+              addComment(newComment);
+            })
+            .catch(() => {
+              showError();
+            });
         },
         onAddToFavourites: () => {
           const newFilm = Film.updatePersonalRating(5, film);
