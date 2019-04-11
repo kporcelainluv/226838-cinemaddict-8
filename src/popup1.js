@@ -4,7 +4,8 @@ import moment from "moment";
 
 const Template = {
   getCommentInput: t => t.querySelector(`.film-details__comment-input`),
-  getCommentsTitleElm: t => t.querySelector(`.film-details__comments-title`)
+  getCommentsTitleElm: t => t.querySelector(`.film-details__comments-title`),
+  getUserRatingElm: t => t.querySelector(`.film-details__user-rating-wrap`)
 };
 
 const getEmoji = key => {
@@ -18,6 +19,14 @@ const getEmoji = key => {
     default:
       return ``;
   }
+};
+
+const hideUserRating = template => {
+  Template.getUserRatingElm(template).classList.add("visually-hidden");
+};
+
+const showUserRating = template => {
+  Template.getUserRatingElm(template).classList.remove("visually-hidden");
 };
 
 const updateRating = template => film => {
@@ -117,6 +126,9 @@ const getTemplate = (film, createComment) => {
   filmControls[0].checked = watchlist;
   filmControls[1].checked = watched;
   filmControls[2].checked = favorite;
+  if (!Film.hasUserComments(film)) {
+    hideUserRating(popUpTemplate);
+  }
   return popUpTemplate;
 };
 
@@ -244,6 +256,7 @@ const hideError = template => () => {
 };
 
 const addComment = template => (comment, film) => {
+  showUserRating(template);
   updateCommentsTitle(template)(film);
   Template.getCommentInput(template).disabled = false;
 

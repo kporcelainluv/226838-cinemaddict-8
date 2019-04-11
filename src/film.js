@@ -37,5 +37,8 @@ export const Film = {
   },
   equals: (f1, f2) => {
     return f1.id === f2.id;
+  },
+  hasUserComments: film => {
+    return film.comments.some(f => f.author === `You`);
   }
 };
