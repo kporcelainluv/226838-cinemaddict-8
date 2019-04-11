@@ -3,6 +3,8 @@ import "whatwg-fetch";
 import { tranform, toRaw } from "./transformers.js";
 
 const getData = (url, method, body) => {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
   headers.append("Authorization", "Basic yukz590ik29889a");
   return window
     .fetch(`https://es8-demo-srv.appspot.com/moowle/${url}`, {
