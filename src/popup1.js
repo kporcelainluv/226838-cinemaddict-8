@@ -189,8 +189,7 @@ const addEventListeners = (
   );
   for (let rating of formUpdateRating) {
     rating.addEventListener(`click`, e => {
-      const selectedRating = 8;
-      onUpdateRating(selectedRating);
+      onUpdateRating(Number(e.target.value));
     });
   }
 

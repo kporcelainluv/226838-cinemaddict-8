@@ -64,11 +64,14 @@ const createFilmCard = (film, container, pageState) => {
             };
           });
         },
-        onUpdateRating: () => {},
+        onUpdateRating: newRating => {
+          filmState = Film.updatePersonalRating(newRating, filmState);
+          updateRating(filmState);
+        },
         onAddComment: newComment => {
           hideError();
           disableCommentForm();
-          const newFilm = Film.addComment(newComment, film);
+          const newFilm = Film.addComment(newComment, filmState);
           API.updateServerFilm(newFilm)
             .then(() => {
               addComment(newComment, newFilm);
@@ -77,10 +80,6 @@ const createFilmCard = (film, container, pageState) => {
             .catch(() => {
               showError();
             });
-        },
-        onToggleFavorites: () => {
-          const newFilm = Film.updatePersonalRating(5, film);
-          updateRating(newFilm);
         },
         onAddToFavourites: () => {
           filmState = Film.toggleFavorite(filmState);
