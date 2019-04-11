@@ -2,6 +2,10 @@ import { default as Component } from "./component.js";
 import { Film } from "./film";
 import moment from "moment";
 
+const Template = {
+  getCommentInput: t => t.querySelector(`.film-details__comment-input`)
+};
+
 const getEmoji = key => {
   switch (key) {
     case `sleeping`:
@@ -225,15 +229,37 @@ const createSmartAppendChild = () => {
 
 const [smartAppendChild, smartRemoveChild] = createSmartAppendChild();
 
-const updateComments = () => {
-  console.log("update comments");
+const showError = template => () => {
+  Template.getCommentInput(template).classList.add("shake", "input-error");
+};
+
+const hideError = template => () => {
+  Template.getCommentInput(template).classList.remove("shake", "input-error");
+};
+
+const addComment = template => comment => {
+  hideError(template)();
+  commentInput.disabled = false;
+
+  const commentsFiled = template.querySelector(`.film-details__comments-list`);
+  commentsFiled.appendChild(createComment(comment));
+
+  Template.getCommentInput(template).value = "";
+};
+
+const disableCommentForm = template => () => {
+  Template.getCommentInput(template).disabled = true;
 };
 
 export const render = ({ film, eventHandlers }) => {
   const template = getTemplate(film, createComment);
   addEventListeners(template, eventHandlers);
   smartAppendChild(template);
-  return { updateRating: updateRating(template), updateComments: () => {} };
+  return {
+    updateRating: updateRating(template),
+    addComment: addComment(template),
+    showError: showError(template)
+  };
 };
 
 export const Popup = {
