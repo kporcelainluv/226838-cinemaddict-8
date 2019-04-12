@@ -69,7 +69,10 @@ const createCard = ({
   releaseDate,
   duration,
   comments,
-  genre
+  genre,
+  watched,
+  watchlist,
+  favorite
 }) => {
   const card = document
     .querySelector(`.card-template`)
@@ -114,6 +117,9 @@ const createCard = ({
 
   const commentsButton = card.querySelector(`.film-card__comments`);
   commentsButton.textContent = `${comments.length} comments`;
+
+  const filmsAmount = document.querySelector(`.footer__statistics`);
+  filmsAmount.innerText = `${Number(id) + 1} movies inside`;
   return card;
 };
 
