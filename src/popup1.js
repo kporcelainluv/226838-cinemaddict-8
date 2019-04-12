@@ -142,7 +142,7 @@ const createComment = comment => {
   const pText = document.createElement("p");
   pText.className = "film-details__comment-text";
   const pInfo = document.createElement("p");
-  pInfo.innerText = comment.comment || comment.text;
+  pText.innerText = comment.comment || comment.text;
   pInfo.className = "film-details__comment-info";
   const spanAuthor = document.createElement("span");
   spanAuthor.className = `film-details__comment-author`;
