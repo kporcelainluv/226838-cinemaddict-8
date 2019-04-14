@@ -254,18 +254,38 @@ const createSmartAppendChild = () => {
   let currentTemplate = undefined;
   const parent = document.querySelector("body");
 
+  const clear = () => {
+    parent.removeChild(currentTemplate);
+    currentTemplate = undefined;
+    removeListener();
+  };
+
+  const onEscPress = evt => {
+    if (evt.keyCode == 27) {
+      clear();
+    }
+  };
+
+  const removeListener = () => {
+    window.removeEventListener("keydown", onEscPress);
+  };
+
+  const addListener = () => {
+    window.addEventListener("keydown", onEscPress);
+  };
+
   const smartAppendChild = template => {
     if (currentTemplate) {
-      parent.removeChild(currentTemplate);
+      clear();
     }
     parent.appendChild(template);
     currentTemplate = template;
+    addListener();
   };
 
   const smartRemoveChild = () => {
     if (currentTemplate) {
-      parent.removeChild(currentTemplate);
-      currentTemplate = undefined;
+      clear();
     }
   };
 
