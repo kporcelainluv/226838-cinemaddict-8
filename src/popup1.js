@@ -7,7 +7,8 @@ const Template = {
   getCommentsTitleElm: t => t.querySelector(`.film-details__comments-title`),
   getUserRatingElm: t => t.querySelector(`.film-details__user-rating-wrap`),
   getUndoBtn: t => t.querySelector(`.film-details__watched-reset`),
-  getCommentListElm: t => t.querySelector(`.film-details__comments-list`)
+  getCommentListElm: t => t.querySelector(`.film-details__comments-list`),
+  getWatchedStatusElm: t => t.querySelector(`.film-details__watched-status`)
 };
 
 const getEmoji = key => {
@@ -52,6 +53,23 @@ const addComments = template => film => {
 
   for (let comment of comments) {
     commentListElm.appendChild(createComment(comment));
+  }
+};
+
+const displayWatchedStatus = template => film => {
+  const statusElm = Template.getWatchedStatusElm(template);
+  const isWatched = Film.isWatched(film);
+  const hasActiveClass = statusElm.classList.contains(
+    `film-details__watched-status--active`
+  );
+
+  statusElm.innerText = isWatched ? `Already watched` : `To watch`;
+
+  if (isWatched && !hasActiveClass) {
+    statusElm.classList.add(`film-details__watched-status--active`);
+  }
+  if (!isWatched && hasActiveClass) {
+    statusElm.classList.remove(`film-details__watched-status--active`);
   }
 };
 
@@ -116,6 +134,7 @@ const getTemplate = (film, createComment) => {
 
   updateRating(popUpTemplate)(film);
   addComments(popUpTemplate)(film);
+  displayWatchedStatus(popUpTemplate)(film);
 
   const ratingValueButton = popUpTemplate.querySelectorAll(
     `.film-details__user-rating-input`
@@ -293,7 +312,8 @@ export const render = ({ film, eventHandlers }) => {
     showError: showError(template),
     hideError: hideError(template),
     disableCommentForm: disableCommentForm(template),
-    refreshComments: refreshComments(template)
+    refreshComments: refreshComments(template),
+    updateWatchedStatus: displayWatchedStatus(template)
   };
 };
 
