@@ -1,6 +1,6 @@
 export default class Observable {
   constructor(data) {
-    this._data = data;
+    this.value = data;
     this._observers = [];
   }
 
@@ -13,11 +13,11 @@ export default class Observable {
   }
 
   update(f) {
-    this._data = f(this._data);
+    this.value = f(this.value);
     this.notify();
   }
 
   notify() {
-    this._observers.forEach(observer => observer(this._data));
+    this._observers.forEach(observer => observer(this.value));
   }
 }
