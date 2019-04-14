@@ -5,7 +5,9 @@ import moment from "moment";
 const Template = {
   getCommentInput: t => t.querySelector(`.film-details__comment-input`),
   getCommentsTitleElm: t => t.querySelector(`.film-details__comments-title`),
-  getUserRatingElm: t => t.querySelector(`.film-details__user-rating-wrap`)
+  getUserRatingElm: t => t.querySelector(`.film-details__user-rating-wrap`),
+  getUndoBtn: t => t.querySelector(`.film-details__watched-reset`),
+  getCommentListElm: t => t.querySelector(`.film-details__comments-list`)
 };
 
 const getEmoji = key => {
@@ -41,6 +43,16 @@ const updateCommentsTitle = template => film => {
   Template.getCommentsTitleElm(template).innerText = `Comments ${
     comments.length
   }`;
+};
+
+const addComments = template => film => {
+  const comments = film.comments;
+  const commentListElm = Template.getCommentListElm(template);
+  commentListElm.innerText = "";
+
+  for (let comment of comments) {
+    commentListElm.appendChild(createComment(comment));
+  }
 };
 
 const getTemplate = (film, createComment) => {
@@ -103,14 +115,8 @@ const getTemplate = (film, createComment) => {
   ).innerText = totalRating;
 
   updateRating(popUpTemplate)(film);
+  addComments(popUpTemplate)(film);
 
-  const commentsFiled = popUpTemplate.querySelector(
-    `.film-details__comments-list`
-  );
-
-  for (let comment of comments) {
-    commentsFiled.appendChild(createComment(comment));
-  }
   const ratingValueButton = popUpTemplate.querySelectorAll(
     `.film-details__user-rating-input`
   );
@@ -178,7 +184,8 @@ const addEventListeners = (
     onAddComment,
     onAddToFavourites,
     onAddToWatchlist,
-    onMarkAsWatched
+    onMarkAsWatched,
+    onClickUndo
   }
 ) => {
   const popUpClose = template.querySelector(`.film-details__close-btn`);
@@ -220,6 +227,8 @@ const addEventListeners = (
     `.film-details__control-label--watched`
   );
   watchedBtn.addEventListener(`click`, onMarkAsWatched);
+
+  Template.getUndoBtn(template).addEventListener(`click`, onClickUndo);
 };
 
 const createSmartAppendChild = () => {
@@ -269,6 +278,11 @@ const disableCommentForm = template => () => {
   Template.getCommentInput(template).disabled = true;
 };
 
+const refreshComments = template => film => {
+  updateCommentsTitle(template)(film);
+  addComments(template)(film);
+};
+
 export const render = ({ film, eventHandlers }) => {
   const template = getTemplate(film, createComment);
   addEventListeners(template, eventHandlers);
@@ -278,7 +292,8 @@ export const render = ({ film, eventHandlers }) => {
     addComment: addComment(template),
     showError: showError(template),
     hideError: hideError(template),
-    disableCommentForm: disableCommentForm(template)
+    disableCommentForm: disableCommentForm(template),
+    refreshComments: refreshComments(template)
   };
 };
 

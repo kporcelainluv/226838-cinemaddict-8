@@ -44,7 +44,8 @@ const createFilmCard = (film, container, pageState) => {
       addComment,
       showError,
       hideError,
-      disableCommentForm
+      disableCommentForm,
+      refreshComments
     } = Popup.render({
       film,
       eventHandlers: {
@@ -89,6 +90,10 @@ const createFilmCard = (film, container, pageState) => {
         },
         onMarkAsWatched: () => {
           filmState = Film.toggleWatched(filmState);
+        },
+        onClickUndo: () => {
+          filmState = Film.removeUserComments(filmState);
+          refreshComments(filmState);
         }
       }
     });

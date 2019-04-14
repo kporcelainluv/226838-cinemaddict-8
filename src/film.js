@@ -40,5 +40,16 @@ export const Film = {
   },
   hasUserComments: film => {
     return film.comments.some(f => f.author === `You`);
+  },
+  removeUserComments: film => {
+    return {
+      ...film,
+      comments: film.comments.filter(comment => {
+        if (comment.author === "You") {
+          return false;
+        }
+        return true;
+      })
+    };
   }
 };
