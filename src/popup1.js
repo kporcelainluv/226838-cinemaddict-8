@@ -8,7 +8,8 @@ const Template = {
   getUserRatingElm: t => t.querySelector(`.film-details__user-rating-wrap`),
   getUndoBtn: t => t.querySelector(`.film-details__watched-reset`),
   getCommentListElm: t => t.querySelector(`.film-details__comments-list`),
-  getWatchedStatusElm: t => t.querySelector(`.film-details__watched-status`)
+  getWatchedStatusElm: t => t.querySelector(`.film-details__watched-status`),
+  getCommentForm: t => t.querySelector(`.film-details__new-comment`)
 };
 
 const getEmoji = key => {
@@ -219,19 +220,6 @@ const addEventListeners = (
     });
   }
 
-  const formAddComment = template.querySelector(`.film-details__new-comment`);
-  formAddComment.addEventListener(`submit`, e => {
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
-    const [text, emotion] = [
-      formData.get(`comment`),
-      formData.get(`comment-emoji`)
-    ];
-    const newComment = createUserComment({ text, emotion });
-    onAddComment(newComment);
-  });
-
   const favoritesBtn = template.querySelector(
     `.film-details__control-label--favorite`
   );
@@ -252,6 +240,7 @@ const addEventListeners = (
 
 const createSmartAppendChild = () => {
   let currentTemplate = undefined;
+  let onCtrlEnterPress = undefined;
   const parent = document.querySelector("body");
 
   const clear = () => {
@@ -268,18 +257,21 @@ const createSmartAppendChild = () => {
 
   const removeListener = () => {
     window.removeEventListener("keydown", onEscPress);
+    window.removeEventListener("keydown", onCtrlEnterPress);
   };
 
   const addListener = () => {
     window.addEventListener("keydown", onEscPress);
+    window.addEventListener("keydown", onCtrlEnterPress);
   };
 
-  const smartAppendChild = template => {
+  const smartAppendChild = (template, handleCtrlEnterPress) => {
     if (currentTemplate) {
       clear();
     }
     parent.appendChild(template);
     currentTemplate = template;
+    onCtrlEnterPress = handleCtrlEnterPress;
     addListener();
   };
 
@@ -317,6 +309,19 @@ const disableCommentForm = template => () => {
   Template.getCommentInput(template).disabled = true;
 };
 
+const submitForm = (template, eventHandlers) => {
+  const { onAddComment } = eventHandlers;
+  const formElm = Template.getCommentForm(template);
+
+  const formData = new FormData(formElm);
+  const [text, emotion] = [
+    formData.get(`comment`),
+    formData.get(`comment-emoji`)
+  ];
+  const newComment = createUserComment({ text, emotion });
+  onAddComment(newComment);
+};
+
 const refreshComments = template => film => {
   updateCommentsTitle(template)(film);
   addComments(template)(film);
@@ -325,7 +330,12 @@ const refreshComments = template => film => {
 export const render = ({ film, eventHandlers }) => {
   const template = getTemplate(film, createComment);
   addEventListeners(template, eventHandlers);
-  smartAppendChild(template);
+  const handleCtrlEnterPress = evt => {
+    if (evt.keyCode == 13 && evt.metaKey) {
+      submitForm(template, eventHandlers);
+    }
+  };
+  smartAppendChild(template, handleCtrlEnterPress);
   return {
     updateRating: updateRating(template),
     addComment: addComment(template),
