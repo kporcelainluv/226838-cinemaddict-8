@@ -20,7 +20,6 @@ export default class Statistics {
       }
     }
     this._genreList = allGenres;
-    console.log("here", this._genreList);
     const listOfGenres = Object.entries(allGenres);
     listOfGenres.sort((a, b) => {
       return b[1] - a[1];

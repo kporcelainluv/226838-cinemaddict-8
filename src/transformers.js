@@ -1,7 +1,6 @@
 export const tranform = films => {
   const arr = [];
   for (let film of films) {
-    console.log(film);
     let filmInfo = {};
     filmInfo.id = film.id;
     filmInfo.descriptionText = film.film_info.description;
