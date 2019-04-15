@@ -3,17 +3,16 @@ import { FILTER_TYPES } from "./filtersMock";
 
 export const Films = {
   filterByType: (films, type) => {
-    return films.filter(film => {
-      if (type === FILTER_TYPES.all) {
-        return true;
-      } else if (type === FILTER_TYPES.favorites) {
-        return Film.isFavorite(film);
-      } else if (type === FILTER_TYPES.watchlist) {
-        return Film.isInWatchlist(film);
-      } else if (type === FILTER_TYPES.history) {
-        return Film.isWatched(film);
-      }
-    });
+    switch (type) {
+      case FILTER_TYPES.favorites:
+        return films.filter(Film.isFavorite);
+      case FILTER_TYPES.watchlist:
+        return films.filter(Film.isInWatchlist);
+      case FILTER_TYPES.history:
+        return films.filter(Film.isWatched);
+      default:
+        return films;
+    }
   },
   getTotalDuration: films =>
     films.reduce(
