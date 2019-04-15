@@ -205,25 +205,10 @@ const pageState = new Observable({
   }
 });
 
-const createDataForStats = currentFilmsData => {
-  currentFilmsData = Array.from(currentFilmsData);
-  let amountOfFilms = 0;
-  let duration = 0;
-  let genres = [];
-  for (const film of currentFilmsData) {
-    if (film.watched) {
-      amountOfFilms += 1;
-      duration += film.duration;
-      genres.push(...film.genre);
-    }
-  }
-  return { amountOfFilms, duration, genres };
-};
-
 pageState.subscribe(({ filterType, allFilms }) => {
   if (filterType === FILTER_TYPES.stats) {
     displayFilmsContainer(false);
-    const stats = new Statistics(createDataForStats(allFilms));
+    const stats = new Statistics(allFilms);
     stats.render();
   } else {
     displayFilmsContainer(true);

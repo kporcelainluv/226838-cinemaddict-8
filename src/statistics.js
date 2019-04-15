@@ -1,12 +1,32 @@
 import moment from "moment";
+
+import { Films } from "./films";
+
+const createDataForStats = currentFilmsData => {
+  currentFilmsData = Array.from(currentFilmsData);
+  let amountOfFilms = 0;
+  let duration = 0;
+  let genres = [];
+  for (const film of currentFilmsData) {
+    if (film.watched) {
+      amountOfFilms += 1;
+      duration += film.duration;
+      genres.push(...film.genre);
+    }
+  }
+  return { amountOfFilms, duration, genres };
+};
+
 import { createChart } from "./formStats.js";
 export default class Statistics {
-  constructor(data) {
+  constructor(films) {
+    const { amountOfFilms, duration, genres } = createDataForStats(films);
+
     this._element = null;
-    this._amountOfFilms = data.amountOfFilms;
-    this._duration = data.duration;
+    this._amountOfFilms = amountOfFilms;
+    this._duration = duration;
     this._topGenre = "";
-    this._genres = data.genres;
+    this._genres = genres;
     this._genreList = {};
     this._parent = document.querySelector(`.main`);
   }
