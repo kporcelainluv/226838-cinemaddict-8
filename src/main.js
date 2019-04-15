@@ -96,12 +96,6 @@ const createFilmCard = (film, container, pageState) => {
   );
 };
 
-const createFilmBoard = (films, container, pageState) => {
-  for (let film of films) {
-    createFilmCard(film, container, pageState);
-  }
-};
-
 const clearFilmBoard = container => {
   container.innerHTML = "";
 };
@@ -139,11 +133,22 @@ const createPage = (container, pageState) => {
     watchlistFilms
   ] = countWatchedFavoriteWatchlist(allFilms);
 
-  filtersData.map(elm => {
-    const filter = new Filter(elm, watchedFilms, favoriteFilms, watchlistFilms);
-    filter.render();
+  const filters = [
+    { name: "All movies", type: FILTER_TYPES.all },
+    { name: "Watchlist", type: FILTER_TYPES.watchlist },
+    { name: "History", type: FILTER_TYPES.history },
+    { name: "Favorites", type: FILTER_TYPES.favorites },
+    {
+      name: "Stats",
+      type: FILTER_TYPES.stats
+    }
+  ];
 
-    filter.onFilter = filterType => {
+  for (const filter of filters) {
+    const f = new Filter(filter, watchedFilms, favoriteFilms, watchlistFilms);
+    f.render();
+
+    f.onFilter = filterType => {
       pageState.update(data => {
         return {
           ...data,
@@ -151,8 +156,11 @@ const createPage = (container, pageState) => {
         };
       });
     };
-  });
-  createFilmBoard(films, container, pageState);
+  }
+
+  for (let film of films) {
+    createFilmCard(film, container, pageState);
+  }
 };
 
 const moviesCategoeriesContainers = Array.from(

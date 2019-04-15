@@ -5,6 +5,7 @@ export const Films = {
   filterByType: (films, type) => {
     switch (type) {
       case FILTER_TYPES.favorites:
+        return films.filter(film => Film.isFavorite(film));
         return films.filter(Film.isFavorite);
       case FILTER_TYPES.watchlist:
         return films.filter(Film.isInWatchlist);
