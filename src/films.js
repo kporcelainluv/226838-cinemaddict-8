@@ -19,8 +19,5 @@ export const Films = {
     films.reduce(
       (totalDuration, film) => totalDuration + Film.getDuration(film)
     ),
-  filterWatched: films => films.filter(film => Film.isWatched(film)),
-  filterFavorite: films => films.filter(film => Film.isFavorite(film)),
-  filterInWatchlist: films => films.filter(film => Film.isInWatchlist(film)),
   updateFilm: (films, film) => films.map(f => (Film.equals(f, film) ? film : f))
 };
