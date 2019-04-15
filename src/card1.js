@@ -53,11 +53,6 @@ const addEventListeners = (
       watched: !card.watched
     });
   });
-  const loadMoreButton = document.querySelector(`.films-list__show-more`);
-  loadMoreButton.addEventListener("click", e => {
-    e.preventDefault();
-    loadNextFIveFilms();
-  });
 };
 
 const createCard = ({

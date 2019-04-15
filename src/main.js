@@ -36,7 +36,6 @@ const createFilmCard = (film, container, pageState) => {
   const onAddToWatchList = addControlToFilm;
   const onMarkAsWatched = addControlToFilm;
   const onAddToFavourites = addControlToFilm;
-  const loadNextFIveFilms = () => {};
   const onClickToComments = () => {
     let filmState = film;
 
@@ -108,8 +107,7 @@ const createFilmCard = (film, container, pageState) => {
       onAddToWatchList,
       onMarkAsWatched,
       onAddToFavourites,
-      onClickToComments,
-      loadNextFIveFilms
+      onClickToComments
     },
     container
   );
