@@ -1,6 +1,7 @@
 export const Film = {
   isFavorite: film => film.favorite,
   isWatched: film => film.watched,
+  isInWatchlist: film => film.watchlist,
   toggleFavorite: film => ({ ...film, favorite: !film.favorite }),
   getPersonalRating: film => film.personalRating,
   updatePersonalRating: (newPersonalRating, film) => ({

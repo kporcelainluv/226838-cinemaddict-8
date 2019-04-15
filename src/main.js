@@ -4,6 +4,7 @@ import { default as Filter } from "./filter.js";
 import { default as Observable } from "./observable";
 import { default as Statistics } from "./statistics.js";
 import { Film } from "./film";
+import { Films } from "./films";
 import { API } from "./fetch";
 import Card1 from "./card1";
 
@@ -127,6 +128,7 @@ const clearFilmBoard = container => {
 const clearFilters = () => {
   document.querySelector("nav.main-navigation").innerHTML = "";
 };
+
 const countWatchedFavoriteWatchlist = films => {
   let watched = 0;
   let favorite = 0;
@@ -144,18 +146,11 @@ const countWatchedFavoriteWatchlist = films => {
   }
   return [watched, favorite, watchlist];
 };
-const createPage = (allFilms, filterType, container, pageState) => {
-  const films = allFilms.filter(film => {
-    if (filterType === FILTER_TYPES.all) {
-      return true;
-    } else if (filterType === FILTER_TYPES.favorites) {
-      return film.favorites;
-    } else if (filterType === FILTER_TYPES.watchlist) {
-      return film.watchlist;
-    } else if (filterType === FILTER_TYPES.history) {
-      return film.watched;
-    }
-  });
+
+const createPage = (container, pageState) => {
+  const { allFilms, filterType } = pageState.value;
+
+  const films = Films.filterByType(allFilms, filterType);
 
   const [
     watchedFilms,
@@ -201,7 +196,13 @@ const displayFilmsContainer = bool => {
 
 const pageState = new Observable({
   filterType: FILTER_TYPES.all,
-  allFilms: films
+  allFilms: films,
+  filmsToDisplay: {
+    [FILTER_TYPES.all]: 5,
+    [FILTER_TYPES.watchlist]: 5,
+    [FILTER_TYPES.history]: 5,
+    [FILTER_TYPES.favorites]: 5
+  }
 });
 
 const createDataForStats = currentFilmsData => {
@@ -233,7 +234,7 @@ pageState.subscribe(({ filterType, allFilms }) => {
       clearFilmBoard(statsSection);
     }
 
-    createPage(allFilms, filterType, allContainer, pageState);
+    createPage(allContainer, pageState);
   }
 });
 
