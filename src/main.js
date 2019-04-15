@@ -16,20 +16,10 @@ import { getFilms, updateServerFilm } from "./fetch.js";
 const createFilmCard = (film, container, pageState) => {
   const addControlToFilm = updatedFilm => {
     updateServerFilm(updatedFilm);
-    pageState.update(({ allFilms, ...otherData }) => {
-      for (let filmData of allFilms) {
-        //
-      }
-      const updatedAllFilms = allFilms.map(film => {
-        if (film.id === updatedFilm.id) {
-          return updatedFilm;
-        }
-        return film;
-      });
-
+    pageState.update(state => {
       return {
-        ...otherData,
-        allFilms: updatedAllFilms
+        ...state,
+        allFilms: Films.updateFilm(state.allFilms, updatedFilm)
       };
     });
   };
@@ -53,16 +43,9 @@ const createFilmCard = (film, container, pageState) => {
         onButtonClose: () => {
           Popup.unrender();
           pageState.update(state => {
-            const updatedAllFilms = state.allFilms.map(f => {
-              if (Film.equals(f, filmState)) {
-                return filmState;
-              }
-              return f;
-            });
-
             return {
               ...state,
-              allFilms: updatedAllFilms
+              allFilms: Films.updateFilm(state.allFilms, filmState)
             };
           });
         },
